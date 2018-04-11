@@ -3,6 +3,9 @@ package com.segmentify.segmentifyandroidsdk.network
 import android.content.Context
 import android.net.ConnectivityManager
 import com.segmentify.segmentifyandroidsdk.BuildConfig
+import com.segmentify.segmentifyandroidsdk.SegmentifyManager
+import com.segmentify.segmentifyandroidsdk.network.Factories.EventFactory
+import com.segmentify.segmentifyandroidsdk.network.Factories.UserSessionFactory
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -11,8 +14,8 @@ import java.util.concurrent.TimeUnit
 
 object ConnectionManager {
     private val timeoutInterval = 60
-    //private var customerFactory : CustomerFactory
-    //private var applicationFactory : ApplicationFactory
+    private var userSessionFactory : UserSessionFactory
+    private var eventFactory : EventFactory
     private val client : OkHttpClient
 
     init {
@@ -31,23 +34,31 @@ object ConnectionManager {
         httpClient.readTimeout(timeoutInterval.toLong(), TimeUnit.SECONDS)
 
         client = httpClient.build()
-        val service = Retrofit.Builder()
-                .baseUrl(BuildConfig.API_ADDRESS)
+        val keyService = Retrofit.Builder()
+                .baseUrl(BuildConfig.KEY_ADDRESS)
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(client)
                 .build()
 
-        //customerFactory = service.create(CustomerFactory::class.java)
-        //applicationFactory = service.create(ApplicationFactory::class.java)
+        userSessionFactory = keyService.create(UserSessionFactory::class.java)
+
+        val eventService = Retrofit.Builder()
+                .baseUrl(SegmentifyManager.clientPreferences?.getApiUrl())
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(client)
+                .build()
+
+        eventFactory = eventService.create(EventFactory::class.java)
     }
 
-    /*fun getCustomerFactory(): CustomerFactory {
-        return customerFactory
+    fun getUserSessionFactory(): UserSessionFactory {
+        return userSessionFactory
     }
 
-    fun getApplicationFactory(): ApplicationFactory {
-        return applicationFactory
-    }*/
+    fun getEventFactory(): EventFactory {
+        return eventFactory
+    }
+
 
     fun isOnline(context: Context): Boolean {
         val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager

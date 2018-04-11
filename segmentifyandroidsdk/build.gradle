@@ -17,11 +17,11 @@ android {
 
     buildTypes {
         debug {
-            buildConfigField 'String', 'API_ADDRESS', "\"https://api.com/api/\""
+            buildConfigField 'String', 'KEY_ADDRESS', "\"https://dce1.segmentify.com/\""
             buildConfigField "Boolean", "DEBUG_MODE", "true"
         }
         release {
-            buildConfigField 'String', 'API_ADDRESS', "\"https://api.com/api/\""
+            buildConfigField 'String', 'KEY_ADDRESS', "\"https://dce1.segmentify.com/\""
             buildConfigField "Boolean", "DEBUG_MODE", "false"
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
