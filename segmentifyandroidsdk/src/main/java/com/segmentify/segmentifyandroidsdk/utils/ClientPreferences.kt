@@ -30,11 +30,11 @@ class ClientPreferences(context : Context) : PreferencesManager(context){
     }
 
     fun getSessionId(): String {
-        return getString(USER_ID, "")!!
+        return getString(SESSION_ID, "")!!
     }
 
     fun setSessionId(userId: String) {
-        putString(USER_ID, userId)
+        putString(SESSION_ID, userId)
     }
 
     fun isLogVisible(): Boolean {

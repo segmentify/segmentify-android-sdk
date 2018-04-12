@@ -35,5 +35,7 @@ class Constant {
         //Custom
         val sessionKeepSecond = 86400
         val segmentfyErrorLog = "Segmentify Error"
+        val segmentfySuccessLog = "Segmentify Success"
+
     }
 }

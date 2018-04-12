@@ -19,8 +19,14 @@ abstract class NetworkCallback<T> : Callback<T> {
                     onSuccess(this)
                 }
             }
-            else if(response.code() == 500){
-
+            else if(response.code() != 200){
+                if(!call!!.isCanceled) run {
+                    SegmentifyLogger.printErrorLog(response.message())
+                    if (retryCount++ < TOTAL_RETRIES) {
+                        SegmentifyLogger.printErrorLog(": Retrying... ($retryCount out of $TOTAL_RETRIES)")
+                        retry(call)
+                    }
+                }
             }
         }
     }
@@ -28,13 +34,7 @@ abstract class NetworkCallback<T> : Callback<T> {
     abstract fun onSuccess(response:T)
 
     override fun onFailure(call: Call<T>, t: Throwable) {
-        if(!call.isCanceled) run {
-            SegmentifyLogger.printLog(t.message.toString())
-            if (retryCount++ < TOTAL_RETRIES) {
-                SegmentifyLogger.printLog(": Retrying... ($retryCount out of $TOTAL_RETRIES)")
-                retry(call)
-            }
-        }
+
     }
 
     private fun retry(call: Call<T>) {

@@ -2,11 +2,15 @@ package com.segmentify.segmentifyandroidsdk.network
 
 import android.content.Context
 import android.net.ConnectivityManager
+import android.util.Log
 import com.segmentify.segmentifyandroidsdk.BuildConfig
 import com.segmentify.segmentifyandroidsdk.SegmentifyManager
 import com.segmentify.segmentifyandroidsdk.network.Factories.EventFactory
 import com.segmentify.segmentifyandroidsdk.network.Factories.UserSessionFactory
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -29,7 +33,22 @@ object ConnectionManager {
 
         val httpClient = OkHttpClient.Builder()
 
-        httpClient.addInterceptor(logging)
+        httpClient.addInterceptor(logging).addInterceptor(Interceptor { chain ->
+            val request = chain?.request()
+            val newRequest: Request
+
+            try {
+                newRequest = request?.newBuilder()?.addHeader("Origin",SegmentifyManager.configModel.subDomain)
+                        ?.addHeader("Content-Type", "application/json")
+                        ?.addHeader("Accept", "application/json")!!.build()
+            } catch (e: Exception) {
+                Log.d("addHeader", "Error")
+                e.printStackTrace()
+                return@Interceptor chain?.proceed(request)!!
+            }
+
+            chain.proceed(newRequest)
+        })
         httpClient.connectTimeout(timeoutInterval.toLong(), TimeUnit.SECONDS)
         httpClient.readTimeout(timeoutInterval.toLong(), TimeUnit.SECONDS)
 
