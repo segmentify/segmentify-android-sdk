@@ -10,17 +10,21 @@ import com.segmentify.segmentifyandroidsdk.network.Factories.UserSessionFactory
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
+
+
+
+
 
 object ConnectionManager {
     private val timeoutInterval = 60
     private var userSessionFactory : UserSessionFactory
     private var eventFactory : EventFactory
     private val client : OkHttpClient
+
 
     init {
         val logging = HttpLoggingInterceptor()
@@ -46,6 +50,25 @@ object ConnectionManager {
                 e.printStackTrace()
                 return@Interceptor chain?.proceed(request)!!
             }
+
+            /*if(SegmentifyManager.clientPreferences != null && SegmentifyManager.clientPreferences!!.getSessionId().isNullOrBlank()){
+                val getSessionIdRequest = Request.Builder().header("Content-Type", "application/json").header("Accept", "application/json").get().url(BuildConfig.KEY_ADDRESS + "get/key?count=1").build()
+                var response = getSyncClient().newCall(getSessionIdRequest).execute()
+                val listType = object : TypeToken<ArrayList<String>>() {}.type
+                var sessionIdResponse = Gson().fromJson<ArrayList<String>>(response.body().toString(), listType)
+
+                SegmentifyManager.clientPreferences?.setSessionId(sessionIdResponse[0])
+            }
+
+            if(SegmentifyManager.clientPreferences != null && SegmentifyManager.clientPreferences!!.getUserId().isNullOrBlank()){
+                val getUserIDSessionIdRequest = Request.Builder().header("Content-Type", "application/json").header("Accept", "application/json").get().url(BuildConfig.KEY_ADDRESS + "get/key?count=2").build()
+                var response = getSyncClient().newCall(getUserIDSessionIdRequest).execute()
+                val listType = object : TypeToken<ArrayList<String>>() {}.type
+                var userIdSessionIdResponse = Gson().fromJson<ArrayList<String>>(response.body().toString(), listType)
+
+                SegmentifyManager.clientPreferences?.setUserId(userIdSessionIdResponse[0])
+                SegmentifyManager.clientPreferences?.setSessionId(userIdSessionIdResponse[1])
+            }*/
 
             chain.proceed(newRequest)
         })
@@ -78,6 +101,9 @@ object ConnectionManager {
         return eventFactory
     }
 
+    fun getSyncClient(): OkHttpClient {
+        return client
+    }
 
     fun isOnline(context: Context): Boolean {
         val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager

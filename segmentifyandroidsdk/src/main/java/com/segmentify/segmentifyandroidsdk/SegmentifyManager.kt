@@ -13,6 +13,7 @@ object SegmentifyManager {
 
     var clientPreferences : ClientPreferences? = null
     var configModel = ConfigModel()
+    var segmentifyObject = SegmentifyObject()
     private var sessionKeepSecond = Constant.sessionKeepSecond
 
 
@@ -183,6 +184,34 @@ object SegmentifyManager {
         })
     }
 
+    fun sendImpression(instanceId : String, interactionId : String){
+        var interactionModel = InteractionModel()
+        interactionModel.eventName = Constant.interactionEventName
+        interactionModel.userOperationStep = Constant.impressionStep
+        interactionModel.instanceId = instanceId
+        interactionModel.interactionId = interactionId
+    }
+
+    fun sendWidgetView(instanceId : String, interactionId : String) {
+        var interactionModel = InteractionModel()
+        interactionModel.eventName = Constant.interactionEventName
+        interactionModel.userOperationStep = Constant.widgetViewStep
+        interactionModel.instanceId = instanceId
+        interactionModel.interactionId = interactionId
+
+        EventController.sendInteractionEvent(interactionModel,configModel.apiKey!!)
+    }
+
+    fun sendClick(instanceId : String, interactionId : String) {
+        var interactionModel = InteractionModel()
+        interactionModel.eventName = Constant.interactionEventName
+        interactionModel.userOperationStep = Constant.clickStep
+        interactionModel.instanceId = instanceId
+        interactionModel.interactionId = interactionId
+
+        EventController.sendInteractionEvent(interactionModel,configModel.apiKey!!)
+    }
+
     fun sendUserRegister(userModel: UserModel) {
         userModel.eventName = Constant.userOperationEventName
         userModel.userOperationStep = Constant.registerStep
@@ -192,7 +221,7 @@ object SegmentifyManager {
             return
         }
 
-        EventController.sendUserRegister(userModel, configModel.apiKey!!)
+        EventController.sendUserOperation(userModel, configModel.apiKey!!)
 
     }
 
@@ -208,7 +237,86 @@ object SegmentifyManager {
         userModel.age = age
         userModel.birthdate = birthdate
 
-        EventController.sendUserRegister(userModel, configModel.apiKey!!)
+        EventController.sendUserOperation(userModel, configModel.apiKey!!)
     }
+
+    fun sendUserLogin(username: String?, email: String?,apiKey : String) {
+        var userModel = UserModel()
+        userModel.eventName = Constant.userOperationEventName
+        userModel.userOperationStep = Constant.signInStep
+        userModel.username = username
+        userModel.email = email
+
+        EventController.sendUserOperation(userModel, configModel.apiKey!!)
+    }
+
+    fun sendUserLogout(username: String?, email: String?) {
+        var userModel = UserModel()
+        userModel.eventName = Constant.userOperationEventName
+        userModel.userOperationStep = Constant.logoutStep
+        userModel.username = username
+        userModel.email = email
+
+        EventController.sendUserOperation(userModel, configModel.apiKey!!)
+    }
+
+    fun sendUserUpdate(username : String?, fullName : String?, email : String?, mobilePhone : String?, gender : String?, age : String?, birthdate : String?, isRegistered : Boolean?, isLogin : Boolean?){
+        var userModel = UserModel()
+        userModel.eventName = Constant.userOperationEventName
+        userModel.userOperationStep = Constant.updateUserStep
+        userModel.username = username
+        userModel.fullName = fullName
+        userModel.email = email
+        userModel.mobilePhone = mobilePhone
+        userModel.gender = gender
+        userModel.age = age
+        userModel.birthdate = birthdate
+        userModel.isRegistered = isRegistered
+        userModel.isLogin = isLogin
+
+        EventController.sendUserOperation(userModel, configModel.apiKey!!)
+    }
+
+    fun sendChangeUser(userChangeModel: UserChangeModel){
+        userChangeModel.eventName = Constant.userChangeEventName
+
+        if(userChangeModel?.userId.isNullOrBlank()){
+            SegmentifyLogger.printErrorLog("You must fill userId before accessing change user event")
+            return
+        }
+        userChangeModel.oldUserId = clientPreferences?.getUserId()
+
+        if(clientPreferences?.getUserId() != userChangeModel.userId){
+            EventController.sendChangeUser(userChangeModel, configModel.apiKey!!,object : SegmentifyCallback<Boolean>{
+                override fun onDataLoaded(isSuccessful: Boolean) {
+                    if(isSuccessful){
+                        userChangeModel.userId?.let { clientPreferences?.setUserId(it) }
+                    }
+                }
+            })
+        }
+    }
+
+    fun setAdvertisingIdentifier(adIdentifier: String?) {
+        segmentifyObject.advertisingIdentifier = adIdentifier
+    }
+
+    fun setAppVersion(appVersion: String?) {
+        segmentifyObject.appVersion = appVersion
+    }
+
+    /*fun addParams(key: String, value: Object?) {
+        segmentifyObject.extra[key] = value
+    }
+
+    fun addCustomParameter(key: String?, value: AnyObject?) {
+        if (key != nil && value != nil) {
+            eventRequest.extra[key!] = value
+        }
+    }
+
+    fun removeUserParameters() {
+        eventRequest.extra.removeAll()
+    }*/
 
 }

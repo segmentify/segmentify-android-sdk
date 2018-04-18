@@ -16,4 +16,6 @@ open class SegmentifyObject{
     var lang : String? = null
     var params : Map<String,Object>? = null
     var nextPage : Boolean? = null
+    var advertisingIdentifier : String? = null
+    var appVersion : String? = null
 }

@@ -57,14 +57,31 @@ internal object EventController {
                 })
     }
 
-    fun sendUserRegister(userModel: UserModel,apiKey : String){
-        ConnectionManager.getEventFactory().sendUserRegister(userModel,apiKey)
+    fun sendUserOperation(userModel: UserModel,apiKey : String){
+        ConnectionManager.getEventFactory().sendUserOperation(userModel,apiKey)
                 .enqueue(object : NetworkCallback<Any>(){
                     override fun onSuccess(response: Any) {
                         SegmentifyLogger.printSuccessLog("Req basarili!")
-                        //segmentifyCallback.onDataLoaded(response)
                     }
                 })
     }
 
+    fun sendChangeUser(userChangeModel: UserChangeModel,apiKey : String,segmentifyCallback : SegmentifyCallback<Boolean>){
+        ConnectionManager.getEventFactory().sendChangeUser(userChangeModel,apiKey)
+                .enqueue(object : NetworkCallback<Any>(){
+                    override fun onSuccess(response: Any) {
+                        SegmentifyLogger.printSuccessLog("Req basarili!")
+                        segmentifyCallback.onDataLoaded(true)
+                    }
+                })
+    }
+
+    fun sendInteractionEvent(interactionModel: InteractionModel,apiKey : String){
+        ConnectionManager.getEventFactory().sendInteractionEvent(interactionModel,apiKey)
+                .enqueue(object : NetworkCallback<Any>(){
+                    override fun onSuccess(response: Any) {
+                        SegmentifyLogger.printSuccessLog("Req basarili!")
+                    }
+                })
+    }
 }
