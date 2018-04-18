@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.segmentify.segmentifyandroidsdk.SegmentifyManager;
-import com.segmentify.segmentifyandroidsdk.controller.EventController;
 import com.segmentify.segmentifyandroidsdk.model.RecommendationModel;
 import com.segmentify.segmentifyandroidsdk.utils.SegmentifyCallback;
 

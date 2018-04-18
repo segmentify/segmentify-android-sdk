@@ -16,6 +16,9 @@ open class SegmentifyObject{
     var lang : String? = null
     var params : Map<String,Object>? = null
     var nextPage : Boolean? = null
+    var os : String? = "android"
+    var device : String? = "android"
+    var osversion : String? = android.os.Build.VERSION.RELEASE.toString()
     var advertisingIdentifier : String? = null
     var appVersion : String? = null
 }

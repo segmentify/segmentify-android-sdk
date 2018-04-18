@@ -5,4 +5,5 @@ class DynamicItemsModel {
     var timeFrame:String? = null
     var itemCount:Int? = null
     var key:String? = null
+    var score:String? = null
 }

@@ -9,7 +9,7 @@ class SegmentifyLogger {
         }
 
         fun printSuccessLog(message:String){
-            Log.e(Constant.segmentfySuccessLog,message)
+            Log.d(Constant.segmentfySuccessLog,message)
         }
     }
 }

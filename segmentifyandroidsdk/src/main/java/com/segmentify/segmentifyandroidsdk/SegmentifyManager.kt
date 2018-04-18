@@ -9,6 +9,8 @@ import com.segmentify.segmentifyandroidsdk.utils.Constant
 import com.segmentify.segmentifyandroidsdk.utils.SegmentifyCallback
 import com.segmentify.segmentifyandroidsdk.utils.SegmentifyLogger
 
+
+
 object SegmentifyManager {
 
     var clientPreferences : ClientPreferences? = null
@@ -75,6 +77,15 @@ object SegmentifyManager {
             SegmentifyLogger.printErrorLog("you must fill category before accessing sendPageView event method")
             return
         }
+
+        segmentifyObject.eventName = "asd"
+
+        val fields = segmentifyObject?.eventName?.javaClass!!.declaredFields
+        for (i in fields.indices) {
+            System.out.println("Field = " + fields[i].toString())
+        }
+
+
 
         var pageModel = PageModel()
         pageModel.eventName = Constant.pageViewEventName
