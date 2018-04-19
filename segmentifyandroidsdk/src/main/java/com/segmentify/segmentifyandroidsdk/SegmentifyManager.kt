@@ -63,7 +63,7 @@ object SegmentifyManager {
         if(pageModel.subCategory != null) {
             pageModel.subCategory = pageModel.subCategory
         }
-        EventController.sendPageView(pageModel, configModel.apiKey!!,object : SegmentifyCallback<ArrayList<RecommendationModel>>{
+        EventController.sendPageView(pageModel,object : SegmentifyCallback<ArrayList<RecommendationModel>>{
             override fun onDataLoaded(data: ArrayList<RecommendationModel>) {
                 segmentifyCallback.onDataLoaded(data)
             }
@@ -92,7 +92,7 @@ object SegmentifyManager {
         pageModel.category = category
         pageModel.subCategory = subCategory
 
-        EventController.sendPageView(pageModel, configModel.apiKey!!,object : SegmentifyCallback<ArrayList<RecommendationModel>>{
+        EventController.sendPageView(pageModel,object : SegmentifyCallback<ArrayList<RecommendationModel>>{
             override fun onDataLoaded(data: ArrayList<RecommendationModel>) {
                 segmentifyCallback.onDataLoaded(data)
             }
@@ -106,7 +106,7 @@ object SegmentifyManager {
         }
         customEventModel.eventName = Constant.customEventName
 
-        EventController.sendCustomEvent(customEventModel, configModel.apiKey!!,object : SegmentifyCallback<ArrayList<RecommendationModel>>{
+        EventController.sendCustomEvent(customEventModel,object : SegmentifyCallback<ArrayList<RecommendationModel>>{
             override fun onDataLoaded(data: ArrayList<RecommendationModel>) {
                 segmentifyCallback.onDataLoaded(data)
             }
@@ -149,7 +149,111 @@ object SegmentifyManager {
             return
         }
 
-        EventController.sendProductView(productModel, configModel.apiKey!!,object : SegmentifyCallback<ArrayList<RecommendationModel>>{
+        EventController.sendProductView(productModel,object : SegmentifyCallback<ArrayList<RecommendationModel>>{
+            override fun onDataLoaded(data: ArrayList<RecommendationModel>) {
+                segmentifyCallback.onDataLoaded(data)
+            }
+        })
+    }
+
+    fun sendCustomerInformation(checkoutModel : CheckoutModel,segmentifyCallback: SegmentifyCallback<ArrayList<RecommendationModel>>){
+        checkoutModel.eventName = Constant.checkoutEventName
+        checkoutModel.checkoutStep = Constant.customerInformationStep
+
+        if(checkoutModel.totalPrice == null){
+            SegmentifyLogger.printErrorLog("You must fill userId before accessing sendCustomerInformation event")
+        }
+
+        if(checkoutModel.productList == null){
+            SegmentifyLogger.printErrorLog("you must fill productList before accessing sendCustomerInformation event method")
+        }
+
+        EventController.sendPurchase(checkoutModel,object : SegmentifyCallback<ArrayList<RecommendationModel>>{
+            override fun onDataLoaded(data: ArrayList<RecommendationModel>) {
+                segmentifyCallback.onDataLoaded(data)
+            }
+        })
+    }
+
+    fun sendViewBasket(totalPrice : Double, productList : ArrayList<ProductModel>, currency : String?,segmentifyCallback: SegmentifyCallback<ArrayList<RecommendationModel>>){
+        var checkoutModel = CheckoutModel()
+        checkoutModel.eventName = Constant.checkoutEventName
+        checkoutModel.checkoutStep = Constant.viewBasketStep
+
+        if(totalPrice == null){
+            SegmentifyLogger.printErrorLog("You must fill userId before accessing sendViewBasket event")
+        }
+
+        if(productList == null){
+            SegmentifyLogger.printErrorLog("you must fill productList before accessing sendViewBasket event method")
+        }
+
+        checkoutModel.totalPrice = totalPrice
+        checkoutModel.productList = productList
+
+        if(currency != null){
+            checkoutModel.currency = currency
+        }
+
+        EventController.sendPurchase(checkoutModel,object : SegmentifyCallback<ArrayList<RecommendationModel>>{
+            override fun onDataLoaded(data: ArrayList<RecommendationModel>) {
+                segmentifyCallback.onDataLoaded(data)
+            }
+        })
+    }
+
+    fun sendViewBasket(checkoutModel : CheckoutModel,segmentifyCallback: SegmentifyCallback<ArrayList<RecommendationModel>>){
+        checkoutModel.eventName = Constant.checkoutEventName
+        checkoutModel.checkoutStep = Constant.viewBasketStep
+        if(checkoutModel.totalPrice == null){
+            SegmentifyLogger.printErrorLog("You must fill userId before accessing sendViewBasket event")
+        }
+
+        if(checkoutModel.productList == null){
+            SegmentifyLogger.printErrorLog("you must fill productList before accessing sendViewBasket event method")
+        }
+
+        EventController.sendPurchase(checkoutModel,object : SegmentifyCallback<ArrayList<RecommendationModel>>{
+            override fun onDataLoaded(data: ArrayList<RecommendationModel>) {
+                segmentifyCallback.onDataLoaded(data)
+            }
+        })
+    }
+
+    fun sendPaymentInformation(checkoutModel : CheckoutModel,segmentifyCallback: SegmentifyCallback<ArrayList<RecommendationModel>>){
+        checkoutModel.eventName = Constant.checkoutEventName
+        checkoutModel.checkoutStep = Constant.paymentInformationStep
+        if(checkoutModel.totalPrice == null){
+            SegmentifyLogger.printErrorLog("You must fill userId before accessing sendPaymentInformation event")
+        }
+
+        if(checkoutModel.productList == null){
+            SegmentifyLogger.printErrorLog("you must fill productList before accessing sendPaymentInformation event method")
+        }
+
+        EventController.sendPurchase(checkoutModel,object : SegmentifyCallback<ArrayList<RecommendationModel>>{
+            override fun onDataLoaded(data: ArrayList<RecommendationModel>) {
+                segmentifyCallback.onDataLoaded(data)
+            }
+        })
+    }
+
+    fun sendPaymentInformation(totalPrice : Double, productList : ArrayList<ProductModel>,segmentifyCallback: SegmentifyCallback<ArrayList<RecommendationModel>>){
+        var checkoutModel = CheckoutModel()
+        checkoutModel.eventName = Constant.checkoutEventName
+        checkoutModel.checkoutStep = Constant.paymentInformationStep
+        if(checkoutModel.totalPrice == null){
+            SegmentifyLogger.printErrorLog("You must fill userId before accessing sendPaymentInformation event")
+        }
+
+        if(checkoutModel.productList == null){
+            SegmentifyLogger.printErrorLog("you must fill productList before accessing sendPaymentInformation event method")
+        }
+
+        checkoutModel.totalPrice = totalPrice
+        checkoutModel.productList = productList
+
+        EventController.sendPurchase(checkoutModel,object : SegmentifyCallback<ArrayList<RecommendationModel>>{
             override fun onDataLoaded(data: ArrayList<RecommendationModel>) {
                 segmentifyCallback.onDataLoaded(data)
             }
@@ -172,7 +276,7 @@ object SegmentifyManager {
             return
         }
 
-        EventController.sendAddOrRemoveBasket(basketModel, configModel.apiKey!!)
+        EventController.sendAddOrRemoveBasket(basketModel)
     }
 
     fun sendPurchase(checkoutModel: CheckoutModel,segmentifyCallback: SegmentifyCallback<ArrayList<RecommendationModel>>) {
@@ -188,7 +292,7 @@ object SegmentifyManager {
             return
         }
 
-        EventController.sendPurchase(checkoutModel, configModel.apiKey!!,object : SegmentifyCallback<ArrayList<RecommendationModel>>{
+        EventController.sendPurchase(checkoutModel,object : SegmentifyCallback<ArrayList<RecommendationModel>>{
             override fun onDataLoaded(data: ArrayList<RecommendationModel>) {
                 segmentifyCallback.onDataLoaded(data)
             }
@@ -210,7 +314,7 @@ object SegmentifyManager {
         interactionModel.instanceId = instanceId
         interactionModel.interactionId = interactionId
 
-        EventController.sendInteractionEvent(interactionModel,configModel.apiKey!!)
+        EventController.sendInteractionEvent(interactionModel)
     }
 
     fun sendClick(instanceId : String, interactionId : String) {
@@ -220,7 +324,7 @@ object SegmentifyManager {
         interactionModel.instanceId = instanceId
         interactionModel.interactionId = interactionId
 
-        EventController.sendInteractionEvent(interactionModel,configModel.apiKey!!)
+        EventController.sendInteractionEvent(interactionModel)
     }
 
     fun sendUserRegister(userModel: UserModel) {
@@ -232,7 +336,7 @@ object SegmentifyManager {
             return
         }
 
-        EventController.sendUserOperation(userModel, configModel.apiKey!!)
+        EventController.sendUserOperation(userModel)
 
     }
 
@@ -248,7 +352,7 @@ object SegmentifyManager {
         userModel.age = age
         userModel.birthdate = birthdate
 
-        EventController.sendUserOperation(userModel, configModel.apiKey!!)
+        EventController.sendUserOperation(userModel)
     }
 
     fun sendUserLogin(username: String?, email: String?,apiKey : String) {
@@ -258,7 +362,7 @@ object SegmentifyManager {
         userModel.username = username
         userModel.email = email
 
-        EventController.sendUserOperation(userModel, configModel.apiKey!!)
+        EventController.sendUserOperation(userModel)
     }
 
     fun sendUserLogout(username: String?, email: String?) {
@@ -268,7 +372,7 @@ object SegmentifyManager {
         userModel.username = username
         userModel.email = email
 
-        EventController.sendUserOperation(userModel, configModel.apiKey!!)
+        EventController.sendUserOperation(userModel)
     }
 
     fun sendUserUpdate(username : String?, fullName : String?, email : String?, mobilePhone : String?, gender : String?, age : String?, birthdate : String?, isRegistered : Boolean?, isLogin : Boolean?){
@@ -285,10 +389,10 @@ object SegmentifyManager {
         userModel.isRegistered = isRegistered
         userModel.isLogin = isLogin
 
-        EventController.sendUserOperation(userModel, configModel.apiKey!!)
+        EventController.sendUserOperation(userModel)
     }
 
-    fun sendChangeUser(userChangeModel: UserChangeModel){
+    fun sendChangeUser(userChangeModel: UserChangeModel) {
         userChangeModel.eventName = Constant.userChangeEventName
 
         if(userChangeModel?.userId.isNullOrBlank()){
@@ -298,7 +402,7 @@ object SegmentifyManager {
         userChangeModel.oldUserId = clientPreferences?.getUserId()
 
         if(clientPreferences?.getUserId() != userChangeModel.userId){
-            EventController.sendChangeUser(userChangeModel, configModel.apiKey!!,object : SegmentifyCallback<Boolean>{
+            EventController.sendChangeUser(userChangeModel,object : SegmentifyCallback<Boolean>{
                 override fun onDataLoaded(isSuccessful: Boolean) {
                     if(isSuccessful){
                         userChangeModel.userId?.let { clientPreferences?.setUserId(it) }

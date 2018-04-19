@@ -15,79 +15,71 @@ internal object EventController {
 
     var productRecommendationGlobalList = arrayListOf<ProductRecommendationModel>()
 
-    fun sendPageView(pageModel : PageModel,apiKey : String,segmentifyCallback: SegmentifyCallback<ArrayList<RecommendationModel>>){
-        ConnectionManager.getEventFactory().sendPageView(pageModel,apiKey)
+    fun sendPageView(pageModel : PageModel,segmentifyCallback: SegmentifyCallback<ArrayList<RecommendationModel>>){
+        ConnectionManager.getEventFactory().sendPageView(pageModel,SegmentifyManager.configModel.apiKey!!)
                 .enqueue(object : NetworkCallback<EventResponseModel>(){
                     override fun onSuccess(response: EventResponseModel) {
-                        SegmentifyLogger.printSuccessLog("Req basarili!")
                         segmentifyCallback.onDataLoaded(reformatResponse(response))
                     }
                 })
     }
 
-    fun sendCustomEvent(customEventModel: CustomEventModel,apiKey : String, segmentifyCallback: SegmentifyCallback<ArrayList<RecommendationModel>>){
-        ConnectionManager.getEventFactory().sendCustomEvent(customEventModel,apiKey)
+    fun sendCustomEvent(customEventModel: CustomEventModel, segmentifyCallback: SegmentifyCallback<ArrayList<RecommendationModel>>){
+        ConnectionManager.getEventFactory().sendCustomEvent(customEventModel,SegmentifyManager.configModel.apiKey!!)
                 .enqueue(object : NetworkCallback<EventResponseModel>(){
                     override fun onSuccess(response: EventResponseModel) {
-                        SegmentifyLogger.printSuccessLog("Req basarili!")
-                        //segmentifyCallback.onDataLoaded(response)
+                        segmentifyCallback.onDataLoaded(reformatResponse(response))
                     }
                 })
     }
 
-    fun sendProductView(productModel: ProductModel,apiKey : String, segmentifyCallback: SegmentifyCallback<ArrayList<RecommendationModel>>){
-        ConnectionManager.getEventFactory().sendProductView(productModel,apiKey)
+    fun sendProductView(productModel: ProductModel, segmentifyCallback: SegmentifyCallback<ArrayList<RecommendationModel>>){
+        ConnectionManager.getEventFactory().sendProductView(productModel,SegmentifyManager.configModel.apiKey!!)
                 .enqueue(object : NetworkCallback<EventResponseModel>(){
                     override fun onSuccess(response: EventResponseModel) {
-                        SegmentifyLogger.printSuccessLog("Req basarili!")
-                        //segmentifyCallback.onDataLoaded(response)
+                        segmentifyCallback.onDataLoaded(reformatResponse(response))
                     }
                 })
     }
 
-    fun sendAddOrRemoveBasket(basketModel: BasketModel,apiKey : String){
-        ConnectionManager.getEventFactory().sendAddOrRemoveBasket(basketModel,apiKey)
+    fun sendAddOrRemoveBasket(basketModel: BasketModel){
+        ConnectionManager.getEventFactory().sendAddOrRemoveBasket(basketModel,SegmentifyManager.configModel.apiKey!!)
                 .enqueue(object : NetworkCallback<Any>(){
                     override fun onSuccess(response: Any) {
-                        SegmentifyLogger.printSuccessLog("Req basarili!")
                     }
                 })
     }
 
-    fun sendPurchase(checkoutModel: CheckoutModel,apiKey : String,segmentifyCallback: SegmentifyCallback<ArrayList<RecommendationModel>>) {
-        ConnectionManager.getEventFactory().sendPurchase(checkoutModel,apiKey)
+    fun sendPurchase(checkoutModel: CheckoutModel,segmentifyCallback: SegmentifyCallback<ArrayList<RecommendationModel>>) {
+        ConnectionManager.getEventFactory().sendPurchase(checkoutModel,SegmentifyManager.configModel.apiKey!!)
                 .enqueue(object : NetworkCallback<EventResponseModel>(){
                     override fun onSuccess(response: EventResponseModel) {
-                        SegmentifyLogger.printSuccessLog("Req basarili!")
-                        //segmentifyCallback.onDataLoaded(response)
+                        segmentifyCallback.onDataLoaded(reformatResponse(response))
                     }
                 })
     }
 
-    fun sendUserOperation(userModel: UserModel,apiKey : String){
-        ConnectionManager.getEventFactory().sendUserOperation(userModel,apiKey)
+    fun sendUserOperation(userModel: UserModel){
+        ConnectionManager.getEventFactory().sendUserOperation(userModel,SegmentifyManager.configModel.apiKey!!)
                 .enqueue(object : NetworkCallback<Any>(){
                     override fun onSuccess(response: Any) {
-                        SegmentifyLogger.printSuccessLog("Req basarili!")
                     }
                 })
     }
 
-    fun sendChangeUser(userChangeModel: UserChangeModel,apiKey : String,segmentifyCallback : SegmentifyCallback<Boolean>){
-        ConnectionManager.getEventFactory().sendChangeUser(userChangeModel,apiKey)
+    fun sendChangeUser(userChangeModel: UserChangeModel,segmentifyCallback : SegmentifyCallback<Boolean>){
+        ConnectionManager.getEventFactory().sendChangeUser(userChangeModel,SegmentifyManager.configModel.apiKey!!)
                 .enqueue(object : NetworkCallback<Any>(){
                     override fun onSuccess(response: Any) {
-                        SegmentifyLogger.printSuccessLog("Req basarili!")
                         segmentifyCallback.onDataLoaded(true)
                     }
                 })
     }
 
-    fun sendInteractionEvent(interactionModel: InteractionModel,apiKey : String){
-        ConnectionManager.getEventFactory().sendInteractionEvent(interactionModel,apiKey)
+    fun sendInteractionEvent(interactionModel: InteractionModel){
+        ConnectionManager.getEventFactory().sendInteractionEvent(interactionModel,SegmentifyManager.configModel.apiKey!!)
                 .enqueue(object : NetworkCallback<Any>(){
                     override fun onSuccess(response: Any) {
-                        SegmentifyLogger.printSuccessLog("Req basarili!")
                     }
                 })
     }
@@ -107,7 +99,7 @@ internal object EventController {
             interactionModel.type = "impression"
             interactionModel.instanceId = recommendationModel.instanceId
             interactionModel.interactionId = recommendationModel.actionId
-            sendInteractionEvent(interactionModel, SegmentifyManager.configModel.apiKey!!)
+            sendInteractionEvent(interactionModel)
 
             try {
                 val recommendedProductsString = Gson().toJson(response.params?.recommendedProducts)
