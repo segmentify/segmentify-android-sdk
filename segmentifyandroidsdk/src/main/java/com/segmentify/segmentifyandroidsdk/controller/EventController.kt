@@ -109,7 +109,7 @@ internal object EventController {
             interactionModel.interactionId = recommendationModel.actionId
             sendInteractionEvent(interactionModel, SegmentifyManager.configModel.apiKey!!)
 
-            try{
+            try {
                 val recommendedProductsString = Gson().toJson(response.params?.recommendedProducts)
                 var recommendedProductsJSON = JSONObject(recommendedProductsString)
                 var recommendedProductItemArray : JSONArray? = recommendedProductsJSON.getJSONArray("RECOMMENDATION_SOURCE_STATIC_ITEMS")
@@ -152,7 +152,9 @@ internal object EventController {
                             i = i + 1
                         }
                         else{
-                            i = i - 1
+                            if(i > 0){
+                                i = i - 1
+                            }
                         }
 
                         if(i == dynamicItem.itemCount!!){
