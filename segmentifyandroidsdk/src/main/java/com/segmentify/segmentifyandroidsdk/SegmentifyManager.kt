@@ -16,12 +16,9 @@ object SegmentifyManager {
     var clientPreferences : ClientPreferences? = null
     var configModel = ConfigModel()
     var segmentifyObject = SegmentifyObject()
-    private var sessionKeepSecond = Constant.sessionKeepSecond
 
-
-    fun setSessionKeepSecond(sessionKeepSecond: Int) : Int {
-        this.sessionKeepSecond = sessionKeepSecond
-        return sessionKeepSecond
+    fun setSessionKeepSecond(sessionKeepSecond: Int){
+        clientPreferences?.setSessionKeepSeconds(sessionKeepSecond)
     }
 
     fun logStatus(isVisible: Boolean) {
@@ -36,17 +33,19 @@ object SegmentifyManager {
         }
 
         clientPreferences = ClientPreferences(context)
+        clientPreferences?.getSessionKeepSeconds()!!
         this.configModel.apiKey = appKey
         this.configModel.dataCenterUrl = dataCenterUrl
         this.configModel.subDomain = subDomain
         setBaseApiUrl()
 
-        if(clientPreferences?.getSessionId().isNullOrBlank()){
+        if(clientPreferences?.getSessionId().isNullOrBlank()) {
             if(clientPreferences?.getUserId().isNullOrBlank())
                 KeyController.getUserIdAndSessionId()
             else
                 KeyController.getSessionId()
         }
+        KeyController.controlSessionTimeout()
     }
 
     private fun setBaseApiUrl() {
