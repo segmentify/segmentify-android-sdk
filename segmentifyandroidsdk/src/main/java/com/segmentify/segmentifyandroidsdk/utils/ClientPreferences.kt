@@ -41,7 +41,7 @@ class ClientPreferences(context : Context) : PreferencesManager(context){
     }
 
     fun isLogVisible(): Boolean {
-        return getBooleanValue(IS_LOG_VISIBLE, true)
+        return getBooleanValue(IS_LOG_VISIBLE, false)
     }
 
     fun setLogVisible(isLogVisible: Boolean) {

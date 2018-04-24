@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnPurchase.setOnClickListener(this);
         btnLogin.setOnClickListener(this);
         btnPageView.setOnClickListener(this);
+        SegmentifyManager.INSTANCE.logStatus(true);
 
     }
 
@@ -71,6 +72,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         CheckoutModel checkoutModel = new CheckoutModel();
         checkoutModel.setProductList(productList);
         checkoutModel.setTotalPrice(350.0);
+
         SegmentifyManager.INSTANCE.sendPaymentInformation(checkoutModel, new SegmentifyCallback<ArrayList<RecommendationModel>>() {
             @Override
             public void onDataLoaded(ArrayList<RecommendationModel> data) {

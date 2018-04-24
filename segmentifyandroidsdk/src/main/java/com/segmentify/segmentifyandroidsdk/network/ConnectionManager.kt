@@ -29,7 +29,7 @@ object ConnectionManager {
     init {
         val logging = HttpLoggingInterceptor()
 
-        if (BuildConfig.DEBUG_MODE) {
+        if (SegmentifyManager.clientPreferences?.isLogVisible()!!) {
             logging.level = HttpLoggingInterceptor.Level.BODY
         } else {
             logging.level = HttpLoggingInterceptor.Level.NONE

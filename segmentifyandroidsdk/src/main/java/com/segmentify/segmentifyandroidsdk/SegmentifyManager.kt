@@ -359,7 +359,6 @@ object SegmentifyManager {
     }
 
     fun sendUserLogin(userModel: UserModel) {
-        var userModel = UserModel()
         userModel.eventName = Constant.userOperationEventName
         userModel.userOperationStep = Constant.signInStep
 
