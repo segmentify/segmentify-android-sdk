@@ -1,6 +1,6 @@
 package com.segmentify.segmentifyandroidsdk.model
 
-class ProductModel : SegmentifyObject() {
+class ProductModel {
         var productId : String? = null
         var name:String? = null
         var inStock:Boolean? = null
@@ -15,8 +15,9 @@ class ProductModel : SegmentifyObject() {
         var category:String? = null
         var categories:ArrayList<String>? = null
         var brand:String? = null
-        var price:Int? = null
-        var oldPrice:Int? = null
+        var price:Double? = null
+        var oldPrice:Double? = null
+        var quantity:Int? = null
         var gender:String? = null
         var colors:ArrayList<String>? = null
         var sizes:ArrayList<String>? = null

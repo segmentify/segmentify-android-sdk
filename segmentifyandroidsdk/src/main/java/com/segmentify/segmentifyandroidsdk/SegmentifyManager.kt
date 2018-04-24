@@ -223,11 +223,13 @@ object SegmentifyManager {
         checkoutModel.eventName = Constant.checkoutEventName
         checkoutModel.checkoutStep = Constant.paymentInformationStep
         if(checkoutModel.totalPrice == null){
-            SegmentifyLogger.printErrorLog("You must fill userId before accessing sendPaymentInformation event")
+            SegmentifyLogger.printErrorLog("You must fill totalPrice before accessing sendPaymentInformation event")
+            return
         }
 
         if(checkoutModel.productList == null){
             SegmentifyLogger.printErrorLog("you must fill productList before accessing sendPaymentInformation event method")
+            return
         }
 
         EventController.sendPurchase(checkoutModel,object : SegmentifyCallback<ArrayList<RecommendationModel>>{
@@ -354,7 +356,25 @@ object SegmentifyManager {
         EventController.sendUserOperation(userModel)
     }
 
-    fun sendUserLogin(username: String?, email: String?,apiKey : String) {
+    fun sendUserLogin(userModel: UserModel) {
+        var userModel = UserModel()
+        userModel.eventName = Constant.userOperationEventName
+        userModel.userOperationStep = Constant.signInStep
+
+        if(userModel?.username.isNullOrBlank()){
+            SegmentifyLogger.printErrorLog("You must fill username before accessing change user event")
+            return
+        }
+
+        if(userModel?.email.isNullOrBlank()){
+            SegmentifyLogger.printErrorLog("You must fill email before accessing change user event")
+            return
+        }
+
+        EventController.sendUserOperation(userModel)
+    }
+
+    fun sendUserLogin(username: String?, email: String?) {
         var userModel = UserModel()
         userModel.eventName = Constant.userOperationEventName
         userModel.userOperationStep = Constant.signInStep
