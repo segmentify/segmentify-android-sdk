@@ -53,7 +53,6 @@ object SegmentifyManager {
     }
 
     fun sendPageView(pageModel: PageModel,segmentifyCallback: SegmentifyCallback<ArrayList<RecommendationModel>>) {
-
         if(pageModel.category.isNullOrBlank()){
             SegmentifyLogger.printErrorLog("you must fill category before accessing sendPageView event method")
             return
@@ -67,11 +66,9 @@ object SegmentifyManager {
                 segmentifyCallback.onDataLoaded(data)
             }
         })
-
     }
 
     fun sendPageView(category : String,subCategory : String?,segmentifyCallback: SegmentifyCallback<ArrayList<RecommendationModel>>) {
-
         if(category.isNullOrBlank()){
             SegmentifyLogger.printErrorLog("you must fill category before accessing sendPageView event method")
             return
@@ -83,8 +80,6 @@ object SegmentifyManager {
         for (i in fields.indices) {
             System.out.println("Field = " + fields[i].toString())
         }
-
-
 
         var pageModel = PageModel()
         pageModel.eventName = Constant.pageViewEventName
@@ -126,7 +121,6 @@ object SegmentifyManager {
 
     fun sendProductView(productModel: ProductModel,segmentifyCallback: SegmentifyCallback<ArrayList<RecommendationModel>>) {
         productModel.name = Constant.productViewEventName
-
         if(productModel?.productId == null){
             SegmentifyLogger.printErrorLog("You must fill productId before accessing sendProductView event")
             return

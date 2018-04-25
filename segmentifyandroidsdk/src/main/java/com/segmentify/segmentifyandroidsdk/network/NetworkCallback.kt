@@ -12,7 +12,7 @@ abstract class NetworkCallback<T> : Callback<T> {
     private var retryCount = 0
 
     override fun onResponse(call: Call<T>?, response: Response<T>?) {
-        response?.apply{
+        response?.apply {
             if(isSuccessful)
             {
                 response.body()?.apply{

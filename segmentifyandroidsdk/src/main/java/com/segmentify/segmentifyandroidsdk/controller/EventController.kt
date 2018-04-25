@@ -8,6 +8,7 @@ import com.segmentify.segmentifyandroidsdk.utils.SegmentifyCallback
 import com.segmentify.segmentifyandroidsdk.utils.SegmentifyLogger
 import com.google.gson.reflect.TypeToken
 import com.segmentify.segmentifyandroidsdk.SegmentifyManager
+import com.segmentify.segmentifyandroidsdk.utils.Constant
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -96,6 +97,7 @@ internal object EventController {
             recommendationModel.actionId = response.params?.actionId
 
             var interactionModel = InteractionModel()
+            interactionModel.eventName = Constant.interactionEventName
             interactionModel.type = "impression"
             interactionModel.instanceId = recommendationModel.instanceId
             interactionModel.interactionId = recommendationModel.actionId
