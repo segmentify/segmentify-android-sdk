@@ -268,7 +268,7 @@ object SegmentifyManager {
         })
     }
 
-    fun x(totalPrice : Double, productList : ArrayList<ProductModel>, currency : String?,segmentifyCallback: SegmentifyCallback<ArrayList<RecommendationModel>>){
+    fun sendViewBasket(totalPrice : Double, productList : ArrayList<ProductModel>, currency : String?,segmentifyCallback: SegmentifyCallback<ArrayList<RecommendationModel>>){
         var checkoutModel = CheckoutModel()
         checkoutModel.eventName = Constant.viewBasketStep
         checkoutModel.checkoutStep = Constant.viewBasketStep
