@@ -20,5 +20,5 @@ class UserModel : SegmentifyObject() {
         var oldUserId:String? = null
         var location:String? = null
         var segments:ArrayList<String>? = null
-        var step:String? = null
+        //var step:String? = null
 }
