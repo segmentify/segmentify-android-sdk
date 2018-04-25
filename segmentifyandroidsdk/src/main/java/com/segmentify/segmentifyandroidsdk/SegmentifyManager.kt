@@ -112,6 +112,18 @@ object SegmentifyManager {
         })
     }
 
+    fun sendCustomEvent(type : String,segmentifyCallback: SegmentifyCallback<ArrayList<RecommendationModel>>){
+        var customEventModel = CustomEventModel()
+        customEventModel.eventName = Constant.customEventName
+        customEventModel.type = type
+
+        EventController.sendCustomEvent(customEventModel,object : SegmentifyCallback<ArrayList<RecommendationModel>>{
+            override fun onDataLoaded(data: ArrayList<RecommendationModel>) {
+                segmentifyCallback.onDataLoaded(data)
+            }
+        })
+    }
+
     fun sendProductView(productModel: ProductModel,segmentifyCallback: SegmentifyCallback<ArrayList<RecommendationModel>>) {
         productModel.name = Constant.productViewEventName
 
@@ -131,15 +143,11 @@ object SegmentifyManager {
             SegmentifyLogger.printErrorLog("You must fill image before accessing sendProductView event method")
             return
         }
-        if(productModel?.category == null){
-            SegmentifyLogger.printErrorLog("You must fill category before accessing sendProductView event method")
-            return
-        }
-        if(productModel?.categories != null && productModel?.categories != null){
+        if(productModel?.category != null && productModel?.categories != null){
             SegmentifyLogger.printErrorLog("You can not both fill category and categpries parameters")
             return
         }
-        if(productModel?.categories == null && productModel?.categories == null){
+        if(productModel?.category == null && productModel?.categories == null){
             SegmentifyLogger.printErrorLog("You should fill one of category and categories parameters")
             return
         }
@@ -155,17 +163,103 @@ object SegmentifyManager {
         })
     }
 
+    fun sendProductView(productId : String, title : String, categories : ArrayList<String>, price : Double,
+                        brand : String?, stock : Boolean?, url: String, image : String,imageXS: String?,
+                        imageS: String?, imageM: String?, imageL: String?, imageXL: String?, gender:String?,
+                        colors:ArrayList<String>?, sizes:ArrayList<String>?, labels:ArrayList<String>?,noUpdate:Boolean?
+                        ,segmentifyCallback: SegmentifyCallback<ArrayList<RecommendationModel>>) {
+        var productModel = ProductModel()
+        productModel.name = Constant.productViewEventName
+
+        if(productId == null){
+            SegmentifyLogger.printErrorLog("You must fill productId before accessing sendProductView event")
+            return
+        }
+        if(title == null){
+            SegmentifyLogger.printErrorLog("You must fill title before accessing sendProductView event method")
+            return
+        }
+        if(url == null){
+            SegmentifyLogger.printErrorLog("You must fill url before accessing sendProductView event method")
+            return
+        }
+        if(image == null){
+            SegmentifyLogger.printErrorLog("You must fill image before accessing sendProductView event method")
+            return
+        }
+        if(categories == null){
+            SegmentifyLogger.printErrorLog("You must fill categories before accessing sendProductView event method")
+            return
+        }
+        if(price == null){
+            SegmentifyLogger.printErrorLog("You must fill price before accessing sendProductView event method")
+            return
+        }
+
+        productModel.productId = productId
+        productModel.name = title
+        productModel.url = url
+        productModel.image = image
+        productModel.categories = categories
+        productModel.price = price
+        productModel.brand = brand
+        productModel.inStock = stock
+        productModel.imageXS = imageXS
+        productModel.imageS = imageS
+        productModel.imageM = imageM
+        productModel.imageL = imageL
+        productModel.imageXL = imageXL
+        productModel.gender = gender
+        productModel.colors = colors
+        productModel.sizes = sizes
+        productModel.labels = labels
+        productModel.noUpdate = noUpdate
+
+        EventController.sendProductView(productModel,object : SegmentifyCallback<ArrayList<RecommendationModel>>{
+            override fun onDataLoaded(data: ArrayList<RecommendationModel>) {
+                segmentifyCallback.onDataLoaded(data)
+            }
+        })
+    }
+
     fun sendCustomerInformation(checkoutModel : CheckoutModel,segmentifyCallback: SegmentifyCallback<ArrayList<RecommendationModel>>){
         checkoutModel.eventName = Constant.checkoutEventName
         checkoutModel.checkoutStep = Constant.customerInformationStep
 
         if(checkoutModel.totalPrice == null){
             SegmentifyLogger.printErrorLog("You must fill userId before accessing sendCustomerInformation event")
+            return
         }
 
         if(checkoutModel.productList == null){
             SegmentifyLogger.printErrorLog("you must fill productList before accessing sendCustomerInformation event method")
+            return
         }
+
+        EventController.sendPurchase(checkoutModel,object : SegmentifyCallback<ArrayList<RecommendationModel>>{
+            override fun onDataLoaded(data: ArrayList<RecommendationModel>) {
+                segmentifyCallback.onDataLoaded(data)
+            }
+        })
+    }
+
+    fun sendCustomerInformation(totalPrice : Double, productList : ArrayList<ProductModel>,,segmentifyCallback: SegmentifyCallback<ArrayList<RecommendationModel>>) {
+        var checkoutModel = CheckoutModel()
+        checkoutModel.eventName = Constant.checkoutEventName
+        checkoutModel.checkoutStep = Constant.customerInformationStep
+
+        if(totalPrice == null){
+            SegmentifyLogger.printErrorLog("You must fill userId before accessing sendCustomerInformation event")
+            return
+        }
+
+        if(productList == null){
+            SegmentifyLogger.printErrorLog("you must fill productList before accessing sendCustomerInformation event method")
+            return
+        }
+
+        checkoutModel.totalPrice = totalPrice
+        checkoutModel.productList = productList
 
         EventController.sendPurchase(checkoutModel,object : SegmentifyCallback<ArrayList<RecommendationModel>>{
             override fun onDataLoaded(data: ArrayList<RecommendationModel>) {
@@ -282,6 +376,35 @@ object SegmentifyManager {
         EventController.sendAddOrRemoveBasket(basketModel)
     }
 
+    fun sendAddOrRemoveBasket(basketStep : String, productId : String, quantity : Int,price : Double?){
+        var basketModel = BasketModel()
+        basketModel.eventName = Constant.basketOperationsEventName
+
+        if(basketStep == null){
+            SegmentifyLogger.printErrorLog("You must fill step before accessing sendAddOrRemoveBasket event method")
+            return
+        }
+        if(productId == null){
+            SegmentifyLogger.printErrorLog("You must fill productId before accessing sendAddOrRemoveBasket event method")
+            return
+        }
+        if(quantity == null){
+            SegmentifyLogger.printErrorLog("You must fill quantity before accessing sendAddOrRemoveBasket event method")
+            return
+        }
+        if(price == null){
+            SegmentifyLogger.printErrorLog("You must fill price before accessing sendAddOrRemoveBasket event method")
+            return
+        }
+
+        basketModel.step = basketStep
+        basketModel.productId = productId
+        basketModel.quantity = quantity
+        basketModel.price = price
+
+        EventController.sendAddOrRemoveBasket(basketModel)
+    }
+
     fun sendPurchase(checkoutModel: CheckoutModel,segmentifyCallback: SegmentifyCallback<ArrayList<RecommendationModel>>) {
         checkoutModel.eventName = Constant.checkoutEventName
         checkoutModel.eventName = Constant.paymentPurchaseStep
@@ -295,6 +418,19 @@ object SegmentifyManager {
             return
         }
 
+        EventController.sendPurchase(checkoutModel,object : SegmentifyCallback<ArrayList<RecommendationModel>>{
+            override fun onDataLoaded(data: ArrayList<RecommendationModel>) {
+                segmentifyCallback.onDataLoaded(data)
+            }
+        })
+    }
+
+    fun sendPurchase(totalPrice : Double, productList:ArrayList<ProductModel>, orderNo : String?,segmentifyCallback: SegmentifyCallback<ArrayList<RecommendationModel>>){
+        var checkoutModel = CheckoutModel()
+        checkoutModel.eventName = Constant.checkoutEventName
+        checkoutModel.eventName = Constant.paymentPurchaseStep
+        checkoutModel.totalPrice = totalPrice
+        checkoutModel.productList = productList
         EventController.sendPurchase(checkoutModel,object : SegmentifyCallback<ArrayList<RecommendationModel>>{
             override fun onDataLoaded(data: ArrayList<RecommendationModel>) {
                 segmentifyCallback.onDataLoaded(data)
@@ -320,7 +456,7 @@ object SegmentifyManager {
         EventController.sendInteractionEvent(interactionModel)
     }
 
-    fun sendClick(instanceId : String, interactionId : String) {
+    fun sendClickView(instanceId : String, interactionId : String) {
         var interactionModel = InteractionModel()
         interactionModel.eventName = Constant.interactionEventName
         interactionModel.userOperationStep = Constant.clickStep
@@ -391,6 +527,18 @@ object SegmentifyManager {
         userModel.userOperationStep = Constant.logoutStep
         userModel.username = username
         userModel.email = email
+
+        EventController.sendUserOperation(userModel)
+    }
+
+    fun sendUserUpdate(userModel: UserModel){
+        userModel.eventName = Constant.userOperationEventName
+        userModel.userOperationStep = Constant.updateUserStep
+
+        if(userModel.email.isNullOrBlank() || userModel.username.isNullOrBlank()){
+            SegmentifyLogger.printErrorLog("You must fill username or email before accessing sendUserUpdate event")
+            return
+        }
 
         EventController.sendUserOperation(userModel)
     }
