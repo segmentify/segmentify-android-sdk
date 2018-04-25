@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 class InteractionModel: SegmentifyObject() {
     @SerializedName("step")
-    var userOperationStep:String? = null
+    var widgetViewStep:String? = null
 
     var interactionId:String? = null
     var impressionId:String? = null

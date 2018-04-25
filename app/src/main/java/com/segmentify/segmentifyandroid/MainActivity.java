@@ -9,7 +9,9 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.segmentify.segmentifyandroidsdk.SegmentifyManager;
+import com.segmentify.segmentifyandroidsdk.model.BasketModel;
 import com.segmentify.segmentifyandroidsdk.model.CheckoutModel;
+import com.segmentify.segmentifyandroidsdk.model.InteractionModel;
 import com.segmentify.segmentifyandroidsdk.model.ProductModel;
 import com.segmentify.segmentifyandroidsdk.model.RecommendationModel;
 import com.segmentify.segmentifyandroidsdk.model.UserModel;
@@ -55,25 +57,50 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         userModel.setEmail("a@a.com");
 
         SegmentifyManager.INSTANCE.sendUserLogin(userModel);
+
+//
+//        InteractionModel model = new InteractionModel();
+//        model.setImpressionId("ada");
+//        model.setInstanceId("ada");
+//        model.setType("impression");
+//
+//        SegmentifyManager.INSTANCE.sendWidgetView("ads","asda");
+
+
+//        BasketModel aa = new BasketModel();
+//        aa.setPrice(775.0);
+//        aa.setQuantity(1);
+//        aa.setProductId("25800412873");
+//        aa.setStep("add");
+//
+//        SegmentifyManager.INSTANCE.sendAddOrRemoveBasket(aa);
+
+
     }
 
     private void sendPaymentInfo(){
         ArrayList<ProductModel> productList = new ArrayList<>();
         ProductModel productModel = new ProductModel();
-        productModel.setPrice(100.0);
-        productModel.setQuantity(2);
+        productModel.setPrice(775.0);
+        productModel.setQuantity(1);
+        productModel.setProductId("25800412873");
+
 
         ProductModel productModel2 = new ProductModel();
-        productModel2.setPrice(50.0);
-        productModel2.setQuantity(3);
+        productModel2.setPrice(678.0);
+        productModel2.setQuantity(1);
+        productModel2.setProductId("25801129801");
+
         productList.add(productModel);
         productList.add(productModel2);
 
         CheckoutModel checkoutModel = new CheckoutModel();
         checkoutModel.setProductList(productList);
-        checkoutModel.setTotalPrice(350.0);
+        checkoutModel.setTotalPrice(1453.0);
 
-        SegmentifyManager.INSTANCE.sendPaymentInformation(checkoutModel, new SegmentifyCallback<ArrayList<RecommendationModel>>() {
+
+
+        SegmentifyManager.INSTANCE.sendViewBasket(checkoutModel, new SegmentifyCallback<ArrayList<RecommendationModel>>() {
             @Override
             public void onDataLoaded(ArrayList<RecommendationModel> data) {
                 if (data != null){
