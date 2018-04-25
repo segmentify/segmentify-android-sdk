@@ -243,7 +243,7 @@ object SegmentifyManager {
         })
     }
 
-    fun sendCustomerInformation(totalPrice : Double, productList : ArrayList<ProductModel>,,segmentifyCallback: SegmentifyCallback<ArrayList<RecommendationModel>>) {
+    fun sendCustomerInformation(totalPrice : Double, productList : ArrayList<ProductModel>,segmentifyCallback: SegmentifyCallback<ArrayList<RecommendationModel>>) {
         var checkoutModel = CheckoutModel()
         checkoutModel.eventName = Constant.checkoutEventName
         checkoutModel.checkoutStep = Constant.customerInformationStep
