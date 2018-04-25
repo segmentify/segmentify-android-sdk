@@ -407,7 +407,7 @@ object SegmentifyManager {
 
     fun sendPurchase(checkoutModel: CheckoutModel,segmentifyCallback: SegmentifyCallback<ArrayList<RecommendationModel>>) {
         checkoutModel.eventName = Constant.checkoutEventName
-        checkoutModel.eventName = Constant.paymentPurchaseStep
+        checkoutModel.checkoutStep = Constant.paymentPurchaseStep
 
         if(checkoutModel.totalPrice == null) {
             SegmentifyLogger.printErrorLog("You must fill userId before accessing sendPurchase event")
@@ -428,7 +428,7 @@ object SegmentifyManager {
     fun sendPurchase(totalPrice : Double, productList:ArrayList<ProductModel>, orderNo : String?,segmentifyCallback: SegmentifyCallback<ArrayList<RecommendationModel>>){
         var checkoutModel = CheckoutModel()
         checkoutModel.eventName = Constant.checkoutEventName
-        checkoutModel.eventName = Constant.paymentPurchaseStep
+        checkoutModel.checkoutStep = Constant.paymentPurchaseStep
         checkoutModel.totalPrice = totalPrice
         checkoutModel.productList = productList
         EventController.sendCheckout(checkoutModel,object : SegmentifyCallback<ArrayList<RecommendationModel>>{
@@ -441,7 +441,7 @@ object SegmentifyManager {
     fun sendImpression(instanceId : String, interactionId : String){
         var interactionModel = InteractionModel()
         interactionModel.eventName = Constant.interactionEventName
-        interactionModel.userOperationStep = Constant.impressionStep
+        interactionModel.type = Constant.impressionStep
         interactionModel.instanceId = instanceId
         interactionModel.interactionId = interactionId
     }
@@ -449,7 +449,7 @@ object SegmentifyManager {
     fun sendWidgetView(instanceId : String, interactionId : String) {
         var interactionModel = InteractionModel()
         interactionModel.eventName = Constant.interactionEventName
-        interactionModel.userOperationStep = Constant.widgetViewStep
+        interactionModel.type = Constant.widgetViewStep
         interactionModel.instanceId = instanceId
         interactionModel.interactionId = interactionId
 
@@ -459,7 +459,7 @@ object SegmentifyManager {
     fun sendClickView(instanceId : String, interactionId : String) {
         var interactionModel = InteractionModel()
         interactionModel.eventName = Constant.interactionEventName
-        interactionModel.userOperationStep = Constant.clickStep
+        interactionModel.type = Constant.clickStep
         interactionModel.instanceId = instanceId
         interactionModel.interactionId = interactionId
 

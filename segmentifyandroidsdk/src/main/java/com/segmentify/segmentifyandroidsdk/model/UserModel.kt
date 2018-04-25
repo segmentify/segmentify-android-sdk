@@ -1,5 +1,7 @@
 package com.segmentify.segmentifyandroidsdk.model
 
+import com.google.gson.annotations.SerializedName
+
 class UserModel : SegmentifyObject() {
         var username:String? = null
         var email:String? = null
@@ -10,7 +12,10 @@ class UserModel : SegmentifyObject() {
         var mobilePhone:String? = null
         var isRegistered:Boolean? = null
         var isLogin:Boolean? = null
+
+        @SerializedName("step")
         var userOperationStep:String? = null
+
         var memberSince:String? = null
         var oldUserId:String? = null
         var location:String? = null
