@@ -50,7 +50,7 @@ internal object EventController {
                 })
     }
 
-    fun sendPurchase(checkoutModel: CheckoutModel,segmentifyCallback: SegmentifyCallback<ArrayList<RecommendationModel>>) {
+    fun sendCheckout(checkoutModel: CheckoutModel,segmentifyCallback: SegmentifyCallback<ArrayList<RecommendationModel>>) {
         ConnectionManager.getEventFactory().sendPurchase(checkoutModel,SegmentifyManager.configModel.apiKey!!)
                 .enqueue(object : NetworkCallback<EventResponseModel>(){
                     override fun onSuccess(response: EventResponseModel) {

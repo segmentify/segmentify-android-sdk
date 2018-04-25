@@ -236,7 +236,7 @@ object SegmentifyManager {
             return
         }
 
-        EventController.sendPurchase(checkoutModel,object : SegmentifyCallback<ArrayList<RecommendationModel>>{
+        EventController.sendCheckout(checkoutModel,object : SegmentifyCallback<ArrayList<RecommendationModel>>{
             override fun onDataLoaded(data: ArrayList<RecommendationModel>) {
                 segmentifyCallback.onDataLoaded(data)
             }
@@ -261,16 +261,16 @@ object SegmentifyManager {
         checkoutModel.totalPrice = totalPrice
         checkoutModel.productList = productList
 
-        EventController.sendPurchase(checkoutModel,object : SegmentifyCallback<ArrayList<RecommendationModel>>{
+        EventController.sendCheckout(checkoutModel,object : SegmentifyCallback<ArrayList<RecommendationModel>>{
             override fun onDataLoaded(data: ArrayList<RecommendationModel>) {
                 segmentifyCallback.onDataLoaded(data)
             }
         })
     }
 
-    fun sendViewBasket(totalPrice : Double, productList : ArrayList<ProductModel>, currency : String?,segmentifyCallback: SegmentifyCallback<ArrayList<RecommendationModel>>){
+    fun x(totalPrice : Double, productList : ArrayList<ProductModel>, currency : String?,segmentifyCallback: SegmentifyCallback<ArrayList<RecommendationModel>>){
         var checkoutModel = CheckoutModel()
-        checkoutModel.eventName = Constant.checkoutEventName
+        checkoutModel.eventName = Constant.viewBasketStep
         checkoutModel.checkoutStep = Constant.viewBasketStep
 
         if(totalPrice == null){
@@ -288,7 +288,7 @@ object SegmentifyManager {
             checkoutModel.currency = currency
         }
 
-        EventController.sendPurchase(checkoutModel,object : SegmentifyCallback<ArrayList<RecommendationModel>>{
+        EventController.sendCheckout(checkoutModel,object : SegmentifyCallback<ArrayList<RecommendationModel>>{
             override fun onDataLoaded(data: ArrayList<RecommendationModel>) {
                 segmentifyCallback.onDataLoaded(data)
             }
@@ -306,7 +306,7 @@ object SegmentifyManager {
             SegmentifyLogger.printErrorLog("you must fill productList before accessing sendViewBasket event method")
         }
 
-        EventController.sendPurchase(checkoutModel,object : SegmentifyCallback<ArrayList<RecommendationModel>>{
+        EventController.sendCheckout(checkoutModel,object : SegmentifyCallback<ArrayList<RecommendationModel>>{
             override fun onDataLoaded(data: ArrayList<RecommendationModel>) {
                 segmentifyCallback.onDataLoaded(data)
             }
@@ -326,7 +326,7 @@ object SegmentifyManager {
             return
         }
 
-        EventController.sendPurchase(checkoutModel,object : SegmentifyCallback<ArrayList<RecommendationModel>>{
+        EventController.sendCheckout(checkoutModel,object : SegmentifyCallback<ArrayList<RecommendationModel>>{
             override fun onDataLoaded(data: ArrayList<RecommendationModel>) {
                 segmentifyCallback.onDataLoaded(data)
             }
@@ -350,7 +350,7 @@ object SegmentifyManager {
         checkoutModel.totalPrice = totalPrice
         checkoutModel.productList = productList
 
-        EventController.sendPurchase(checkoutModel,object : SegmentifyCallback<ArrayList<RecommendationModel>>{
+        EventController.sendCheckout(checkoutModel,object : SegmentifyCallback<ArrayList<RecommendationModel>>{
             override fun onDataLoaded(data: ArrayList<RecommendationModel>) {
                 segmentifyCallback.onDataLoaded(data)
             }
@@ -418,7 +418,7 @@ object SegmentifyManager {
             return
         }
 
-        EventController.sendPurchase(checkoutModel,object : SegmentifyCallback<ArrayList<RecommendationModel>>{
+        EventController.sendCheckout(checkoutModel,object : SegmentifyCallback<ArrayList<RecommendationModel>>{
             override fun onDataLoaded(data: ArrayList<RecommendationModel>) {
                 segmentifyCallback.onDataLoaded(data)
             }
@@ -431,7 +431,7 @@ object SegmentifyManager {
         checkoutModel.eventName = Constant.paymentPurchaseStep
         checkoutModel.totalPrice = totalPrice
         checkoutModel.productList = productList
-        EventController.sendPurchase(checkoutModel,object : SegmentifyCallback<ArrayList<RecommendationModel>>{
+        EventController.sendCheckout(checkoutModel,object : SegmentifyCallback<ArrayList<RecommendationModel>>{
             override fun onDataLoaded(data: ArrayList<RecommendationModel>) {
                 segmentifyCallback.onDataLoaded(data)
             }
