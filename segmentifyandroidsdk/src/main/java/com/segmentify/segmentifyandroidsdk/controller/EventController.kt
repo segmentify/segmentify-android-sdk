@@ -89,6 +89,7 @@ internal object EventController {
 
         var reformatedReponseModelList = ArrayList<RecommendationModel>()
 
+        if(eventResponseModel != null && eventResponseModel.responses != null && eventResponseModel?.responses?.size!!>0){
         for(response in eventResponseModel.responses?.get(0)!!){
 
             var recommendationModel = RecommendationModel()
@@ -106,52 +107,48 @@ internal object EventController {
             try {
                 val recommendedProductsString = Gson().toJson(response.params?.recommendedProducts)
                 var recommendedProductsJSON = JSONObject(recommendedProductsString)
-                var recommendedProductItemArray : JSONArray? = recommendedProductsJSON.getJSONArray("RECOMMENDATION_SOURCE_STATIC_ITEMS")
-                for(i in 0 until recommendedProductItemArray!!.length()){
+                var recommendedProductItemArray: JSONArray? = recommendedProductsJSON.getJSONArray("RECOMMENDATION_SOURCE_STATIC_ITEMS")
+                for (i in 0 until recommendedProductItemArray!!.length()) {
                     recommendationModel.products?.add(parseJsonToProductModel(recommendedProductItemArray.getJSONObject(i)))
                 }
-            }catch (ex : Exception){
+            } catch (ex: Exception) {
                 SegmentifyLogger.printErrorLog(ex.message.toString())
             }
-            var dynamicItemString = response.params?.dynamicItems?.replace("\"","*")
-            dynamicItemString = dynamicItemString?.replace("*","\"")
+            var dynamicItemString = response.params?.dynamicItems?.replace("\"", "*")
+            dynamicItemString = dynamicItemString?.replace("*", "\"")
             val listType = object : TypeToken<ArrayList<DynamicItemsModel>>() {}.type
-            var dynamicItems : ArrayList<DynamicItemsModel> = Gson().fromJson<ArrayList<DynamicItemsModel>>(dynamicItemString, listType)
+            var dynamicItems: ArrayList<DynamicItemsModel> = Gson().fromJson<ArrayList<DynamicItemsModel>>(dynamicItemString, listType)
 
-            for(dynamicItem in dynamicItems){
-                var recommendationProductListName : String = ""
-                if(dynamicItem.timeFrame.isNullOrBlank() && dynamicItem.score.isNullOrBlank()){
+            for (dynamicItem in dynamicItems) {
+                var recommendationProductListName: String = ""
+                if (dynamicItem.timeFrame.isNullOrBlank() && dynamicItem.score.isNullOrBlank()) {
                     recommendationProductListName = dynamicItem.recommendationSource + "|null"
-                }
-                else if(!dynamicItem.timeFrame.isNullOrBlank() && dynamicItem.score.isNullOrBlank()){
+                } else if (!dynamicItem.timeFrame.isNullOrBlank() && dynamicItem.score.isNullOrBlank()) {
                     recommendationProductListName = dynamicItem.recommendationSource + "|" + dynamicItem.timeFrame
-                }
-                else if(dynamicItem.timeFrame.isNullOrBlank() && !dynamicItem.score.isNullOrBlank()){
+                } else if (dynamicItem.timeFrame.isNullOrBlank() && !dynamicItem.score.isNullOrBlank()) {
                     recommendationProductListName = dynamicItem.recommendationSource + "|null|" + dynamicItem.score
-                }
-                else if(!dynamicItem.timeFrame.isNullOrBlank() && !dynamicItem.score.isNullOrBlank()){
+                } else if (!dynamicItem.timeFrame.isNullOrBlank() && !dynamicItem.score.isNullOrBlank()) {
                     recommendationProductListName = dynamicItem.recommendationSource + "|" + dynamicItem.timeFrame + "|" + dynamicItem.score
                 }
 
-                if(!recommendationProductListName.isNullOrBlank()){
+                if (!recommendationProductListName.isNullOrBlank()) {
                     val recommendedProductsString = Gson().toJson(response.params?.recommendedProducts)
                     var recommendedProductsJSON = JSONObject(recommendedProductsString)
-                    var recommendedProductItemArray : JSONArray? = recommendedProductsJSON.getJSONArray(recommendationProductListName)
+                    var recommendedProductItemArray: JSONArray? = recommendedProductsJSON.getJSONArray(recommendationProductListName)
 
                     var i = 0
-                    for(k in 0 until recommendedProductItemArray!!.length()){
+                    for (k in 0 until recommendedProductItemArray!!.length()) {
                         var productModel = parseJsonToProductModel(recommendedProductItemArray!!.getJSONObject(k))
-                        if(!isProductExistInGlobalProductList(productModel)){
+                        if (!isProductExistInGlobalProductList(productModel)) {
                             recommendationModel.products?.add(productModel)
                             i = i + 1
-                        }
-                        else{
-                            if(i > 0){
+                        } else {
+                            if (i > 0) {
                                 i = i - 1
                             }
                         }
 
-                        if(i == dynamicItem.itemCount!!){
+                        if (i == dynamicItem.itemCount!!) {
                             break
                         }
                     }
@@ -159,6 +156,8 @@ internal object EventController {
             }
 
             reformatedReponseModelList.add(recommendationModel)
+        }
+
         }
 
         productRecommendationGlobalList.clear()
