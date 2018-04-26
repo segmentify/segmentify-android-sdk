@@ -4,9 +4,8 @@ import com.google.gson.annotations.SerializedName
 
 class ProductModel {
         var productId : String? = null
-        @SerializedName("title")
         var name:String? = null
-        
+        var title:String? = null
         var inStock:Boolean? = null
         var url:String? = null
         var mUrl:String? = null
