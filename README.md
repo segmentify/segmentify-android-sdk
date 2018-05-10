@@ -1,6 +1,8 @@
 # Segmentify Android SDK
 Segmentify  SDK for sending events and rendering recommendations for android based devices
 
+> **Supports Android 4.4 and higher devices.**
+
 ## Installation
 
 You can install Segmentify Android SDK to your application by using [Maven](https://mvnrepository.com/artifact/com.segmentify.sdk/android).
@@ -60,7 +62,7 @@ To learn more about how to integrate Segmentify Android SDK to your application,
 
 For other integrations you can check [Master Integration](https://www.segmentify.com/dev/) guide too.
 
-**Supports Android 4.4 and higher devices.
+
 
 ## License
 
