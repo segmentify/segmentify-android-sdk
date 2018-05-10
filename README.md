@@ -60,6 +60,7 @@ To learn more about how to integrate Segmentify Android SDK to your application,
 
 For other integrations you can check [Master Integration](https://www.segmentify.com/dev/) guide too.
 
+**Supports Android 4.4 and higher devices.
 
 ## License
 
