@@ -5,7 +5,17 @@ Segmentify  SDK for sending events and rendering recommendations for android bas
 
 ## Installation
 
-You can install Segmentify Android SDK to your application by using [Maven](https://mvnrepository.com/artifact/com.segmentify.sdk/android).
+You can install Segmentify Android SDK to your application by using  [Maven](https://mvnrepository.com/artifact/com.segmentify.sdk/android).
+
+To use Maven, add the project gradle file:
+
+```java
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+}
+```
 
 Please add following line to your gradle file:
 
