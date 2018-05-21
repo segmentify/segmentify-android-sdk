@@ -2,9 +2,8 @@ package com.segmentify.segmentifyandroidsdk.model
 
 import com.google.gson.annotations.SerializedName
 
-class ProductModel {
+class ProductModel : SegmentifyObject() {
         var productId : String? = null
-        var name:String? = null
         var title:String? = null
         var inStock:Boolean? = null
         var url:String? = null

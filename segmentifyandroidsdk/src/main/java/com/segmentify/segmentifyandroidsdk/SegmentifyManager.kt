@@ -120,7 +120,7 @@ object SegmentifyManager {
     }
 
     fun sendProductView(productModel: ProductModel,segmentifyCallback: SegmentifyCallback<ArrayList<RecommendationModel>>) {
-        productModel.name = Constant.productViewEventName
+        productModel.eventName = Constant.productViewEventName
         if(productModel?.productId == null){
             SegmentifyLogger.printErrorLog("You must fill productId before accessing sendProductView event")
             return
@@ -163,7 +163,7 @@ object SegmentifyManager {
                         colors:ArrayList<String>?, sizes:ArrayList<String>?, labels:ArrayList<String>?,noUpdate:Boolean?
                         ,segmentifyCallback: SegmentifyCallback<ArrayList<RecommendationModel>>) {
         var productModel = ProductModel()
-        productModel.name = Constant.productViewEventName
+        productModel.eventName = Constant.productViewEventName
 
         if(productId == null){
             SegmentifyLogger.printErrorLog("You must fill productId before accessing sendProductView event")

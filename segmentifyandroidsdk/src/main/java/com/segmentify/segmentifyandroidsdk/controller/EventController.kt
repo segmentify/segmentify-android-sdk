@@ -25,9 +25,9 @@ internal object EventController {
                 })
     }
 
-    fun sendCustomEvent(customEventModel: CustomEventModel, segmentifyCallback: SegmentifyCallback<ArrayList<RecommendationModel>>){
+    fun sendCustomEvent(customEventModel: CustomEventModel, segmentifyCallback: SegmentifyCallback<ArrayList<RecommendationModel>>) {
         ConnectionManager.getEventFactory().sendCustomEvent(customEventModel,SegmentifyManager.configModel.apiKey!!)
-                .enqueue(object : NetworkCallback<EventResponseModel>(){
+                .enqueue(object : NetworkCallback<EventResponseModel>() {
                     override fun onSuccess(response: EventResponseModel) {
                         segmentifyCallback.onDataLoaded(reformatResponse(response))
                     }
@@ -36,7 +36,7 @@ internal object EventController {
 
     fun sendProductView(productModel: ProductModel, segmentifyCallback: SegmentifyCallback<ArrayList<RecommendationModel>>){
         ConnectionManager.getEventFactory().sendProductView(productModel,SegmentifyManager.configModel.apiKey!!)
-                .enqueue(object : NetworkCallback<EventResponseModel>(){
+                .enqueue(object : NetworkCallback<EventResponseModel>() {
                     override fun onSuccess(response: EventResponseModel) {
                         segmentifyCallback.onDataLoaded(reformatResponse(response))
                     }
