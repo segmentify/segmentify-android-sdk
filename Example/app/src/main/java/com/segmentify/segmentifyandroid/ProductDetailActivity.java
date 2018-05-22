@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.segmentify.segmentifyandroidsdk.SegmentifyManager;
 import com.segmentify.segmentifyandroidsdk.model.RecommendationModel;
 import com.segmentify.segmentifyandroidsdk.utils.SegmentifyCallback;
+import com.squareup.picasso.Picasso;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -63,7 +64,8 @@ public class ProductDetailActivity extends AppCompatActivity {
 
         tvProductname.setText(name);
         tvPrice.setText(price  + " TL");
-        new DownloadImage().execute(image);
+        Picasso.get().load(image).into(ivProduct);
+        //new DownloadImage().execute(image);
 
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,7 +74,7 @@ public class ProductDetailActivity extends AppCompatActivity {
                 intent.putExtra("id", productId);
                 intent.putExtra("name", name);
                 intent.putExtra("price", price);
-                intent.putExtra("image", "https:" + image);
+                intent.putExtra("image", image);
                 startActivity(intent);
             }
         });

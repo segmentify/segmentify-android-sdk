@@ -19,25 +19,20 @@ public class PurchaseSuccessActivity extends AppCompatActivity {
         setContentView(R.layout.activity_purchase_success);
 
         TextView tvPurchase = (TextView) findViewById(R.id.tvTotalPrice);
+        final ListView lvBottom = (ListView) findViewById(R.id.lvBottom);
 
         final String price = getIntent().getStringExtra("purchase");
         tvPurchase.setText("Total Price: " + price);
-        final ListView lvPurchase = findViewById(R.id.lvPurchase);
 
         SegmentifyManager.INSTANCE.sendPageView("Home Page", null, new SegmentifyCallback<ArrayList<RecommendationModel>>() {
             @Override
             public void onDataLoaded(ArrayList<RecommendationModel> recommendationModels) {
                 if(recommendationModels != null){
                     System.out.println(recommendationModels);
-                    ListAdapter segmentifyBottomListAdapter = new ListAdapter(PurchaseSuccessActivity.this,recommendationModels.get(0).getProducts());
-                    lvPurchase.setAdapter(segmentifyBottomListAdapter);
+                    ListAdapter segmentifyBottomListAdapter = new ListAdapter(PurchaseSuccessActivity.this,recommendationModels.get(1).getProducts());
+                    lvBottom.setAdapter(segmentifyBottomListAdapter);
                 }
             }
         });
-
-
-
-
-
     }
 }

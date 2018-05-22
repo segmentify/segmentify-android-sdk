@@ -37,10 +37,10 @@
     <ListView
         android:id="@+id/lvBasket"
         android:layout_width="match_parent"
-        android:layout_height="280dp"/>
+        android:layout_height="350dp"/>
 
     <ListView
-        android:id="@+id/lvBottom"
+        android:id="@+id/rvBottom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         />

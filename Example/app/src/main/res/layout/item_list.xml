@@ -13,7 +13,7 @@
         <ImageView
             android:id="@+id/imgProduct"
             android:layout_width="90dp"
-            android:layout_height="105dp"
+            android:layout_height="132dp"
             android:background="#000000" />
 
         <RelativeLayout

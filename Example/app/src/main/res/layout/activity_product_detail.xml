@@ -19,20 +19,30 @@
         android:id="@+id/tvProductName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Necklace Mariacaldera"
         android:textColor="#000000"
         android:textSize="20sp"
         android:layout_gravity="center"
         android:layout_marginTop="20dp"/>
 
+    <TextView
+        android:id="@+id/tvBrand"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Maria Caldera"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_gravity="center" />
 
     <TextView
         android:id="@+id/tvPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="777"
         android:textSize="20sp"
         android:textStyle="bold"
         android:layout_gravity="center"
-        android:layout_marginTop="20dp"/>
+       />
 
     <Button
         android:id="@+id/btnAdd"

@@ -1,8 +1,13 @@
 package com.segmentify.segmentifyandroid;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
@@ -10,8 +15,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.segmentify.segmentifyandroidsdk.SegmentifyManager;
+import com.segmentify.segmentifyandroidsdk.model.CheckoutModel;
+import com.segmentify.segmentifyandroidsdk.model.ProductModel;
 import com.segmentify.segmentifyandroidsdk.model.RecommendationModel;
 import com.segmentify.segmentifyandroidsdk.utils.SegmentifyCallback;
 
@@ -23,15 +31,27 @@ public class BasketDetailActivity extends AppCompatActivity {
     ImageView ivProduct;
     Button btnPurchase;
 
+    String productId;
+    String name;
+    String price;
+    String image;
+
+    ItemOnClick onClickListener = new ItemOnClick() {
+        @Override
+        public void onItemClicked(View v, int position) {
+
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_basket_detail);
 
-        final String productId = getIntent().getStringExtra("id");
-        final String name = getIntent().getStringExtra("name");
-        final String price = getIntent().getStringExtra("price");
-        final String image = getIntent().getStringExtra("image");
+        //productId = getIntent().getStringExtra("id");
+        //name = getIntent().getStringExtra("name");
+        //price = getIntent().getStringExtra("price");
+        //image = getIntent().getStringExtra("image");
 
         tvProductName = (TextView) findViewById(R.id.tvProductName);
         tvPrice = (TextView) findViewById(R.id.tvPrice);
@@ -40,18 +60,43 @@ public class BasketDetailActivity extends AppCompatActivity {
         btnPurchase = (Button) findViewById(R.id.btnPurchase);
 
         final ListView lvBasket = findViewById(R.id.lvBasket);
-        final ListView lvBottom = findViewById(R.id.lvBottom);
+        final RecyclerView rvBottom = findViewById(R.id.rvBottom);
 
-        SegmentifyManager.INSTANCE.sendPageView("Home Page", null, new SegmentifyCallback<ArrayList<RecommendationModel>>() {
+        ArrayList<ProductModel> productList = new ArrayList<>();
+        ProductModel productModel = new ProductModel();
+        productModel.setPrice(78.0);
+        productModel.setQuantity(2);
+        productModel.setProductId("25799809929");
+
+        productList.add(productModel);
+
+        CheckoutModel checkoutModel = new CheckoutModel();
+        checkoutModel.setProductList(productList);
+        checkoutModel.setTotalPrice(156.0);
+
+        SegmentifyManager.INSTANCE.sendViewBasket(checkoutModel, new SegmentifyCallback<ArrayList<RecommendationModel>>() {
             @Override
-            public void onDataLoaded(ArrayList<RecommendationModel> recommendationModels) {
-                if(recommendationModels != null){
-                    System.out.println(recommendationModels);
-                    ListAdapter segmentifyBottomListAdapter = new ListAdapter(BasketDetailActivity.this,recommendationModels.get(0).getProducts());
-                    lvBottom.setAdapter(segmentifyBottomListAdapter);
-                }
+            public void onDataLoaded(ArrayList<RecommendationModel> data) {
+                BottomRecyclerAdapter bottomRecyclerAdapter = new BottomRecyclerAdapter(data.get(0).getProducts(),BasketDetailActivity.this,onClickListener);
+                rvBottom.setAdapter(bottomRecyclerAdapter);
+                rvBottom.setLayoutManager(new LinearLayoutManager(BasketDetailActivity.this,LinearLayoutManager.HORIZONTAL,false));
             }
         });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         String[] idsArr = {};
         String newItemId = productId;
@@ -103,7 +148,6 @@ public class BasketDetailActivity extends AppCompatActivity {
 
         BasketAdapter BasketAdapter = new BasketAdapter(idsArr,namesArr,priceArr,imagesArr,BasketDetailActivity.this);
         lvBasket.setAdapter(BasketAdapter);
-        lvBottom.setAdapter(BasketAdapter);
 
         btnPurchase.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,7 +165,7 @@ public class BasketDetailActivity extends AppCompatActivity {
                 intent.putExtra("id", productId);
                 intent.putExtra("name", name);
                 intent.putExtra("price", price);
-                intent.putExtra("image", "https:" + image);
+                intent.putExtra("image", image);
                 startActivity(intent);
             }
         });

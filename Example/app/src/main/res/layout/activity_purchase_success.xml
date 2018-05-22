@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_gravity="center"
-        android:layout_margin="30dp">
+        android:layout_margin="35dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -46,13 +46,13 @@
         android:textColor="#000000"
         android:textStyle="bold"
         android:gravity="center"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="25dp"
         android:padding="20dp"
         android:background="#FDCC66"/>
 
     <ListView
+        android:id="@+id/lvBottom"
         android:layout_width="match_parent"
-        android:id="@+id/lvPurchase"
-        android:layout_height="wrap_content"></ListView>
+        android:layout_height="wrap_content"/>
 
 </LinearLayout>

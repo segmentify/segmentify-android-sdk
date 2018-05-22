@@ -7,6 +7,7 @@
 
 
     <ImageView
+        android:id="@+id/imgProduct"
         android:layout_width="60dp"
         android:layout_height="80dp"
         android:background="#000000"
@@ -14,6 +15,7 @@
         android:layout_marginTop="10dp"/>
 
     <TextView
+        android:id="@+id/tvProductName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Ball Point"
@@ -21,6 +23,7 @@
         android:maxLines="1"/>
 
     <TextView
+        android:id="@+id/tvPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="£ 23"
