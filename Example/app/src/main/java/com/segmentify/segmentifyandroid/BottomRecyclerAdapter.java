@@ -26,6 +26,7 @@ public class BottomRecyclerAdapter  extends RecyclerView.Adapter<BottomRecyclerA
     public BottomRecyclerAdapter(ArrayList<ProductRecommendationModel> productRecommendationModelArrayList, Activity activity, ItemOnClick onClickListener) {
         this.productRecommendationModelArrayList = productRecommendationModelArrayList;
         this.activity = activity;
+        this.onClickListener = onClickListener;
     }
 
     @NonNull

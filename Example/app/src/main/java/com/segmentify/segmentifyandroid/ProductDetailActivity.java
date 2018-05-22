@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.segmentify.segmentifyandroidsdk.SegmentifyManager;
+import com.segmentify.segmentifyandroidsdk.model.ProductRecommendationModel;
 import com.segmentify.segmentifyandroidsdk.model.RecommendationModel;
 import com.segmentify.segmentifyandroidsdk.utils.SegmentifyCallback;
 import com.squareup.picasso.Picasso;
@@ -27,6 +28,7 @@ import java.io.InputStream;
 import java.net.PortUnreachableException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ProductDetailActivity extends AppCompatActivity {
 
@@ -70,11 +72,22 @@ public class ProductDetailActivity extends AppCompatActivity {
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                List<ProductRecommendationModel> basketProductList = MyApplication.getClientPreferences().getProductRecommendationModelList();
+
+                if(basketProductList == null){
+                    basketProductList = new ArrayList<>();
+                }
+
+
+                ProductRecommendationModel productRecommendationModel = new ProductRecommendationModel();
+                productRecommendationModel.setProductId(productId);
+                productRecommendationModel.setName(name);
+                productRecommendationModel.setPrice(Double.parseDouble(price));
+                productRecommendationModel.setImage(image);
+
+                basketProductList.add(productRecommendationModel);
+                MyApplication.getClientPreferences().setProductRecommendationModelList(basketProductList);
                 Intent intent = new Intent(ProductDetailActivity.this, BasketDetailActivity.class);
-                intent.putExtra("id", productId);
-                intent.putExtra("name", name);
-                intent.putExtra("price", price);
-                intent.putExtra("image", image);
                 startActivity(intent);
             }
         });

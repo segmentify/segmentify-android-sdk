@@ -20,10 +20,12 @@ import android.widget.Toast;
 import com.segmentify.segmentifyandroidsdk.SegmentifyManager;
 import com.segmentify.segmentifyandroidsdk.model.CheckoutModel;
 import com.segmentify.segmentifyandroidsdk.model.ProductModel;
+import com.segmentify.segmentifyandroidsdk.model.ProductRecommendationModel;
 import com.segmentify.segmentifyandroidsdk.model.RecommendationModel;
 import com.segmentify.segmentifyandroidsdk.utils.SegmentifyCallback;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class BasketDetailActivity extends AppCompatActivity {
 
@@ -35,6 +37,7 @@ public class BasketDetailActivity extends AppCompatActivity {
     String name;
     String price;
     String image;
+    double totalPrice = 0.0;
 
     ItemOnClick onClickListener = new ItemOnClick() {
         @Override
@@ -82,21 +85,6 @@ public class BasketDetailActivity extends AppCompatActivity {
                 rvBottom.setLayoutManager(new LinearLayoutManager(BasketDetailActivity.this,LinearLayoutManager.HORIZONTAL,false));
             }
         });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         String[] idsArr = {};
         String newItemId = productId;
@@ -146,7 +134,7 @@ public class BasketDetailActivity extends AppCompatActivity {
         tempArrayImg[newSizeImg- 1] = newItemImg;
         imagesArr = tempArrayImg;
 
-        BasketAdapter BasketAdapter = new BasketAdapter(idsArr,namesArr,priceArr,imagesArr,BasketDetailActivity.this);
+        BasketAdapter BasketAdapter = new BasketAdapter(BasketDetailActivity.this);
         lvBasket.setAdapter(BasketAdapter);
 
         btnPurchase.setOnClickListener(new View.OnClickListener() {
@@ -170,6 +158,15 @@ public class BasketDetailActivity extends AppCompatActivity {
             }
         });
 
-        tvBasketAmount.setText("Total amount of items: " + price);
+        List<ProductRecommendationModel> productRecommendationModelList = MyApplication.getClientPreferences().getProductRecommendationModelList();
+        if(productRecommendationModelList != null) {
+            for (ProductRecommendationModel productRecommendationModel : productRecommendationModelList) {
+                if(productRecommendationModel.getPrice() != null){
+                    totalPrice = productRecommendationModel.getPrice() + totalPrice;
+                }
+            }
+        }
+
+        tvBasketAmount.setText("Total amount of items: " + totalPrice);
     }
 }

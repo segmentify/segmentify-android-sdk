@@ -16,6 +16,7 @@ import com.segmentify.segmentifyandroidsdk.model.ProductRecommendationModel;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ProductViewHolder> {
 
@@ -48,11 +49,16 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Produc
         holder.btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                List<ProductRecommendationModel> basketProductList = MyApplication.getClientPreferences().getProductRecommendationModelList();
+
+                if(basketProductList == null){
+                    basketProductList = new ArrayList<>();
+                }
+
+                basketProductList.add(productRecommendationModelArrayList.get(position));
+                MyApplication.getClientPreferences().setProductRecommendationModelList(basketProductList);
                 Intent intent = new Intent(activity, BasketDetailActivity.class);
-                intent.putExtra("productId",productRecommendationModelArrayList.get(position).getProductId());
-                intent.putExtra("name",productRecommendationModelArrayList.get(position).getName());
-                intent.putExtra("price",productRecommendationModelArrayList.get(position).getPrice());
-                intent.putExtra("image","https:" + productRecommendationModelArrayList.get(position).getImage());
                 activity.startActivity(intent);
             }
         });

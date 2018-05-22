@@ -6,10 +6,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.segmentify.segmentifyandroidsdk.SegmentifyManager;
+import com.segmentify.segmentifyandroidsdk.model.ProductRecommendationModel;
 import com.segmentify.segmentifyandroidsdk.model.RecommendationModel;
 import com.segmentify.segmentifyandroidsdk.utils.SegmentifyCallback;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class PurchaseSuccessActivity extends AppCompatActivity {
 
@@ -22,7 +24,18 @@ public class PurchaseSuccessActivity extends AppCompatActivity {
         final ListView lvBottom = (ListView) findViewById(R.id.lvBottom);
 
         final String price = getIntent().getStringExtra("purchase");
-        tvPurchase.setText("Total Price: " + price);
+
+        double totalPrice = 0.0;
+
+        List<ProductRecommendationModel> productRecommendationModelList = MyApplication.getClientPreferences().getProductRecommendationModelList();
+        if(productRecommendationModelList != null) {
+            for (ProductRecommendationModel productRecommendationModel : productRecommendationModelList) {
+                if(productRecommendationModel.getPrice() != null){
+                    totalPrice = productRecommendationModel.getPrice() + totalPrice;
+                }
+            }
+        }
+        tvPurchase.setText("Total Price: " + totalPrice);
 
         SegmentifyManager.INSTANCE.sendPageView("Home Page", null, new SegmentifyCallback<ArrayList<RecommendationModel>>() {
             @Override

@@ -27,6 +27,11 @@ public class HomeActivity extends AppCompatActivity {
     ItemOnClick onClickListener = new ItemOnClick() {
         @Override
         public void onItemClicked(View v, int position) {
+            switch (v.getId()){
+                case R.id.rvProducts:
+
+                break;
+            }
 
         }
     };

@@ -14,7 +14,7 @@
             android:id="@+id/imgProduct"
             android:layout_width="80dp"
             android:layout_height="100dp"
-            android:background="#000000" />
+            />
 
         <RelativeLayout
             android:layout_width="match_parent"
