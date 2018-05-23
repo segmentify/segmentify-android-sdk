@@ -21,12 +21,22 @@ public class BottomRecyclerAdapter  extends RecyclerView.Adapter<BottomRecyclerA
     Activity activity;
     ImageView ivProduct;
     TextView tvProductname, tvPrice;
-    ItemOnClick onClickListener;
+    ItemOnClick onClickListener = new ItemOnClick() {
+        @Override
+        public void onItemClicked(View v, int position) {
+            Intent intent = new Intent(activity, ProductDetailActivity.class);
+            intent.putExtra("id", productRecommendationModelArrayList.get(position).getProductId());
+            intent.putExtra("name", productRecommendationModelArrayList.get(position).getName());
+            intent.putExtra("price", productRecommendationModelArrayList.get(position).getPrice() + "");
+            intent.putExtra("image", "https:" + productRecommendationModelArrayList.get(position).getImage());
+            activity.startActivity(intent);
+        }
+    };
 
     public BottomRecyclerAdapter(ArrayList<ProductRecommendationModel> productRecommendationModelArrayList, Activity activity, ItemOnClick onClickListener) {
         this.productRecommendationModelArrayList = productRecommendationModelArrayList;
         this.activity = activity;
-        this.onClickListener = onClickListener;
+        //this.onClickListener = onClickListener;
     }
 
     @NonNull

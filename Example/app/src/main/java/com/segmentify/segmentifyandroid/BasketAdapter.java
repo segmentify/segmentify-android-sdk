@@ -73,7 +73,10 @@ public class BasketAdapter extends BaseAdapter{
         TextView tvProductPrice = (TextView) view.findViewById(R.id.tvPrice);
         tvProductName.setText(productList.get(position).getName());
         tvProductPrice.setText(productList.get(position).getPrice() + "");
-        Picasso.get().load("https:" + productList.get(position).getImage()).into(ivProduct);
+        if(!productList.get(position).getImage().contains("https:")){
+            productList.get(position).setImage("https:" + productList.get(position).getImage());
+        }
+        Picasso.get().load(productList.get(position).getImage()).into(ivProduct);
 
         view.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -42,7 +42,7 @@ public class PurchaseSuccessActivity extends AppCompatActivity {
             public void onDataLoaded(ArrayList<RecommendationModel> recommendationModels) {
                 if(recommendationModels != null){
                     System.out.println(recommendationModels);
-                    ListAdapter segmentifyBottomListAdapter = new ListAdapter(PurchaseSuccessActivity.this,recommendationModels.get(1).getProducts());
+                    ListAdapter segmentifyBottomListAdapter = new ListAdapter(PurchaseSuccessActivity.this,recommendationModels.get(1).getProducts(),true);
                     lvBottom.setAdapter(segmentifyBottomListAdapter);
                 }
             }

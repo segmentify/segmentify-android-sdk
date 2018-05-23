@@ -34,12 +34,14 @@ public class ListAdapter extends BaseAdapter{
     ImageView ivProduct;
     Button btnAdd, btnDetail;
     SharedPreferences sharedPref;
+    boolean isAfterPurchase;
 
 
-    public ListAdapter(Activity activity, ArrayList<ProductRecommendationModel> productRecommendationModelArrayList) {
+    public ListAdapter(Activity activity, ArrayList<ProductRecommendationModel> productRecommendationModelArrayList, boolean isAfterPurchase) {
 
         this.activity = activity;
         this.productRecommendationModelArrayList = productRecommendationModelArrayList;
+        this.isAfterPurchase = isAfterPurchase;
 
     }
 
@@ -69,6 +71,13 @@ public class ListAdapter extends BaseAdapter{
         Picasso.get().load("https:" + productRecommendationModelArrayList.get(position).getImage()).into(ivProduct);
         tvProductname.setText(productRecommendationModelArrayList.get(position).getName());
         tvPrice.setText(productRecommendationModelArrayList.get(position).getPrice() + " TL");
+
+        if(isAfterPurchase){
+            btnAdd.setVisibility(View.GONE);
+        }
+        else{
+            btnAdd.setVisibility(View.VISIBLE);
+        }
 
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override

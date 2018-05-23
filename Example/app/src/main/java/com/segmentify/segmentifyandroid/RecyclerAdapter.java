@@ -46,6 +46,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Produc
         Picasso.get().load("https:" + productRecommendationModelArrayList.get(position).getImage()).into(holder.ivProduct);
         holder.tvProductname.setText(productRecommendationModelArrayList.get(position).getName());
         holder.tvPrice.setText(productRecommendationModelArrayList.get(position).getPrice() + " TL");
+
         holder.btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -86,54 +86,6 @@ public class BasketDetailActivity extends AppCompatActivity {
             }
         });
 
-        String[] idsArr = {};
-        String newItemId = productId;
-        int currentSizeId = idsArr.length;
-        int newSizeId = currentSizeId + 1;
-        String[] tempArrayId = new String[ newSizeId ];
-        for (int i=0; i < currentSizeId; i++)
-        {
-            tempArrayId[i] = idsArr [i];
-        }
-        tempArrayId[newSizeId- 1] = newItemId;
-        idsArr = tempArrayId;
-
-        String[] namesArr = {};
-        String newItemName = name;
-        int currentSizeName = namesArr.length;
-        int newSizeName = currentSizeName + 1;
-        String[] tempArrayName = new String[ newSizeName ];
-        for (int i=0; i < currentSizeName; i++)
-        {
-            tempArrayName[i] = namesArr [i];
-        }
-        tempArrayName[newSizeName- 1] = newItemName;
-        namesArr = tempArrayName;
-
-        String[] priceArr = {};
-        String newItemPrice = price;
-        int currentSizePrice = priceArr.length;
-        int newSizePrice = currentSizePrice + 1;
-        String[] tempArrayPrice = new String[ newSizePrice ];
-        for (int i=0; i < currentSizePrice; i++)
-        {
-            tempArrayPrice[i] = priceArr [i];
-        }
-        tempArrayPrice[newSizePrice- 1] = newItemPrice;
-        priceArr = tempArrayPrice;
-
-        String[] imagesArr = {};
-        String newItemImg = image;
-        int currentSizeImg = imagesArr.length;
-        int newSizeImg = currentSizeImg + 1;
-        String[] tempArrayImg = new String[ newSizeImg ];
-        for (int i=0; i < currentSizeImg; i++)
-        {
-            tempArrayImg[i] = imagesArr [i];
-        }
-        tempArrayImg[newSizeImg- 1] = newItemImg;
-        imagesArr = tempArrayImg;
-
         BasketAdapter BasketAdapter = new BasketAdapter(BasketDetailActivity.this);
         lvBasket.setAdapter(BasketAdapter);
 
