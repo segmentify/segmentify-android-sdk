@@ -54,13 +54,21 @@ public class PurchaseSuccessActivity extends AppCompatActivity {
 
 
 
-        ArrayList<ProductModel> productList = new ArrayList<>();
-        ProductModel productModel = new ProductModel();
-        productModel.setPrice(78.0);
-        productModel.setQuantity(2);
-        productModel.setProductId("25799809929");
 
-        productList.add(productModel);
+        ArrayList<ProductModel> productList = new ArrayList<>();
+
+        if(productRecommendationModelList != null) {
+            for (ProductRecommendationModel productRecommendationModel : productRecommendationModelList) {
+
+                ProductModel productModel = new ProductModel();
+                productModel.setPrice(productRecommendationModel.getPrice());
+                productModel.setQuantity(1);
+                productModel.setProductId(productRecommendationModel.getProductId());
+
+                productList.add(productModel);
+            }
+        }
+
 
         CheckoutModel checkoutModel = new CheckoutModel();
         checkoutModel.setProductList(productList);

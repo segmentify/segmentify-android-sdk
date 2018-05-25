@@ -47,7 +47,11 @@ public class ProductDetailActivity extends AppCompatActivity {
         final String productId = getIntent().getStringExtra("productId");
         final String name = getIntent().getStringExtra("name");
         final String price = getIntent().getStringExtra("price");
-        final String image = getIntent().getStringExtra("image");
+        final String image  = getIntent().getStringExtra("image");
+
+
+
+
         final String url = getIntent().getStringExtra("url");
 
         tvProductname = (TextView) findViewById(R.id.tvProductName);
@@ -85,6 +89,9 @@ public class ProductDetailActivity extends AppCompatActivity {
                 System.out.println(data);
                 ListAdapter segmentifyBottomListAdapter = new ListAdapter(ProductDetailActivity.this,data.get(0).getProducts(),false);
                 lvBottom.setAdapter(segmentifyBottomListAdapter);
+
+
+
             }
         });
 

@@ -78,8 +78,13 @@ public class HomeActivity extends AppCompatActivity {
                 intent.putExtra("productId", recommendationModelArrayList.get(1).getProducts().get(position).getProductId());
                 intent.putExtra("name", recommendationModelArrayList.get(1).getProducts().get(position).getName());
                 intent.putExtra("price", recommendationModelArrayList.get(1).getProducts().get(position).getPrice().toString());
-                intent.putExtra("image", "https:" + recommendationModelArrayList.get(1).getProducts().get(position).getImage());
+                intent.putExtra("image",    recommendationModelArrayList.get(1).getProducts().get(position).getImage());
                 intent.putExtra("url", "https:" + recommendationModelArrayList.get(1).getProducts().get(position).getUrl());
+
+
+                SegmentifyManager.INSTANCE.sendWidgetView(recommendationModelArrayList.get(1).getInstanceId(),recommendationModelArrayList.get(1).getActionId());
+                SegmentifyManager.INSTANCE.sendClickView(recommendationModelArrayList.get(1).getInstanceId(),recommendationModelArrayList.get(1).getProducts().get(position).getProductId());
+
 
                 BasketModel model = new BasketModel();
                 model.setStep("add");

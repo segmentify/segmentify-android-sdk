@@ -68,7 +68,25 @@ public class ListAdapter extends BaseAdapter{
         ivProduct=(ImageView)row.findViewById(R.id.imgProduct);
         btnAdd = row.findViewById(R.id.btnAdd);
         btnDetail = row.findViewById(R.id.btnDetail);
-        Picasso.get().load("https:" + productRecommendationModelArrayList.get(position).getImage()).into(ivProduct);
+
+        String fix_image ="";
+
+        if(productRecommendationModelArrayList.get(position).getImage().startsWith("https:https://"))
+        {
+            fix_image =    productRecommendationModelArrayList.get(position).getImage().replace("https:https://","https://");
+        }
+        else if(productRecommendationModelArrayList.get(position).getImage().startsWith("//"))
+        {
+            fix_image = "https:" +  productRecommendationModelArrayList.get(position).getImage();
+        }
+        else if(productRecommendationModelArrayList.get(position).getImage().startsWith("https://"))
+        {
+            fix_image = productRecommendationModelArrayList.get(position).getImage();
+        }
+
+
+
+        Picasso.get().load(fix_image).into(ivProduct);
         tvProductname.setText(productRecommendationModelArrayList.get(position).getName());
         tvPrice.setText(productRecommendationModelArrayList.get(position).getPrice() + " TL");
 

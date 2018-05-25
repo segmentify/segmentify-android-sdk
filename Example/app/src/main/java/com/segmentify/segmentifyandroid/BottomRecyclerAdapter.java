@@ -49,7 +49,23 @@ public class BottomRecyclerAdapter  extends RecyclerView.Adapter<BottomRecyclerA
     @Override
     public void onBindViewHolder(@NonNull BottomRecyclerAdapter.BottomProductViewHolder holder, final int position) {
 
-        Picasso.get().load("https:" + productRecommendationModelArrayList.get(position).getImage()).into(holder.ivProduct);
+        String fix_image ="";
+
+        if(productRecommendationModelArrayList.get(position).getImage().startsWith("https:https://"))
+        {
+            fix_image =    productRecommendationModelArrayList.get(position).getImage().replace("https:https://","https://");
+        }
+        else if(productRecommendationModelArrayList.get(position).getImage().startsWith("//"))
+        {
+            fix_image = "https:" +  productRecommendationModelArrayList.get(position).getImage();
+        }
+        else if(productRecommendationModelArrayList.get(position).getImage().startsWith("https://"))
+        {
+            fix_image = productRecommendationModelArrayList.get(position).getImage();
+        }
+
+
+        Picasso.get().load(fix_image).into(holder.ivProduct);
         holder.tvProductname.setText(productRecommendationModelArrayList.get(position).getName());
         holder.tvPrice.setText(productRecommendationModelArrayList.get(position).getPrice() + " TL");
     }
