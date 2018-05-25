@@ -101,7 +101,28 @@ public class ProductDetailActivity extends AppCompatActivity {
 
         tvProductname.setText(name);
         tvPrice.setText(price  + " TL");
-        Picasso.get().load(image).into(ivProduct);
+
+
+        String fix_image ="";
+
+        if(image.startsWith("https:https://"))
+        {
+            fix_image =    image.replace("https:https://","https://");
+        }
+        else if(image.startsWith("//"))
+        {
+            fix_image = "https:" +  image;
+        }
+        else if(image.startsWith("https://"))
+        {
+            fix_image = image;
+        }
+
+
+
+
+
+        Picasso.get().load(fix_image).into(ivProduct);
         //new DownloadImage().execute(image);
 
         btnAdd.setOnClickListener(new View.OnClickListener() {
