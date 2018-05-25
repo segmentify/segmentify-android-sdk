@@ -2,10 +2,13 @@ package com.segmentify.segmentifyandroid;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.segmentify.segmentifyandroidsdk.SegmentifyManager;
+import com.segmentify.segmentifyandroidsdk.model.CheckoutModel;
+import com.segmentify.segmentifyandroidsdk.model.ProductModel;
 import com.segmentify.segmentifyandroidsdk.model.ProductRecommendationModel;
 import com.segmentify.segmentifyandroidsdk.model.RecommendationModel;
 import com.segmentify.segmentifyandroidsdk.utils.SegmentifyCallback;
@@ -37,15 +40,50 @@ public class PurchaseSuccessActivity extends AppCompatActivity {
         }
         tvPurchase.setText("Total Price: " + totalPrice);
 
-        SegmentifyManager.INSTANCE.sendPageView("Home Page", null, new SegmentifyCallback<ArrayList<RecommendationModel>>() {
+
+
+
+        SegmentifyManager.INSTANCE.sendPageView("Checkout Success Page", null, new SegmentifyCallback<ArrayList<RecommendationModel>>() {
             @Override
             public void onDataLoaded(ArrayList<RecommendationModel> recommendationModels) {
                 if(recommendationModels != null){
-                    System.out.println(recommendationModels);
-                    ListAdapter segmentifyBottomListAdapter = new ListAdapter(PurchaseSuccessActivity.this,recommendationModels.get(1).getProducts(),true);
-                    lvBottom.setAdapter(segmentifyBottomListAdapter);
+
                 }
             }
         });
+
+
+
+        ArrayList<ProductModel> productList = new ArrayList<>();
+        ProductModel productModel = new ProductModel();
+        productModel.setPrice(78.0);
+        productModel.setQuantity(2);
+        productModel.setProductId("25799809929");
+
+        productList.add(productModel);
+
+        CheckoutModel checkoutModel = new CheckoutModel();
+        checkoutModel.setProductList(productList);
+        checkoutModel.setTotalPrice(totalPrice);
+
+        SegmentifyManager.INSTANCE.sendPurchase(checkoutModel, new SegmentifyCallback<ArrayList<RecommendationModel>>() {
+            @Override
+            public void onDataLoaded(ArrayList<RecommendationModel> data) {
+                System.out.println(data);
+                ListAdapter segmentifyBottomListAdapter = new ListAdapter(PurchaseSuccessActivity.this,data.get(0).getProducts(),true);
+                lvBottom.setAdapter(segmentifyBottomListAdapter);
+            }
+        });
+
+
+
+
+
+
+
+
+
+
+
     }
 }

@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.segmentify.segmentifyandroidsdk.SegmentifyManager;
+import com.segmentify.segmentifyandroidsdk.model.BasketModel;
 import com.segmentify.segmentifyandroidsdk.model.CheckoutModel;
 import com.segmentify.segmentifyandroidsdk.model.ProductModel;
 import com.segmentify.segmentifyandroidsdk.model.ProductRecommendationModel;
@@ -81,6 +82,9 @@ public class BasketDetailActivity extends AppCompatActivity {
             @Override
             public void onDataLoaded(ArrayList<RecommendationModel> data) {
                 BottomRecyclerAdapter bottomRecyclerAdapter = new BottomRecyclerAdapter(data.get(0).getProducts(),BasketDetailActivity.this,onClickListener);
+
+                TextView tv =(TextView)findViewById(R.id.tvBasket);
+                tv.setText(data.get(0).getNotificationTitle());
                 rvBottom.setAdapter(bottomRecyclerAdapter);
                 rvBottom.setLayoutManager(new LinearLayoutManager(BasketDetailActivity.this,LinearLayoutManager.HORIZONTAL,false));
             }
@@ -106,6 +110,17 @@ public class BasketDetailActivity extends AppCompatActivity {
                 intent.putExtra("name", name);
                 intent.putExtra("price", price);
                 intent.putExtra("image", image);
+
+
+
+                BasketModel model = new BasketModel();
+                model.setStep("add");
+                model.setProductId(productId);
+                model.setQuantity(1);
+                model.setPrice(Double.parseDouble((price)));
+                SegmentifyManager.INSTANCE.sendAddOrRemoveBasket(model);
+
+
                 startActivity(intent);
             }
         });

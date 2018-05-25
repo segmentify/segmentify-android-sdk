@@ -11,8 +11,10 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.segmentify.segmentifyandroidsdk.model.BasketModel;
 import com.squareup.picasso.Picasso;
 
 import com.segmentify.segmentifyandroidsdk.SegmentifyManager;
@@ -55,6 +57,8 @@ public class HomeActivity extends AppCompatActivity {
                     recommendationModelArrayList = recommendationModels;
                     RecyclerAdapter recyclerAdapter = new RecyclerAdapter(recommendationModelArrayList.get(1).getProducts(),HomeActivity.this,onClickListener);
                     rvProduct.setAdapter(recyclerAdapter);
+                    TextView tv =(TextView)findViewById(R.id.tvHome);
+                    tv.setText(recommendationModels.get(0).getNotificationTitle());
                     rvProduct.setLayoutManager(new LinearLayoutManager(HomeActivity.this,LinearLayoutManager.VERTICAL,false));
                     BottomRecyclerAdapter bottomRecyclerAdapter = new BottomRecyclerAdapter(recommendationModels.get(0).getProducts(),HomeActivity.this,onClickListener);
                     rvBottom.setAdapter(bottomRecyclerAdapter);
@@ -75,6 +79,16 @@ public class HomeActivity extends AppCompatActivity {
                 intent.putExtra("name", recommendationModelArrayList.get(1).getProducts().get(position).getName());
                 intent.putExtra("price", recommendationModelArrayList.get(1).getProducts().get(position).getPrice().toString());
                 intent.putExtra("image", "https:" + recommendationModelArrayList.get(1).getProducts().get(position).getImage());
+                intent.putExtra("url", "https:" + recommendationModelArrayList.get(1).getProducts().get(position).getUrl());
+
+                BasketModel model = new BasketModel();
+                model.setStep("add");
+                model.setProductId(recommendationModelArrayList.get(1).getProducts().get(position).getProductId());
+                model.setQuantity(1);
+                model.setPrice(Double.parseDouble(recommendationModelArrayList.get(1).getProducts().get(position).getPrice().toString()));
+                SegmentifyManager.INSTANCE.sendAddOrRemoveBasket(model);
+
+
                 startActivity(intent);
             }
         };

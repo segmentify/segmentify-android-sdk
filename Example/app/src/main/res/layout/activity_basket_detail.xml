@@ -37,7 +37,18 @@
     <ListView
         android:id="@+id/lvBasket"
         android:layout_width="match_parent"
-        android:layout_height="350dp"/>
+        android:layout_height="220dp" />
+
+    <TextView
+        android:id="@+id/tvBasket"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#000000"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginTop="10dp"
+        android:padding="10dp"
+        android:background="#FDCC66"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvBottom"

@@ -17,6 +17,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.segmentify.segmentifyandroidsdk.SegmentifyManager;
+import com.segmentify.segmentifyandroidsdk.model.BasketModel;
+import com.segmentify.segmentifyandroidsdk.model.ProductModel;
 import com.segmentify.segmentifyandroidsdk.model.ProductRecommendationModel;
 import com.segmentify.segmentifyandroidsdk.model.RecommendationModel;
 import com.segmentify.segmentifyandroidsdk.utils.SegmentifyCallback;
@@ -42,10 +44,11 @@ public class ProductDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_detail);
 
-        final String productId = getIntent().getStringExtra("id");
+        final String productId = getIntent().getStringExtra("productId");
         final String name = getIntent().getStringExtra("name");
         final String price = getIntent().getStringExtra("price");
         final String image = getIntent().getStringExtra("image");
+        final String url = getIntent().getStringExtra("url");
 
         tvProductname = (TextView) findViewById(R.id.tvProductName);
         tvPrice = (TextView) findViewById(R.id.tvPrice);
@@ -53,16 +56,41 @@ public class ProductDetailActivity extends AppCompatActivity {
         btnAdd = (Button) findViewById(R.id.btnAdd);
         lvBottom = (ListView) findViewById(R.id.lvBottom);
 
-        SegmentifyManager.INSTANCE.sendPageView("Home Page", null, new SegmentifyCallback<ArrayList<RecommendationModel>>() {
+        SegmentifyManager.INSTANCE.sendPageView("Product Page", null, new SegmentifyCallback<ArrayList<RecommendationModel>>() {
             @Override
             public void onDataLoaded(ArrayList<RecommendationModel> recommendationModels) {
                 if(recommendationModels != null){
-                    System.out.println(recommendationModels);
-                    ListAdapter segmentifyBottomListAdapter = new ListAdapter(ProductDetailActivity.this,recommendationModels.get(0).getProducts(),false);
-                    lvBottom.setAdapter(segmentifyBottomListAdapter);
+
                 }
             }
         });
+
+
+
+
+        ProductModel model = new ProductModel();
+        ArrayList<String> categories = new ArrayList<String>();
+        categories.add("Womenswear");
+
+        model.setProductId(productId);
+        model.setCategories(categories);
+        model.setPrice(Double.parseDouble(price));
+        model.setTitle(name);
+        model.setImage(image);
+        model.setUrl(url);
+
+        SegmentifyManager.INSTANCE.sendProductView(model, new SegmentifyCallback<ArrayList<RecommendationModel>>() {
+            @Override
+            public void onDataLoaded(ArrayList<RecommendationModel> data) {
+                System.out.println(data);
+                ListAdapter segmentifyBottomListAdapter = new ListAdapter(ProductDetailActivity.this,data.get(0).getProducts(),false);
+                lvBottom.setAdapter(segmentifyBottomListAdapter);
+            }
+        });
+
+
+
+
 
         tvProductname.setText(name);
         tvPrice.setText(price  + " TL");
@@ -78,6 +106,12 @@ public class ProductDetailActivity extends AppCompatActivity {
                     basketProductList = new ArrayList<>();
                 }
 
+                BasketModel model = new BasketModel();
+                model.setStep("add");
+                model.setProductId(productId);
+                model.setQuantity(1);
+                model.setPrice(Double.parseDouble((price)));
+                SegmentifyManager.INSTANCE.sendAddOrRemoveBasket(model);
 
                 ProductRecommendationModel productRecommendationModel = new ProductRecommendationModel();
                 productRecommendationModel.setProductId(productId);
