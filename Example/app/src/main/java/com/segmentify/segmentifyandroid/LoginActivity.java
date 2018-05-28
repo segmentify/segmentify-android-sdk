@@ -6,6 +6,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.segmentify.segmentifyandroidsdk.SegmentifyManager;
+import com.segmentify.segmentifyandroidsdk.model.UserChangeModel;
+import com.segmentify.segmentifyandroidsdk.model.UserModel;
+
 public class LoginActivity extends AppCompatActivity {
 
     @Override
@@ -14,13 +18,44 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         Button btLogin = (Button) findViewById(R.id.btLogin);
+        Button btLoginAs = (Button) findViewById(R.id.btLoginAs);
 
         btLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+
+                UserModel model = new UserModel();
+                model.setEmail("user@example.com");
+                model.setUsername("John Doe");
+
+                SegmentifyManager.INSTANCE.sendUserUpdate(model);
+                UserChangeModel model_ = new UserChangeModel();
+                model.setOldUserId("12345");
+                SegmentifyManager.INSTANCE.sendChangeUser(model_);
+
                 Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                 startActivity(intent);
             }
         });
+
+        btLoginAs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+                UserModel model = new UserModel();
+                model.setEmail("user@example.com");
+                model.setUsername("John Doe");
+
+                SegmentifyManager.INSTANCE.sendUserUpdate(model);
+
+                Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
+
     }
 }

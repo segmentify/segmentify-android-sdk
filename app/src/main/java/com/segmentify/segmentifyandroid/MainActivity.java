@@ -58,6 +58,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         SegmentifyManager.INSTANCE.sendUserLogin(userModel);
 
+        Segment
+
 //
 //        InteractionModel model = new InteractionModel();
 //        model.setImpressionId("ada");

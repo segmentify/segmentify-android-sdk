@@ -134,6 +134,7 @@ public class ProductDetailActivity extends AppCompatActivity {
                     basketProductList = new ArrayList<>();
                 }
 
+
                 BasketModel model = new BasketModel();
                 model.setStep("add");
                 model.setProductId(productId);

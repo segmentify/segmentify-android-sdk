@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.widget.ListView;
 import android.widget.TextView;
+import java.util.Random;
+
 
 import com.segmentify.segmentifyandroidsdk.SegmentifyManager;
 import com.segmentify.segmentifyandroidsdk.model.CheckoutModel;
@@ -12,6 +14,8 @@ import com.segmentify.segmentifyandroidsdk.model.ProductModel;
 import com.segmentify.segmentifyandroidsdk.model.ProductRecommendationModel;
 import com.segmentify.segmentifyandroidsdk.model.RecommendationModel;
 import com.segmentify.segmentifyandroidsdk.utils.SegmentifyCallback;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,10 +73,17 @@ public class PurchaseSuccessActivity extends AppCompatActivity {
             }
         }
 
+        Random rand = new Random();
+
 
         CheckoutModel checkoutModel = new CheckoutModel();
         checkoutModel.setProductList(productList);
         checkoutModel.setTotalPrice(totalPrice);
+        checkoutModel.setOrderNo(String.valueOf(rand.nextInt(9999999) + 1));
+
+        TextView orderNo = (TextView)findViewById(R.id.tvOrderNo);
+        orderNo.setText(String.valueOf(rand.nextInt(9999999) + 1));
+
 
         SegmentifyManager.INSTANCE.sendPurchase(checkoutModel, new SegmentifyCallback<ArrayList<RecommendationModel>>() {
             @Override

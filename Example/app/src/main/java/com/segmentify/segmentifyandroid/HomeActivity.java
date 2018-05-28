@@ -82,6 +82,8 @@ public class HomeActivity extends AppCompatActivity {
                 intent.putExtra("url", "https:" + recommendationModelArrayList.get(1).getProducts().get(position).getUrl());
 
 
+                System.out.println(recommendationModelArrayList.get(1).getProducts().get(position).getProductId());
+
                 SegmentifyManager.INSTANCE.sendWidgetView(recommendationModelArrayList.get(1).getInstanceId(),recommendationModelArrayList.get(1).getActionId());
                 SegmentifyManager.INSTANCE.sendClickView(recommendationModelArrayList.get(1).getInstanceId(),recommendationModelArrayList.get(1).getProducts().get(position).getProductId());
 

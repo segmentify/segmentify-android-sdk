@@ -57,6 +57,8 @@ public class BasketDetailActivity extends AppCompatActivity {
         //price = getIntent().getStringExtra("price");
         //image = getIntent().getStringExtra("image");
 
+
+
         tvProductName = (TextView) findViewById(R.id.tvProductName);
         tvPrice = (TextView) findViewById(R.id.tvPrice);
         tvBasketAmount = (TextView) findViewById(R.id.tvBasketAmount);
@@ -66,29 +68,6 @@ public class BasketDetailActivity extends AppCompatActivity {
         final ListView lvBasket = findViewById(R.id.lvBasket);
         final RecyclerView rvBottom = findViewById(R.id.rvBottom);
 
-        ArrayList<ProductModel> productList = new ArrayList<>();
-        ProductModel productModel = new ProductModel();
-        productModel.setPrice(78.0);
-        productModel.setQuantity(2);
-        productModel.setProductId("25799809929");
-
-        productList.add(productModel);
-
-        CheckoutModel checkoutModel = new CheckoutModel();
-        checkoutModel.setProductList(productList);
-        checkoutModel.setTotalPrice(156.0);
-
-        SegmentifyManager.INSTANCE.sendViewBasket(checkoutModel, new SegmentifyCallback<ArrayList<RecommendationModel>>() {
-            @Override
-            public void onDataLoaded(ArrayList<RecommendationModel> data) {
-                BottomRecyclerAdapter bottomRecyclerAdapter = new BottomRecyclerAdapter(data.get(0).getProducts(),BasketDetailActivity.this,onClickListener);
-
-                TextView tv =(TextView)findViewById(R.id.tvBasket);
-                tv.setText(data.get(0).getNotificationTitle());
-                rvBottom.setAdapter(bottomRecyclerAdapter);
-                rvBottom.setLayoutManager(new LinearLayoutManager(BasketDetailActivity.this,LinearLayoutManager.HORIZONTAL,false));
-            }
-        });
 
         BasketAdapter BasketAdapter = new BasketAdapter(BasketDetailActivity.this);
         lvBasket.setAdapter(BasketAdapter);
@@ -125,6 +104,7 @@ public class BasketDetailActivity extends AppCompatActivity {
             }
         });
 
+
         List<ProductRecommendationModel> productRecommendationModelList = MyApplication.getClientPreferences().getProductRecommendationModelList();
         if(productRecommendationModelList != null) {
             for (ProductRecommendationModel productRecommendationModel : productRecommendationModelList) {
@@ -133,6 +113,40 @@ public class BasketDetailActivity extends AppCompatActivity {
                 }
             }
         }
+
+
+
+        ArrayList<ProductModel> productList = new ArrayList<>();
+
+        if(productRecommendationModelList != null) {
+            for (ProductRecommendationModel productRecommendationModel : productRecommendationModelList) {
+
+                ProductModel productModel = new ProductModel();
+                productModel.setPrice(productRecommendationModel.getPrice());
+                productModel.setQuantity(1);
+                productModel.setProductId(productRecommendationModel.getProductId());
+
+                productList.add(productModel);
+            }
+        }
+
+        CheckoutModel checkoutModel = new CheckoutModel();
+        checkoutModel.setProductList(productList);
+        checkoutModel.setTotalPrice(totalPrice);
+
+        SegmentifyManager.INSTANCE.sendViewBasket(checkoutModel, new SegmentifyCallback<ArrayList<RecommendationModel>>() {
+            @Override
+            public void onDataLoaded(ArrayList<RecommendationModel> data) {
+                BottomRecyclerAdapter bottomRecyclerAdapter = new BottomRecyclerAdapter(data.get(0).getProducts(),BasketDetailActivity.this,onClickListener);
+
+                TextView tv =(TextView)findViewById(R.id.tvBasket);
+                tv.setText(data.get(0).getNotificationTitle());
+                rvBottom.setAdapter(bottomRecyclerAdapter);
+                rvBottom.setLayoutManager(new LinearLayoutManager(BasketDetailActivity.this,LinearLayoutManager.HORIZONTAL,false));
+            }
+        });
+
+
 
         tvBasketAmount.setText("Total amount of items: " + totalPrice);
     }
