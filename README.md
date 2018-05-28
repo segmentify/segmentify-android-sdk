@@ -26,7 +26,7 @@ implementation 'com.segmentify.sdk:android:1.0.0'
 or If you are using another tool, you can add it as follows :
 
 Maven:
-```java
+```xml
 <!-- https://mvnrepository.com/artifact/com.segmentify.sdk/android -->
 <dependency>
     <groupId>com.segmentify.sdk</groupId>
@@ -35,31 +35,31 @@ Maven:
 </dependency>
 ```
 SBT :
-```java
+```scala
 // https://mvnrepository.com/artifact/com.segmentify.sdk/android
 libraryDependencies += "com.segmentify.sdk" % "android" % "1.0.0"
 ```
 
 Ivy :
-```java
+```xml
 <!-- https://mvnrepository.com/artifact/com.segmentify.sdk/android -->
 <dependency org="com.segmentify.sdk" name="android" rev="1.0.0"/>
 ```
 
 Grape : 
-```java
+```xml
 <!-- https://mvnrepository.com/artifact/com.segmentify.sdk/android -->
 <dependency org="com.segmentify.sdk" name="android" rev="1.0.0"/>
 ```
 
 Leiningen : 
-```java
+```Clojure 
 ;; https://mvnrepository.com/artifact/com.segmentify.sdk/android
 [com.segmentify.sdk/android "1.0.0"]
 ```
 
 Buildr : 
-```java
+```
 # https://mvnrepository.com/artifact/com.segmentify.sdk/android
 'com.segmentify.sdk:android:jar:1.0.0'
 
