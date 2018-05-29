@@ -34,7 +34,7 @@ import java.util.List;
 
 public class ProductDetailActivity extends AppCompatActivity {
 
-    TextView tvProductname, tvPrice;
+    TextView tvProductname, tvPrice,tvProductId;
     ImageView ivProduct;
     Button btnAdd;
     ListView lvBottom;
@@ -147,7 +147,7 @@ public class ProductDetailActivity extends AppCompatActivity {
                 productRecommendationModel.setName(name);
                 productRecommendationModel.setPrice(Double.parseDouble(price));
                 productRecommendationModel.setImage(image);
-
+                productRecommendationModel.setUrl(url);
                 basketProductList.add(productRecommendationModel);
                 MyApplication.getClientPreferences().setProductRecommendationModelList(basketProductList);
                 Intent intent = new Intent(ProductDetailActivity.this, BasketDetailActivity.class);

@@ -30,8 +30,10 @@ public class LoginActivity extends AppCompatActivity {
                 model.setUsername("John Doe");
 
                 SegmentifyManager.INSTANCE.sendUserUpdate(model);
+
                 UserChangeModel model_ = new UserChangeModel();
-                model.setOldUserId("12345");
+                model_.setUserId("12345");
+
                 SegmentifyManager.INSTANCE.sendChangeUser(model_);
 
                 Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
@@ -42,13 +44,6 @@ public class LoginActivity extends AppCompatActivity {
         btLoginAs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-
-                UserModel model = new UserModel();
-                model.setEmail("user@example.com");
-                model.setUsername("John Doe");
-
-                SegmentifyManager.INSTANCE.sendUserUpdate(model);
 
                 Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                 startActivity(intent);

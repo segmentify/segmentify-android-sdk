@@ -52,10 +52,10 @@ public class BasketDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_basket_detail);
 
-        //productId = getIntent().getStringExtra("id");
-        //name = getIntent().getStringExtra("name");
-        //price = getIntent().getStringExtra("price");
-        //image = getIntent().getStringExtra("image");
+        productId = getIntent().getStringExtra("id");
+        name = getIntent().getStringExtra("name");
+        price = getIntent().getStringExtra("price");
+        image = getIntent().getStringExtra("image");
 
 
 
@@ -133,6 +133,19 @@ public class BasketDetailActivity extends AppCompatActivity {
         CheckoutModel checkoutModel = new CheckoutModel();
         checkoutModel.setProductList(productList);
         checkoutModel.setTotalPrice(totalPrice);
+
+
+        SegmentifyManager.INSTANCE.sendPageView("Basket Page", null, new SegmentifyCallback<ArrayList<RecommendationModel>>() {
+            @Override
+            public void onDataLoaded(ArrayList<RecommendationModel> recommendationModels) {
+                if(recommendationModels != null){
+
+                }
+            }
+        });
+
+
+
 
         SegmentifyManager.INSTANCE.sendViewBasket(checkoutModel, new SegmentifyCallback<ArrayList<RecommendationModel>>() {
             @Override

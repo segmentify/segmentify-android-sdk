@@ -91,6 +91,7 @@ public class PurchaseSuccessActivity extends AppCompatActivity {
                 System.out.println(data);
                 ListAdapter segmentifyBottomListAdapter = new ListAdapter(PurchaseSuccessActivity.this,data.get(0).getProducts(),true);
                 lvBottom.setAdapter(segmentifyBottomListAdapter);
+                MyApplication.getClientPreferences().clearKey("ReqProductList");
             }
         });
 

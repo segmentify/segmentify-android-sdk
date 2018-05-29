@@ -24,7 +24,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Produc
     Activity activity;
     ImageView ivProduct;
     Button btnAdd, btnDetail;
-    TextView tvProductname, tvPrice;
+    TextView tvProductname, tvPrice,tvProductId;
     ItemOnClick onClickListener;
 
     public RecyclerAdapter(ArrayList<ProductRecommendationModel> productRecommendationModelArrayList, Activity activity, ItemOnClick onClickListener) {
@@ -65,6 +65,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Produc
         holder.tvProductname.setText(productRecommendationModelArrayList.get(position).getName());
         holder.tvPrice.setText(productRecommendationModelArrayList.get(position).getPrice() + " TL");
 
+
+
         holder.btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -77,7 +79,16 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Produc
 
                 basketProductList.add(productRecommendationModelArrayList.get(position));
                 MyApplication.getClientPreferences().setProductRecommendationModelList(basketProductList);
+
+
+
+
                 Intent intent = new Intent(activity, BasketDetailActivity.class);
+                intent.putExtra("productId", productRecommendationModelArrayList.get(position).getProductId());
+                intent.putExtra("name", productRecommendationModelArrayList.get(position).getName());
+                intent.putExtra("price", productRecommendationModelArrayList.get(position).getPrice().toString());
+                intent.putExtra("image",  productRecommendationModelArrayList.get(position).getImage());
+
                 activity.startActivity(intent);
             }
         });

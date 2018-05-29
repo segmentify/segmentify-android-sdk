@@ -18,8 +18,8 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:layout_marginLeft="10dp">
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1">
 
             <TextView
                 android:id="@+id/tvProductName"
@@ -45,9 +45,9 @@
                     android:id="@+id/btnAdd"
                     android:layout_width="wrap_content"
                     android:layout_height="35dp"
+                    android:layout_marginLeft="110dp"
                     android:text="Add to Basket"
-                    android:textSize="9sp"
-                    android:layout_marginLeft="110dp"/>
+                    android:textSize="9sp" />
 
             </RelativeLayout>
 

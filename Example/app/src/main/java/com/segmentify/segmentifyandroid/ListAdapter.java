@@ -104,7 +104,7 @@ public class ListAdapter extends BaseAdapter{
                 intent.putExtra("productId", productRecommendationModelArrayList.get(position).getProductId());
                 intent.putExtra("name", productRecommendationModelArrayList.get(position).getName());
                 intent.putExtra("price", productRecommendationModelArrayList.get(position).getPrice().toString());
-                intent.putExtra("image", "https:" + productRecommendationModelArrayList.get(position).getImage());
+                intent.putExtra("image",  productRecommendationModelArrayList.get(position).getImage());
                 activity.startActivity(intent);
             }
         });
@@ -122,7 +122,8 @@ public class ListAdapter extends BaseAdapter{
                 intent.putExtra("productId", productRecommendationModelArrayList.get(position).getProductId());
                 intent.putExtra("name", productRecommendationModelArrayList.get(position).getName());
                 intent.putExtra("price", productRecommendationModelArrayList.get(position).getPrice().toString());
-                intent.putExtra("image", "https:" + productRecommendationModelArrayList.get(position).getImage());
+                intent.putExtra("image",  productRecommendationModelArrayList.get(position).getImage());
+                intent.putExtra("url",productRecommendationModelArrayList.get(position).getUrl());
                 activity.startActivity(intent);
             }
         });
