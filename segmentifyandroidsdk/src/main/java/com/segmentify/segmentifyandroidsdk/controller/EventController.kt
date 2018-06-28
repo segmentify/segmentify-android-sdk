@@ -266,6 +266,18 @@ internal object EventController {
             productRecommendationModel.noUpdate = productJson.getBoolean("noUpdate")
         }
 
+
+
+        if(productJson.has("params")){
+            var obj =  productJson.getString("params");
+            var json  = JSONObject(obj);
+            var paramsMap: Map<String, Any> =Gson().fromJson(obj, object : TypeToken<Map<String, Any>>() {}.type)
+            productRecommendationModel.params =paramsMap
+        }
+
+
+
+
         return productRecommendationModel
     }
 

@@ -22,4 +22,5 @@ class ProductRecommendationModel {
         var sizes:ArrayList<String>? = null
         var labels:ArrayList<String>? = null
         var noUpdate:Boolean? = null
+        var params : Map<String,Any>? = null
 }

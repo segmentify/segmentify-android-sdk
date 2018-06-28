@@ -82,7 +82,6 @@ public class ProductDetailActivity extends AppCompatActivity {
         model.setTitle(name);
         model.setImage(image);
         model.setUrl(url);
-
         SegmentifyManager.INSTANCE.sendProductView(model, new SegmentifyCallback<ArrayList<RecommendationModel>>() {
             @Override
             public void onDataLoaded(ArrayList<RecommendationModel> data) {
