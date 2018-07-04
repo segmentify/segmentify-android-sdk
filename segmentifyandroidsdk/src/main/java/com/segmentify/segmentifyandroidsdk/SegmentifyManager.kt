@@ -61,6 +61,8 @@ object SegmentifyManager {
         if(pageModel.subCategory != null) {
             pageModel.subCategory = pageModel.subCategory
         }
+
+        pageModel.eventName = Constant.pageViewEventName
         EventController.sendPageView(pageModel,object : SegmentifyCallback<ArrayList<RecommendationModel>>{
             override fun onDataLoaded(data: ArrayList<RecommendationModel>) {
                 segmentifyCallback.onDataLoaded(data)
