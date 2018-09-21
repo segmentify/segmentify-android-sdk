@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.segmentify.segmentifyandroidsdk.SegmentifyManager;
+import com.segmentify.segmentifyandroidsdk.model.PageModel;
 import com.segmentify.segmentifyandroidsdk.model.ProductRecommendationModel;
 import com.segmentify.segmentifyandroidsdk.model.RecommendationModel;
 import com.segmentify.segmentifyandroidsdk.utils.SegmentifyCallback;
@@ -18,8 +19,10 @@ public class EventActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
+        PageModel model = new PageModel();
+        model.setCategory("Home Page");
 
-        SegmentifyManager.INSTANCE.sendPageView("Home Page", null, new SegmentifyCallback<ArrayList<RecommendationModel>>() {
+        SegmentifyManager.INSTANCE.sendPageView(model, new SegmentifyCallback<ArrayList<RecommendationModel>>() {
             @Override
             public void onDataLoaded(ArrayList<RecommendationModel> data) {
                 if(data!=null){

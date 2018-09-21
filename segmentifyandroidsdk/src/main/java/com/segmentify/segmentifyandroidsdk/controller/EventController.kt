@@ -121,15 +121,26 @@ internal object EventController {
 
             for (dynamicItem in dynamicItems) {
                 var recommendationProductListName: String = ""
-                if (dynamicItem.timeFrame.isNullOrBlank() && dynamicItem.score.isNullOrBlank()) {
-                    recommendationProductListName = dynamicItem.recommendationSource + "|null"
-                } else if (!dynamicItem.timeFrame.isNullOrBlank() && dynamicItem.score.isNullOrBlank()) {
+
+                if (!dynamicItem.timeFrame.isNullOrBlank() || !dynamicItem.timeFrame.isNullOrEmpty()){
                     recommendationProductListName = dynamicItem.recommendationSource + "|" + dynamicItem.timeFrame
-                } else if (dynamicItem.timeFrame.isNullOrBlank() && !dynamicItem.score.isNullOrBlank()) {
-                    recommendationProductListName = dynamicItem.recommendationSource + "|null|" + dynamicItem.score
-                } else if (!dynamicItem.timeFrame.isNullOrBlank() && !dynamicItem.score.isNullOrBlank()) {
-                    recommendationProductListName = dynamicItem.recommendationSource + "|" + dynamicItem.timeFrame + "|" + dynamicItem.score
+
+                    if (!dynamicItem.score.isNullOrBlank() || !dynamicItem.score.isNullOrEmpty()) {
+                        recommendationProductListName = recommendationProductListName + "|" + dynamicItem.score
+                    }
                 }
+
+
+
+//                if (dynamicItem.timeFrame.isNullOrBlank() && dynamicItem.score.isNullOrBlank()) {
+//                    recommendationProductListName = dynamicItem.recommendationSource + "|null"
+//                } else if (!dynamicItem.timeFrame.isNullOrBlank() && dynamicItem.score.isNullOrBlank()) {
+//                    recommendationProductListName = dynamicItem.recommendationSource + "|" + dynamicItem.timeFrame
+//                } else if (dynamicItem.timeFrame.isNullOrBlank() && !dynamicItem.score.isNullOrBlank()) {
+//                    recommendationProductListName = dynamicItem.recommendationSource + "|null|" + dynamicItem.score
+//                } else if (!dynamicItem.timeFrame.isNullOrBlank() && !dynamicItem.score.isNullOrBlank()) {
+//                    recommendationProductListName = dynamicItem.recommendationSource + "|" + dynamicItem.timeFrame + "|" + dynamicItem.score
+//                }
 
                 if (!recommendationProductListName.isNullOrBlank()) {
                     val recommendedProductsString = Gson().toJson(response.params?.recommendedProducts)
