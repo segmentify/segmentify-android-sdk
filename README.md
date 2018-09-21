@@ -9,6 +9,7 @@ You can install Segmentify Android SDK to your application by using  [Maven](htt
 
 To use Maven, add the project gradle file:
 
+
 ```java
 buildscript {
     repositories {
@@ -21,7 +22,7 @@ Please add following line to your gradle file:
 
 Gradle : 
 ```java
-implementation 'com.segmentify.sdk:android:1.0.0'
+implementation 'com.segmentify.sdk:android:*.*.*'
 ```
 or If you are using another tool, you can add it as follows :
 
@@ -31,37 +32,37 @@ Maven:
 <dependency>
     <groupId>com.segmentify.sdk</groupId>
     <artifactId>android</artifactId>
-    <version>1.0.0</version>
+    <version>***</version>
 </dependency>
 ```
 SBT :
 ```scala
 // https://mvnrepository.com/artifact/com.segmentify.sdk/android
-libraryDependencies += "com.segmentify.sdk" % "android" % "1.0.0"
+libraryDependencies += "com.segmentify.sdk" % "android" % "*.*.*"
 ```
 
 Ivy :
 ```xml
 <!-- https://mvnrepository.com/artifact/com.segmentify.sdk/android -->
-<dependency org="com.segmentify.sdk" name="android" rev="1.0.0"/>
+<dependency org="com.segmentify.sdk" name="android" rev="*.*.*"/>
 ```
 
 Grape : 
 ```xml
 <!-- https://mvnrepository.com/artifact/com.segmentify.sdk/android -->
-<dependency org="com.segmentify.sdk" name="android" rev="1.0.0"/>
+<dependency org="com.segmentify.sdk" name="android" rev="*.*.*"/>
 ```
 
 Leiningen : 
 ```Clojure 
 ;; https://mvnrepository.com/artifact/com.segmentify.sdk/android
-[com.segmentify.sdk/android "1.0.0"]
+[com.segmentify.sdk/android "*.*.*"]
 ```
 
 Buildr : 
 ```
 # https://mvnrepository.com/artifact/com.segmentify.sdk/android
-'com.segmentify.sdk:android:jar:1.0.0'
+'com.segmentify.sdk:android:jar:*.*.*'
 
 ```
 
