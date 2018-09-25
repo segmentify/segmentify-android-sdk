@@ -2,6 +2,7 @@
 Segmentify  SDK for sending events and rendering recommendations for android based devices
 
 > **Supports Android 4.4(API Level: 19) and higher devices.**
+> **Stable version : 1.0.7
 
 ## Installation
 
