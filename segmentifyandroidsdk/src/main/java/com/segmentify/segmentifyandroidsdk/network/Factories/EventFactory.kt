@@ -36,8 +36,8 @@ interface EventFactory {
         @POST("/add/events/v1.json")
         fun sendChangeUser(@Body userChangeModel: UserChangeModel,@Query("apiKey") apiKey : String): Call<Any>
 
-
         //POST Interaction Object with types as defined in documentation
         @POST("/add/events/v1.json")
         fun sendInteractionEvent(@Body interactionModel: InteractionModel,@Query("apiKey") apiKey : String): Call<Any>
+
 }

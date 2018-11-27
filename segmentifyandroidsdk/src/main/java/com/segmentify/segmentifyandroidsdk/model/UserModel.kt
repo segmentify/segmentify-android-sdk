@@ -6,11 +6,11 @@ class UserModel : SegmentifyObject() {
         var username:String? = null
         var email:String? = null
         var age:String? = null
-        var birthdate:String? = null
+        var birthDate:String? = null
         var gender:String? = null
         var fullName:String? = null
         var mobilePhone:String? = null
-        var isRegistered:Boolean? = null
+        var isRegistered:String? = null
         var isLogin:Boolean? = null
 
         @SerializedName("step")

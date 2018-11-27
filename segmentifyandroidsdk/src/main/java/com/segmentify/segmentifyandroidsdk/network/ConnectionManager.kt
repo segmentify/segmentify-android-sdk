@@ -6,6 +6,7 @@ import android.util.Log
 import com.segmentify.segmentifyandroidsdk.BuildConfig
 import com.segmentify.segmentifyandroidsdk.SegmentifyManager
 import com.segmentify.segmentifyandroidsdk.network.Factories.EventFactory
+import com.segmentify.segmentifyandroidsdk.network.Factories.PushFactory
 import com.segmentify.segmentifyandroidsdk.network.Factories.UserSessionFactory
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -23,6 +24,7 @@ object ConnectionManager {
     private val timeoutInterval = 60
     private var userSessionFactory : UserSessionFactory
     private var eventFactory : EventFactory
+    private var pushFactory : PushFactory
     private val client : OkHttpClient
 
 
@@ -37,12 +39,14 @@ object ConnectionManager {
 
         val httpClient = OkHttpClient.Builder()
 
+        //Gelen response kontrol edilecek
         httpClient.addInterceptor(logging).addInterceptor(Interceptor { chain ->
             val request = chain?.request()
             val newRequest: Request
 
             try {
-                newRequest = request?.newBuilder()?.addHeader("Origin",SegmentifyManager.configModel.subDomain)
+                newRequest = request?.newBuilder()
+                        ?.addHeader("Origin",SegmentifyManager.configModel.subDomain)
                         ?.addHeader("Content-Type", "application/json")
                         ?.addHeader("Accept", "application/json")!!.build()
             } catch (e: Exception) {
@@ -75,6 +79,8 @@ object ConnectionManager {
         httpClient.connectTimeout(timeoutInterval.toLong(), TimeUnit.SECONDS)
         httpClient.readTimeout(timeoutInterval.toLong(), TimeUnit.SECONDS)
 
+        httpClient.addInterceptor(logging);
+
         client = httpClient.build()
         val keyService = Retrofit.Builder()
                 .baseUrl(BuildConfig.KEY_ADDRESS)
@@ -90,7 +96,21 @@ object ConnectionManager {
                 .client(client)
                 .build()
 
+
+
+        val pushService = Retrofit.Builder()
+                .baseUrl(SegmentifyManager.clientPreferences?.getApiUrl())
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(client)
+                .build()
+
+
         eventFactory = eventService.create(EventFactory::class.java)
+
+
+
+        pushFactory = pushService.create(PushFactory::class.java)
+
     }
 
     fun getUserSessionFactory(): UserSessionFactory {
@@ -100,6 +120,11 @@ object ConnectionManager {
     fun getEventFactory(): EventFactory {
         return eventFactory
     }
+
+    fun getPushFactory(): PushFactory {
+        return pushFactory
+    }
+
 
     fun getSyncClient(): OkHttpClient {
         return client

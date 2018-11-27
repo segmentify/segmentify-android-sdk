@@ -1,8 +1,11 @@
 package com.segmentify.segmentifyandroidsdk
 
 import android.content.Context
+import android.util.Log
+import android.widget.Toast
 import com.segmentify.segmentifyandroidsdk.controller.EventController
 import com.segmentify.segmentifyandroidsdk.controller.KeyController
+import com.segmentify.segmentifyandroidsdk.controller.PushController
 import com.segmentify.segmentifyandroidsdk.model.*
 import com.segmentify.segmentifyandroidsdk.utils.ClientPreferences
 import com.segmentify.segmentifyandroidsdk.utils.Constant
@@ -10,24 +13,30 @@ import com.segmentify.segmentifyandroidsdk.utils.SegmentifyCallback
 import com.segmentify.segmentifyandroidsdk.utils.SegmentifyLogger
 
 
-
 object SegmentifyManager {
 
-    var clientPreferences : ClientPreferences? = null
+    var clientPreferences: ClientPreferences? = null
     var configModel = ConfigModel()
     var segmentifyObject = SegmentifyObject()
 
-    fun setSessionKeepSecond(sessionKeepSecond: Int){
+    fun setSessionKeepSecond(sessionKeepSecond: Int) {
         clientPreferences?.setSessionKeepSeconds(sessionKeepSecond)
+    }
+
+
+    fun setConfig(apiKey: String, dataCenterUrl: String, subDomain: String ) {
+        this.configModel.apiKey = apiKey
+        this.configModel.dataCenterUrl = dataCenterUrl
+        this.configModel.subDomain = subDomain
     }
 
     fun logStatus(isVisible: Boolean) {
         clientPreferences?.setLogVisible(isVisible)
     }
 
-    fun config(context: Context,appKey: String, dataCenterUrl: String, subDomain: String) {
+    fun config(context: Context, appKey: String, dataCenterUrl: String, subDomain: String) {
 
-        if(appKey.isNullOrBlank() || dataCenterUrl.isNullOrBlank() || subDomain.isNullOrBlank()){
+        if (appKey.isNullOrBlank() || dataCenterUrl.isNullOrBlank() || subDomain.isNullOrBlank()) {
             SegmentifyLogger.printErrorLog("Api is not initialized, you can not enter null or empty parameter to config, please recheck your config parameters")
             return
         }
@@ -39,8 +48,8 @@ object SegmentifyManager {
         this.configModel.subDomain = subDomain
         setBaseApiUrl()
 
-        if(clientPreferences?.getSessionId().isNullOrBlank()) {
-            if(clientPreferences?.getUserId().isNullOrBlank())
+        if (clientPreferences?.getSessionId().isNullOrBlank()) {
+            if (clientPreferences?.getUserId().isNullOrBlank())
                 KeyController.getUserIdAndSessionId()
             else
                 KeyController.getSessionId()
@@ -52,26 +61,26 @@ object SegmentifyManager {
         configModel.dataCenterUrl?.let { clientPreferences?.setApiUrl(it) }
     }
 
-    fun sendPageView(pageModel: PageModel,segmentifyCallback: SegmentifyCallback<ArrayList<RecommendationModel>>) {
-        if(pageModel.category.isNullOrBlank()){
+    fun sendPageView(pageModel: PageModel, segmentifyCallback: SegmentifyCallback<ArrayList<RecommendationModel>>) {
+        if (pageModel.category.isNullOrBlank()) {
             SegmentifyLogger.printErrorLog("you must fill category before accessing sendPageView event method")
             return
         }
 
-        if(pageModel.subCategory != null) {
+        if (pageModel.subCategory != null) {
             pageModel.subCategory = pageModel.subCategory
         }
 
         pageModel.eventName = Constant.pageViewEventName
-        EventController.sendPageView(pageModel,object : SegmentifyCallback<ArrayList<RecommendationModel>>{
+        EventController.sendPageView(pageModel, object : SegmentifyCallback<ArrayList<RecommendationModel>> {
             override fun onDataLoaded(data: ArrayList<RecommendationModel>) {
                 segmentifyCallback.onDataLoaded(data)
             }
         })
     }
 
-    fun sendPageView(category : String,subCategory : String?,segmentifyCallback: SegmentifyCallback<ArrayList<RecommendationModel>>) {
-        if(category.isNullOrBlank()){
+    fun sendPageView(category: String, subCategory: String?, segmentifyCallback: SegmentifyCallback<ArrayList<RecommendationModel>>) {
+        if (category.isNullOrBlank()) {
             SegmentifyLogger.printErrorLog("you must fill category before accessing sendPageView event method")
             return
         }
@@ -88,106 +97,106 @@ object SegmentifyManager {
         pageModel.category = category
         pageModel.subCategory = subCategory
 
-        EventController.sendPageView(pageModel,object : SegmentifyCallback<ArrayList<RecommendationModel>>{
+        EventController.sendPageView(pageModel, object : SegmentifyCallback<ArrayList<RecommendationModel>> {
             override fun onDataLoaded(data: ArrayList<RecommendationModel>) {
                 segmentifyCallback.onDataLoaded(data)
             }
         })
     }
 
-    fun sendCustomEvent(customEventModel: CustomEventModel,segmentifyCallback: SegmentifyCallback<ArrayList<RecommendationModel>>) {
-        if(customEventModel == null || customEventModel?.type.isNullOrBlank()){
+    fun sendCustomEvent(customEventModel: CustomEventModel, segmentifyCallback: SegmentifyCallback<ArrayList<RecommendationModel>>) {
+        if (customEventModel == null || customEventModel?.type.isNullOrBlank()) {
             SegmentifyLogger.printErrorLog("you must fill type before accessing sendCustomEvent event method")
             return
         }
         customEventModel.eventName = Constant.customEventName
 
-        EventController.sendCustomEvent(customEventModel,object : SegmentifyCallback<ArrayList<RecommendationModel>>{
+        EventController.sendCustomEvent(customEventModel, object : SegmentifyCallback<ArrayList<RecommendationModel>> {
             override fun onDataLoaded(data: ArrayList<RecommendationModel>) {
                 segmentifyCallback.onDataLoaded(data)
             }
         })
     }
 
-    fun sendCustomEvent(type : String,segmentifyCallback: SegmentifyCallback<ArrayList<RecommendationModel>>){
+    fun sendCustomEvent(type: String, segmentifyCallback: SegmentifyCallback<ArrayList<RecommendationModel>>) {
         var customEventModel = CustomEventModel()
         customEventModel.eventName = Constant.customEventName
         customEventModel.type = type
 
-        EventController.sendCustomEvent(customEventModel,object : SegmentifyCallback<ArrayList<RecommendationModel>>{
+        EventController.sendCustomEvent(customEventModel, object : SegmentifyCallback<ArrayList<RecommendationModel>> {
             override fun onDataLoaded(data: ArrayList<RecommendationModel>) {
                 segmentifyCallback.onDataLoaded(data)
             }
         })
     }
 
-    fun sendProductView(productModel: ProductModel,segmentifyCallback: SegmentifyCallback<ArrayList<RecommendationModel>>) {
+    fun sendProductView(productModel: ProductModel, segmentifyCallback: SegmentifyCallback<ArrayList<RecommendationModel>>) {
         productModel.eventName = Constant.productViewEventName
-        if(productModel?.productId == null){
+        if (productModel?.productId == null) {
             SegmentifyLogger.printErrorLog("You must fill productId before accessing sendProductView event")
             return
         }
-        if(productModel?.title == null){
+        if (productModel?.title == null) {
             SegmentifyLogger.printErrorLog("You must fill title before accessing sendProductView event method")
             return
         }
-        if(productModel?.url == null){
+        if (productModel?.url == null) {
             SegmentifyLogger.printErrorLog("You must fill url before accessing sendProductView event method")
             return
         }
-        if(productModel?.image == null){
+        if (productModel?.image == null) {
             SegmentifyLogger.printErrorLog("You must fill image before accessing sendProductView event method")
             return
         }
-        if(productModel?.category != null && productModel?.categories != null){
+        if (productModel?.category != null && productModel?.categories != null) {
             SegmentifyLogger.printErrorLog("You can not both fill category and categpries parameters")
             return
         }
-        if(productModel?.category == null && productModel?.categories == null){
+        if (productModel?.category == null && productModel?.categories == null) {
             SegmentifyLogger.printErrorLog("You should fill one of category and categories parameters")
             return
         }
-        if(productModel.price == null){
+        if (productModel.price == null) {
             SegmentifyLogger.printErrorLog("You must fill price before accessing sendProductView event method")
             return
         }
 
-        EventController.sendProductView(productModel,object : SegmentifyCallback<ArrayList<RecommendationModel>>{
+        EventController.sendProductView(productModel, object : SegmentifyCallback<ArrayList<RecommendationModel>> {
             override fun onDataLoaded(data: ArrayList<RecommendationModel>) {
                 segmentifyCallback.onDataLoaded(data)
             }
         })
     }
 
-    fun sendProductView(productId : String, title : String, categories : ArrayList<String>, price : Double,
-                        brand : String?, stock : Boolean?, url: String, image : String,imageXS: String?,
-                        imageS: String?, imageM: String?, imageL: String?, imageXL: String?, gender:String?,
-                        colors:ArrayList<String>?, sizes:ArrayList<String>?, labels:ArrayList<String>?,noUpdate:Boolean?
-                        ,segmentifyCallback: SegmentifyCallback<ArrayList<RecommendationModel>>) {
+    fun sendProductView(productId: String, title: String, categories: ArrayList<String>, price: Double,
+                        brand: String?, stock: Boolean?, url: String, image: String, imageXS: String?,
+                        imageS: String?, imageM: String?, imageL: String?, imageXL: String?, gender: String?,
+                        colors: ArrayList<String>?, sizes: ArrayList<String>?, labels: ArrayList<String>?, noUpdate: Boolean?
+                        , segmentifyCallback: SegmentifyCallback<ArrayList<RecommendationModel>>) {
         var productModel = ProductModel()
         productModel.eventName = Constant.productViewEventName
 
-        if(productId == null){
+        if (productId == null) {
             SegmentifyLogger.printErrorLog("You must fill productId before accessing sendProductView event")
             return
         }
-        if(title == null){
+        if (title == null) {
             SegmentifyLogger.printErrorLog("You must fill title before accessing sendProductView event method")
             return
         }
-        if(url == null){
+        if (url == null) {
             SegmentifyLogger.printErrorLog("You must fill url before accessing sendProductView event method")
             return
         }
-        if(image == null){
+        if (image == null) {
             SegmentifyLogger.printErrorLog("You must fill image before accessing sendProductView event method")
             return
         }
-        if(categories == null){
+        if (categories == null) {
             SegmentifyLogger.printErrorLog("You must fill categories before accessing sendProductView event method")
             return
         }
-        if(price == null){
+        if (price == null) {
             SegmentifyLogger.printErrorLog("You must fill price before accessing sendProductView event method")
             return
         }
@@ -211,45 +220,45 @@ object SegmentifyManager {
         productModel.labels = labels
         productModel.noUpdate = noUpdate
 
-        EventController.sendProductView(productModel,object : SegmentifyCallback<ArrayList<RecommendationModel>>{
+        EventController.sendProductView(productModel, object : SegmentifyCallback<ArrayList<RecommendationModel>> {
             override fun onDataLoaded(data: ArrayList<RecommendationModel>) {
                 segmentifyCallback.onDataLoaded(data)
             }
         })
     }
 
-    fun sendCustomerInformation(checkoutModel : CheckoutModel,segmentifyCallback: SegmentifyCallback<ArrayList<RecommendationModel>>){
+    fun sendCustomerInformation(checkoutModel: CheckoutModel, segmentifyCallback: SegmentifyCallback<ArrayList<RecommendationModel>>) {
         checkoutModel.eventName = Constant.checkoutEventName
         checkoutModel.checkoutStep = Constant.customerInformationStep
 
-        if(checkoutModel.totalPrice == null){
-            SegmentifyLogger.printErrorLog("You must fill userId before accessing sendCustomerInformation event")
+        if (checkoutModel.totalPrice == null) {
+            SegmentifyLogger.printErrorLog("You must fill totalPrice before accessing sendCustomerInformation event")
             return
         }
 
-        if(checkoutModel.productList == null){
+        if (checkoutModel.productList == null) {
             SegmentifyLogger.printErrorLog("you must fill productList before accessing sendCustomerInformation event method")
             return
         }
 
-        EventController.sendCheckout(checkoutModel,object : SegmentifyCallback<ArrayList<RecommendationModel>>{
+        EventController.sendCheckout(checkoutModel, object : SegmentifyCallback<ArrayList<RecommendationModel>> {
             override fun onDataLoaded(data: ArrayList<RecommendationModel>) {
                 segmentifyCallback.onDataLoaded(data)
             }
         })
     }
 
-    fun sendCustomerInformation(totalPrice : Double, productList : ArrayList<ProductModel>,segmentifyCallback: SegmentifyCallback<ArrayList<RecommendationModel>>) {
+    fun sendCustomerInformation(totalPrice: Double, productList: ArrayList<ProductModel>, segmentifyCallback: SegmentifyCallback<ArrayList<RecommendationModel>>) {
         var checkoutModel = CheckoutModel()
         checkoutModel.eventName = Constant.checkoutEventName
         checkoutModel.checkoutStep = Constant.customerInformationStep
 
-        if(totalPrice == null){
-            SegmentifyLogger.printErrorLog("You must fill userId before accessing sendCustomerInformation event")
+        if (totalPrice == null) {
+            SegmentifyLogger.printErrorLog("You must fill totalPrice before accessing sendCustomerInformation event")
             return
         }
 
-        if(productList == null){
+        if (productList == null) {
             SegmentifyLogger.printErrorLog("you must fill productList before accessing sendCustomerInformation event method")
             return
         }
@@ -257,88 +266,88 @@ object SegmentifyManager {
         checkoutModel.totalPrice = totalPrice
         checkoutModel.productList = productList
 
-        EventController.sendCheckout(checkoutModel,object : SegmentifyCallback<ArrayList<RecommendationModel>>{
+        EventController.sendCheckout(checkoutModel, object : SegmentifyCallback<ArrayList<RecommendationModel>> {
             override fun onDataLoaded(data: ArrayList<RecommendationModel>) {
                 segmentifyCallback.onDataLoaded(data)
             }
         })
     }
 
-    fun sendViewBasket(totalPrice : Double, productList : ArrayList<ProductModel>, currency : String?,segmentifyCallback: SegmentifyCallback<ArrayList<RecommendationModel>>){
+    fun sendViewBasket(totalPrice: Double, productList: ArrayList<ProductModel>, currency: String?, segmentifyCallback: SegmentifyCallback<ArrayList<RecommendationModel>>) {
         var checkoutModel = CheckoutModel()
         checkoutModel.eventName = Constant.viewBasketStep
         checkoutModel.checkoutStep = Constant.viewBasketStep
 
-        if(totalPrice == null){
-            SegmentifyLogger.printErrorLog("You must fill userId before accessing sendViewBasket event")
+        if (totalPrice == null) {
+            SegmentifyLogger.printErrorLog("You must fill totalPrice before accessing sendViewBasket event")
         }
 
-        if(productList == null){
+        if (productList == null) {
             SegmentifyLogger.printErrorLog("you must fill productList before accessing sendViewBasket event method")
         }
 
         checkoutModel.totalPrice = totalPrice
         checkoutModel.productList = productList
 
-        if(currency != null){
+        if (currency != null) {
             checkoutModel.currency = currency
         }
 
-        EventController.sendCheckout(checkoutModel,object : SegmentifyCallback<ArrayList<RecommendationModel>>{
+        EventController.sendCheckout(checkoutModel, object : SegmentifyCallback<ArrayList<RecommendationModel>> {
             override fun onDataLoaded(data: ArrayList<RecommendationModel>) {
                 segmentifyCallback.onDataLoaded(data)
             }
         })
     }
 
-    fun sendViewBasket(checkoutModel : CheckoutModel,segmentifyCallback: SegmentifyCallback<ArrayList<RecommendationModel>>){
+    fun sendViewBasket(checkoutModel: CheckoutModel, segmentifyCallback: SegmentifyCallback<ArrayList<RecommendationModel>>) {
         checkoutModel.eventName = Constant.checkoutEventName
         checkoutModel.checkoutStep = Constant.viewBasketStep
-        if(checkoutModel.totalPrice == null){
-            SegmentifyLogger.printErrorLog("You must fill userId before accessing sendViewBasket event")
+        if (checkoutModel.totalPrice == null) {
+            SegmentifyLogger.printErrorLog("You must fill totalPrice before accessing sendViewBasket event")
         }
 
-        if(checkoutModel.productList == null){
+        if (checkoutModel.productList == null) {
             SegmentifyLogger.printErrorLog("you must fill productList before accessing sendViewBasket event method")
         }
 
-        EventController.sendCheckout(checkoutModel,object : SegmentifyCallback<ArrayList<RecommendationModel>>{
+        EventController.sendCheckout(checkoutModel, object : SegmentifyCallback<ArrayList<RecommendationModel>> {
             override fun onDataLoaded(data: ArrayList<RecommendationModel>) {
                 segmentifyCallback.onDataLoaded(data)
             }
         })
     }
 
-    fun sendPaymentInformation(checkoutModel : CheckoutModel,segmentifyCallback: SegmentifyCallback<ArrayList<RecommendationModel>>){
+    fun sendPaymentInformation(checkoutModel: CheckoutModel, segmentifyCallback: SegmentifyCallback<ArrayList<RecommendationModel>>) {
         checkoutModel.eventName = Constant.checkoutEventName
         checkoutModel.checkoutStep = Constant.paymentInformationStep
-        if(checkoutModel.totalPrice == null){
+        if (checkoutModel.totalPrice == null) {
             SegmentifyLogger.printErrorLog("You must fill totalPrice before accessing sendPaymentInformation event")
             return
         }
 
-        if(checkoutModel.productList == null){
+        if (checkoutModel.productList == null) {
             SegmentifyLogger.printErrorLog("you must fill productList before accessing sendPaymentInformation event method")
             return
         }
 
-        EventController.sendCheckout(checkoutModel,object : SegmentifyCallback<ArrayList<RecommendationModel>>{
+        EventController.sendCheckout(checkoutModel, object : SegmentifyCallback<ArrayList<RecommendationModel>> {
             override fun onDataLoaded(data: ArrayList<RecommendationModel>) {
                 segmentifyCallback.onDataLoaded(data)
             }
         })
     }
 
-    fun sendPaymentInformation(totalPrice : Double, productList : ArrayList<ProductModel>,segmentifyCallback: SegmentifyCallback<ArrayList<RecommendationModel>>){
+    fun sendPaymentInformation(totalPrice: Double, productList: ArrayList<ProductModel>, segmentifyCallback: SegmentifyCallback<ArrayList<RecommendationModel>>) {
         var checkoutModel = CheckoutModel()
         checkoutModel.eventName = Constant.checkoutEventName
         checkoutModel.checkoutStep = Constant.paymentInformationStep
-        if(checkoutModel.totalPrice == null){
-            SegmentifyLogger.printErrorLog("You must fill userId before accessing sendPaymentInformation event")
+        if (checkoutModel.totalPrice == null) {
+            SegmentifyLogger.printErrorLog("You must fill totalPrice before accessing sendPaymentInformation event")
             return
         }
 
-        if(checkoutModel.productList == null){
+        if (checkoutModel.productList == null) {
             SegmentifyLogger.printErrorLog("you must fill productList before accessing sendPaymentInformation event method")
             return
         }
@@ -346,25 +355,25 @@ object SegmentifyManager {
         checkoutModel.totalPrice = totalPrice
         checkoutModel.productList = productList
 
-        EventController.sendCheckout(checkoutModel,object : SegmentifyCallback<ArrayList<RecommendationModel>>{
+        EventController.sendCheckout(checkoutModel, object : SegmentifyCallback<ArrayList<RecommendationModel>> {
             override fun onDataLoaded(data: ArrayList<RecommendationModel>) {
                 segmentifyCallback.onDataLoaded(data)
             }
         })
     }
 
-    fun sendAddOrRemoveBasket(basketModel: BasketModel){
+    fun sendAddOrRemoveBasket(basketModel: BasketModel) {
         basketModel.eventName = Constant.basketOperationsEventName
 
-        if(basketModel.step == null){
+        if (basketModel.step == null) {
             SegmentifyLogger.printErrorLog("You must fill step before accessing sendAddOrRemoveBasket event method")
             return
         }
-        if(basketModel.productId == null){
+        if (basketModel.productId == null) {
             SegmentifyLogger.printErrorLog("You must fill productId before accessing sendAddOrRemoveBasket event method")
             return
         }
-        if(basketModel.quantity == null){
+        if (basketModel.quantity == null) {
             SegmentifyLogger.printErrorLog("You must fill quantity before accessing sendAddOrRemoveBasket event method")
             return
         }
@@ -372,23 +381,23 @@ object SegmentifyManager {
         EventController.sendAddOrRemoveBasket(basketModel)
     }
 
-    fun sendAddOrRemoveBasket(basketStep : String, productId : String, quantity : Int,price : Double?){
+    fun sendAddOrRemoveBasket(basketStep: String, productId: String, quantity: Int, price: Double?) {
         var basketModel = BasketModel()
         basketModel.eventName = Constant.basketOperationsEventName
 
-        if(basketStep == null){
+        if (basketStep == null) {
             SegmentifyLogger.printErrorLog("You must fill step before accessing sendAddOrRemoveBasket event method")
             return
         }
-        if(productId == null){
+        if (productId == null) {
             SegmentifyLogger.printErrorLog("You must fill productId before accessing sendAddOrRemoveBasket event method")
             return
         }
-        if(quantity == null){
+        if (quantity == null) {
             SegmentifyLogger.printErrorLog("You must fill quantity before accessing sendAddOrRemoveBasket event method")
             return
         }
-        if(price == null){
+        if (price == null) {
             SegmentifyLogger.printErrorLog("You must fill price before accessing sendAddOrRemoveBasket event method")
             return
         }
@@ -401,40 +410,40 @@ object SegmentifyManager {
         EventController.sendAddOrRemoveBasket(basketModel)
     }
 
-    fun sendPurchase(checkoutModel: CheckoutModel,segmentifyCallback: SegmentifyCallback<ArrayList<RecommendationModel>>) {
+    fun sendPurchase(checkoutModel: CheckoutModel, segmentifyCallback: SegmentifyCallback<ArrayList<RecommendationModel>>) {
         checkoutModel.eventName = Constant.checkoutEventName
         checkoutModel.checkoutStep = Constant.paymentPurchaseStep
 
-        if(checkoutModel.totalPrice == null) {
-            SegmentifyLogger.printErrorLog("You must fill userId before accessing sendPurchase event")
+        if (checkoutModel.totalPrice == null) {
+            SegmentifyLogger.printErrorLog("You must fill totalPrice before accessing sendPurchase event")
             return
         }
-        if(checkoutModel.productList == null || checkoutModel.productList?.size == 0){
+        if (checkoutModel.productList == null || checkoutModel.productList?.size == 0) {
             SegmentifyLogger.printErrorLog("You must fill productList before accessing sendPurchase event method")
             return
         }
 
-        EventController.sendCheckout(checkoutModel,object : SegmentifyCallback<ArrayList<RecommendationModel>>{
+        EventController.sendCheckout(checkoutModel, object : SegmentifyCallback<ArrayList<RecommendationModel>> {
             override fun onDataLoaded(data: ArrayList<RecommendationModel>) {
                 segmentifyCallback.onDataLoaded(data)
             }
         })
     }
 
-    fun sendPurchase(totalPrice : Double, productList:ArrayList<ProductModel>, orderNo : String?,segmentifyCallback: SegmentifyCallback<ArrayList<RecommendationModel>>){
+    fun sendPurchase(totalPrice: Double, productList: ArrayList<ProductModel>, orderNo: String?, segmentifyCallback: SegmentifyCallback<ArrayList<RecommendationModel>>) {
         var checkoutModel = CheckoutModel()
         checkoutModel.eventName = Constant.checkoutEventName
         checkoutModel.checkoutStep = Constant.paymentPurchaseStep
         checkoutModel.totalPrice = totalPrice
         checkoutModel.productList = productList
-        EventController.sendCheckout(checkoutModel,object : SegmentifyCallback<ArrayList<RecommendationModel>>{
+        EventController.sendCheckout(checkoutModel, object : SegmentifyCallback<ArrayList<RecommendationModel>> {
             override fun onDataLoaded(data: ArrayList<RecommendationModel>) {
                 segmentifyCallback.onDataLoaded(data)
             }
         })
     }
 
-    fun sendImpression(instanceId : String, interactionId : String){
+    fun sendImpression(instanceId: String, interactionId: String) {
         var interactionModel = InteractionModel()
         interactionModel.eventName = Constant.interactionEventName
         interactionModel.type = Constant.impressionStep
@@ -442,7 +451,7 @@ object SegmentifyManager {
         interactionModel.interactionId = interactionId
     }
 
-    fun sendWidgetView(instanceId : String, interactionId : String) {
+    fun sendWidgetView(instanceId: String, interactionId: String) {
         var interactionModel = InteractionModel()
         interactionModel.eventName = Constant.interactionEventName
         interactionModel.type = Constant.widgetViewStep
@@ -452,7 +461,7 @@ object SegmentifyManager {
         EventController.sendInteractionEvent(interactionModel)
     }
 
-    fun sendClickView(instanceId : String, interactionId : String) {
+    fun sendClickView(instanceId: String, interactionId: String) {
         var interactionModel = InteractionModel()
         interactionModel.eventName = Constant.interactionEventName
         interactionModel.type = Constant.clickStep
@@ -466,8 +475,8 @@ object SegmentifyManager {
         userModel.eventName = Constant.userOperationEventName
         userModel.userOperationStep = Constant.registerStep
 
-        if(userModel.email == null && userModel.username == null) {
-            SegmentifyLogger.printErrorLog("You must fill userId or email before accessing sendUserLogout event")
+        if (userModel.email == null && userModel.username == null) {
+            SegmentifyLogger.printErrorLog("You must fill email or email before accessing sendUserLogout event")
             return
         }
 
@@ -475,7 +484,7 @@ object SegmentifyManager {
 
     }
 
-    fun sendUserRegister(username : String?, fullName : String?, email : String?, mobilePhone : String?, gender : String?, age : String?, birthdate : String?){
+    fun sendUserRegister(username: String?, fullName: String?, email: String?, mobilePhone: String?, gender: String?, age: String?, birthdate: String?) {
         var userModel = UserModel()
         userModel.eventName = Constant.userOperationEventName
         userModel.userOperationStep = Constant.registerStep
@@ -485,7 +494,7 @@ object SegmentifyManager {
         userModel.mobilePhone = mobilePhone
         userModel.gender = gender
         userModel.age = age
-        userModel.birthdate = birthdate
+        userModel.birthDate = birthdate
 
         EventController.sendUserOperation(userModel)
     }
@@ -494,12 +503,12 @@ object SegmentifyManager {
         userModel.eventName = Constant.userOperationEventName
         userModel.userOperationStep = Constant.signInStep
 
-        if(userModel?.username.isNullOrBlank()){
+        if (userModel?.username.isNullOrBlank()) {
             SegmentifyLogger.printErrorLog("You must fill username before accessing change user event")
             return
         }
 
-        if(userModel?.email.isNullOrBlank()){
+        if (userModel?.email.isNullOrBlank()) {
             SegmentifyLogger.printErrorLog("You must fill email before accessing change user event")
             return
         }
@@ -527,19 +536,23 @@ object SegmentifyManager {
         EventController.sendUserOperation(userModel)
     }
 
-    fun sendUserUpdate(userModel: UserModel){
+    fun sendUserUpdate(userModel: UserModel) {
         userModel.eventName = Constant.userOperationEventName
         userModel.userOperationStep = Constant.updateUserStep
 
-        if(userModel.email.isNullOrBlank() || userModel.username.isNullOrBlank()){
+        if (userModel.email.isNullOrBlank() || userModel.username.isNullOrBlank()) {
             SegmentifyLogger.printErrorLog("You must fill username or email before accessing sendUserUpdate event")
             return
         }
 
+        //Email ve userName kaydedebilmek için
+        //clientPreferences.setUserName(userModel.username.toString())
+        //clientPreferences?.setEmail(userModel.email.toString())
+
         EventController.sendUserOperation(userModel)
     }
 
-    fun sendUserUpdate(username : String?, fullName : String?, email : String?, mobilePhone : String?, gender : String?, age : String?, birthdate : String?, isRegistered : Boolean?, isLogin : Boolean?){
+    fun sendUserUpdate(username: String?, fullName: String?, email: String?, mobilePhone: String?, gender: String?, age: String?, birthdate: String?, isRegistered: String?, isLogin: Boolean?) {
         var userModel = UserModel()
         userModel.eventName = Constant.userOperationEventName
         userModel.userOperationStep = Constant.updateUserStep
@@ -549,9 +562,16 @@ object SegmentifyManager {
         userModel.mobilePhone = mobilePhone
         userModel.gender = gender
         userModel.age = age
-        userModel.birthdate = birthdate
+        userModel.birthDate = birthdate
         userModel.isRegistered = isRegistered
         userModel.isLogin = isLogin
+
+
+        //Email ve userName kaydedebilmek için
+
+        clientPreferences?.setUserName(username.toString())
+        clientPreferences?.setEmail(email.toString())
+
 
         EventController.sendUserOperation(userModel)
     }
@@ -559,16 +579,16 @@ object SegmentifyManager {
     fun sendChangeUser(userChangeModel: UserChangeModel) {
         userChangeModel.eventName = Constant.userChangeEventName
 
-        if(userChangeModel?.userId.isNullOrBlank()){
+        if (userChangeModel?.userId.isNullOrBlank()) {
             SegmentifyLogger.printErrorLog("You must fill userId before accessing change user event")
             return
         }
         userChangeModel.oldUserId = clientPreferences?.getUserId()
 
-        if(clientPreferences?.getUserId() != userChangeModel.userId){
-            EventController.sendChangeUser(userChangeModel,object : SegmentifyCallback<Boolean>{
+        if (clientPreferences?.getUserId() != userChangeModel.userId) {
+            EventController.sendChangeUser(userChangeModel, object : SegmentifyCallback<Boolean> {
                 override fun onDataLoaded(isSuccessful: Boolean) {
-                    if(isSuccessful){
+                    if (isSuccessful) {
                         userChangeModel.userId?.let { clientPreferences?.setUserId(it) }
                     }
                 }
@@ -584,18 +604,68 @@ object SegmentifyManager {
         segmentifyObject.appVersion = appVersion
     }
 
-    /*fun addParams(key: String, value: Object?) {
-        segmentifyObject.extra[key] = value
-    }
+    fun sendNotification(notificationModel: NotificationModel) {
+        
+        if (notificationModel.type == NotificationType.PERMISSION_INFO) {
 
-    fun addCustomParameter(key: String?, value: AnyObject?) {
-        if (key != nil && value != nil) {
-            eventRequest.extra[key!] = value
+            if (notificationModel.deviceToken.isNullOrEmpty()) {
+                SegmentifyLogger.printErrorLog("You must fill deviceToken before accessing notification event")
+                return
+            }
+
         }
+
+        PushController.sendNotification(notificationModel)
     }
 
-    fun removeUserParameters() {
-        eventRequest.extra.removeAll()
-    }*/
+
+    fun sendNotificationInteraction(notificationModel: NotificationModel) {
+
+        if (notificationModel.type == NotificationType.VIEW) {
+            if (notificationModel.instanceId.isNullOrEmpty()) {
+                SegmentifyLogger.printErrorLog("You must fill instanceId before accessing notification view event")
+                return
+            }
+        }
+
+
+        if (notificationModel.type == NotificationType.CLICK) {
+
+
+            if (notificationModel.instanceId.isNullOrEmpty() && notificationModel.productId.isNullOrEmpty() ) {
+                SegmentifyLogger.printErrorLog("You must fill deviceToken before accessing notification click event")
+                return
+            }
+            else{
+                clientPreferences?.setPushCampaignId(notificationModel.instanceId!!)
+                clientPreferences?.setPushCampaignProductId(notificationModel.productId!!)
+                sendClickView(notificationModel.instanceId!!, notificationModel.productId!!);
+            }
+
+        }
+
+        PushController.sendNotificationInteraction(notificationModel)
+
+    }
+
+    fun getTrackingParameters(): UtmModel {
+        return  UtmModel()
+    }
 
 }
+
+/*fun addParams(key: String, value: Object?) {
+    segmentifyObject.extra[key] = value
+}
+
+fun addCustomParameter(key: String?, value: AnyObject?) {
+    if (key != nil && value != nil) {
+        eventRequest.extra[key!] = value
+    }
+}
+
+fun removeUserParameters() {
+    eventRequest.extra.removeAll()
+}*/
+
+

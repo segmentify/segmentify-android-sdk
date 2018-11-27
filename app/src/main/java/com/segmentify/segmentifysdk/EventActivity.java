@@ -16,6 +16,7 @@ import com.segmentify.segmentifyandroidsdk.SegmentifyManager;
 import com.segmentify.segmentifyandroidsdk.model.NotificationModel;
 import com.segmentify.segmentifyandroidsdk.model.NotificationType;
 import com.segmentify.segmentifyandroidsdk.model.PageModel;
+import com.segmentify.segmentifyandroidsdk.model.ProductModel;
 import com.segmentify.segmentifyandroidsdk.model.ProductRecommendationModel;
 import com.segmentify.segmentifyandroidsdk.model.RecommendationModel;
 import com.segmentify.segmentifyandroidsdk.utils.SegmentifyCallback;
@@ -44,19 +45,16 @@ public class EventActivity extends AppCompatActivity {
 
 
 
-
-
-
         Button subscribeButton = findViewById(R.id.button);
         subscribeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
 
-            NotificationModel model = new NotificationModel();
-            model.setDeviceToken(FirebaseInstanceId.getInstance().getToken());
-            model.setType(NotificationType.PERMISSION_INFO);
-            SegmentifyManager.INSTANCE.sendNotification(model);
+                NotificationModel model = new NotificationModel();
+                model.setDeviceToken(FirebaseInstanceId.getInstance().getToken());
+                model.setType(NotificationType.PERMISSION_INFO);
+                SegmentifyManager.INSTANCE.sendNotification(model);
 
 
             }

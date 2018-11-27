@@ -19,6 +19,7 @@ abstract class PreferencesManager(targetContext: Context){
     }
 
     /*constructor(targetContext : Context,preferenceName : String) : this(targetContext) {
+
     }*/
 
     fun clearKey(key: String) {
