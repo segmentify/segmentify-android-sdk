@@ -13,6 +13,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.segmentify.segmentifyandroidsdk.SegmentifyManager;
+import com.segmentify.segmentifyandroidsdk.model.CheckoutModel;
 import com.segmentify.segmentifyandroidsdk.model.NotificationModel;
 import com.segmentify.segmentifyandroidsdk.model.NotificationType;
 import com.segmentify.segmentifyandroidsdk.model.PageModel;
@@ -42,6 +43,26 @@ public class EventActivity extends AppCompatActivity {
                 }
             }
         });
+
+        ArrayList<ProductModel> productList = new ArrayList<>();
+        ProductModel productModel = new ProductModel();
+        productModel.setPrice(78.0);
+        productModel.setQuantity(2);
+        productModel.setProductId("25799809929");
+
+        productList.add(productModel);
+
+        CheckoutModel checkoutModel = new CheckoutModel();
+        checkoutModel.setProductList(productList);
+        checkoutModel.setTotalPrice(156.0);
+
+        SegmentifyManager.INSTANCE.sendViewBasket(checkoutModel, new SegmentifyCallback<ArrayList<RecommendationModel>>() {
+            @Override
+            public void onDataLoaded(ArrayList<RecommendationModel> data) {
+
+            }
+        });
+
 
 
 
