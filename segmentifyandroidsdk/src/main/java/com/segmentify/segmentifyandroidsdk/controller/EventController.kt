@@ -198,15 +198,15 @@ internal object EventController {
 
             for (dynamicItem in dynamicItems) {
                 var recommendationProductListName: String = ""
+                if (!dynamicItem.recommendationSource.isNullOrEmpty()) {
+                    recommendationProductListName = dynamicItem.recommendationSource!!
+                    if (!dynamicItem.timeFrame.isNullOrBlank() || !dynamicItem.timeFrame.isNullOrEmpty()) {
+                        recommendationProductListName = recommendationProductListName + "|" + dynamicItem.timeFrame
 
-                if (!dynamicItem.timeFrame.isNullOrBlank() || !dynamicItem.timeFrame.isNullOrEmpty()){
-                    recommendationProductListName = dynamicItem.recommendationSource + "|" + dynamicItem.timeFrame
-
-                    if (!dynamicItem.score.isNullOrBlank() || !dynamicItem.score.isNullOrEmpty()) {
-                        recommendationProductListName = recommendationProductListName + "|" + dynamicItem.score
+                        if (!dynamicItem.score.isNullOrBlank() || !dynamicItem.score.isNullOrEmpty()) {
+                            recommendationProductListName = recommendationProductListName + "|" + dynamicItem.score
+                        }
                     }
-                }
-
 
 
 //                if (dynamicItem.timeFrame.isNullOrBlank() && dynamicItem.score.isNullOrBlank()) {
@@ -219,25 +219,26 @@ internal object EventController {
 //                    recommendationProductListName = dynamicItem.recommendationSource + "|" + dynamicItem.timeFrame + "|" + dynamicItem.score
 //                }
 
-                if (!recommendationProductListName.isNullOrBlank()) {
-                    val recommendedProductsString = Gson().toJson(response.params?.recommendedProducts)
-                    var recommendedProductsJSON = JSONObject(recommendedProductsString)
-                    var recommendedProductItemArray: JSONArray? = recommendedProductsJSON.getJSONArray(recommendationProductListName)
+                    if (!recommendationProductListName.isNullOrBlank()) {
+                        val recommendedProductsString = Gson().toJson(response.params?.recommendedProducts)
+                        var recommendedProductsJSON = JSONObject(recommendedProductsString)
+                        var recommendedProductItemArray: JSONArray? = recommendedProductsJSON.getJSONArray(recommendationProductListName)
 
-                    var i = 0
-                    for (k in 0 until recommendedProductItemArray!!.length()) {
-                        var productModel = parseJsonToProductModel(recommendedProductItemArray!!.getJSONObject(k))
-                        if (!isProductExistInGlobalProductList(productModel)) {
-                            recommendationModel.products?.add(productModel)
-                            i = i + 1
-                        } else {
-                            if (i > 0) {
-                                i = i - 1
+                        var i = 0
+                        for (k in 0 until recommendedProductItemArray!!.length()) {
+                            var productModel = parseJsonToProductModel(recommendedProductItemArray!!.getJSONObject(k))
+                            if (!isProductExistInGlobalProductList(productModel)) {
+                                recommendationModel.products?.add(productModel)
+                                i = i + 1
+                            } else {
+                                if (i > 0) {
+                                    i = i - 1
+                                }
                             }
-                        }
 
-                        if (i == dynamicItem.itemCount!!) {
-                            break
+                            if (i == dynamicItem.itemCount!!) {
+                                break
+                            }
                         }
                     }
                 }
