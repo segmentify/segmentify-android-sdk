@@ -7,6 +7,7 @@ import com.segmentify.segmentifyandroidsdk.controller.EventController
 import com.segmentify.segmentifyandroidsdk.controller.KeyController
 import com.segmentify.segmentifyandroidsdk.controller.PushController
 import com.segmentify.segmentifyandroidsdk.model.*
+import com.segmentify.segmentifyandroidsdk.network.ConnectionManager
 import com.segmentify.segmentifyandroidsdk.utils.ClientPreferences
 import com.segmentify.segmentifyandroidsdk.utils.Constant
 import com.segmentify.segmentifyandroidsdk.utils.SegmentifyCallback
@@ -28,6 +29,8 @@ object SegmentifyManager {
         this.configModel.apiKey = apiKey
         this.configModel.dataCenterUrl = dataCenterUrl
         this.configModel.subDomain = subDomain
+        setBaseApiUrl()
+        ConnectionManager.rebuildServices()
     }
 
     fun logStatus(isVisible: Boolean) {

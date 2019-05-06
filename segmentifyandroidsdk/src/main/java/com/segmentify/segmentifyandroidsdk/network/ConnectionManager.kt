@@ -125,6 +125,28 @@ object ConnectionManager {
         return pushFactory
     }
 
+    fun rebuildServices() {
+        val eventService = Retrofit.Builder()
+                .baseUrl(SegmentifyManager.clientPreferences?.getApiUrl())
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(client)
+                .build()
+
+
+
+        val pushService = Retrofit.Builder()
+                .baseUrl(SegmentifyManager.clientPreferences?.getApiUrl())
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(client)
+                .build()
+
+        eventFactory = eventService.create(EventFactory::class.java)
+
+
+
+        pushFactory = pushService.create(PushFactory::class.java)
+    }
+
 
     fun getSyncClient(): OkHttpClient {
         return client
