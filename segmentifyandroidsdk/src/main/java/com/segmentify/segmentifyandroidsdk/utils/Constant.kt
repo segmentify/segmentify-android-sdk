@@ -18,6 +18,9 @@ class Constant {
         val userChangeEventName = "USER_CHANGE"
         val customEventName = "CUSTOM_EVENT"
         val interactionEventName = "INTERACTION"
+        val bannerOperationsEventName = "BANNER_OPERATIONS"
+        val bannerGroupViewEventName = "BANNER_GROUP_VIEW"
+        val internalBannerGroupEventName = "INTERNAL_BANNER_GROUP"
 
         //Steps
         val customerInformationStep = "customer"
@@ -31,6 +34,9 @@ class Constant {
         val impressionStep = "impression"
         val widgetViewStep = "widget-view"
         val clickStep = "click"
+        val bannerImpressionStep = "impression"
+        val bannerClickStep = "click"
+        val bannerUpdateStep = "update"
 
         //Custom
         val sessionKeepSecond = 86400

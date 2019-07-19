@@ -1,6 +1,7 @@
 package com.segmentify.segmentifyandroidsdk.model
 
-import com.google.gson.annotations.SerializedName
+import java.util.*
+import kotlin.collections.ArrayList
 
 class ProductModel : SegmentifyObject() {
         var productId : String? = null
@@ -25,4 +26,5 @@ class ProductModel : SegmentifyObject() {
         var sizes:ArrayList<String>? = null
         var labels:ArrayList<String>? = null
         var noUpdate:Boolean? = null
+        var activeBanners:LinkedList<ClickedBannerObject> = LinkedList()
 }

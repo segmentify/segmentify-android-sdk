@@ -1,6 +1,7 @@
 package com.segmentify.segmentifyandroidsdk.controller
 
 import com.google.gson.Gson
+import com.google.gson.internal.LinkedTreeMap
 import com.segmentify.segmentifyandroidsdk.model.*
 import com.segmentify.segmentifyandroidsdk.network.ConnectionManager
 import com.segmentify.segmentifyandroidsdk.network.NetworkCallback
@@ -159,7 +160,68 @@ internal object EventController {
             return
         }
 
+    }
 
+    fun sendBannerOperations(bannerOperationOperationsModel: BannerOperationsModel){
+
+        if(!bannerOperationOperationsModel.userId.isNullOrEmpty() && !bannerOperationOperationsModel.sessionId.isNullOrEmpty()){
+            ConnectionManager.getEventFactory().sendBannerOperations(bannerOperationOperationsModel,SegmentifyManager.configModel.apiKey!!)
+                    .enqueue(object : NetworkCallback<Any>(){
+                        override fun onSuccess(response: Any) {
+                        }
+                    })
+        }
+        else{
+            SegmentifyLogger.printErrorLog("You must fill userid&sessionid before accessing banner operation event")
+            return
+        }
+
+    }
+
+    fun sendBannerGroupView(bannerGroupViewModel: BannerGroupViewModel){
+
+        if(!bannerGroupViewModel.userId.isNullOrEmpty() && !bannerGroupViewModel.sessionId.isNullOrEmpty()){
+            ConnectionManager.getEventFactory().sendBannerGroupView(bannerGroupViewModel,SegmentifyManager.configModel.apiKey!!)
+                    .enqueue(object : NetworkCallback<Any>(){
+                        override fun onSuccess(response: Any) {
+                            try {
+                                var resp = (response as LinkedTreeMap<String, Any>)
+                                if ((resp.get("statusCode") as String).equals("SUCCESS")) {
+                                    var responses = (resp.get("responses") as ArrayList<Any>)
+                                    if (responses.size > 0) {
+                                        var response = (responses.get(0) as ArrayList<Any>)
+                                        if (response.size > 0) {
+                                            var responseDetail = (response.get(0) as LinkedTreeMap<String, Any>)
+                                            if ((responseDetail.get("type") as String).equals("sendBannerDetails")) {
+                                                SegmentifyManager.sendInternalBannerGroupEvent(bannerGroupViewModel)
+                                            }
+                                        }
+                                    }
+                                }
+                            } catch (err: Exception) {
+                            }
+                        }
+                    })
+        }
+        else{
+            SegmentifyLogger.printErrorLog("You must fill userid&sessionid before accessing banner group view event")
+            return
+        }
+    }
+
+    fun sendInternalBannerGroup(bannerGroupViewModel: BannerGroupViewModel){
+
+        if(!bannerGroupViewModel.userId.isNullOrEmpty() && !bannerGroupViewModel.sessionId.isNullOrEmpty()){
+            ConnectionManager.getEventFactory().sendInternalBannerGroup(bannerGroupViewModel,SegmentifyManager.configModel.apiKey!!)
+                    .enqueue(object : NetworkCallback<Any>(){
+                        override fun onSuccess(response: Any) {
+                        }
+                    })
+        }
+        else{
+            SegmentifyLogger.printErrorLog("You must fill userid&sessionid before accessing internal banner group event")
+            return
+        }
     }
 
     private fun reformatResponse(eventResponseModel: EventResponseModel) : ArrayList<RecommendationModel> {

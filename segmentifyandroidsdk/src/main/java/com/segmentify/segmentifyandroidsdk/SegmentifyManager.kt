@@ -1,8 +1,6 @@
 package com.segmentify.segmentifyandroidsdk
 
 import android.content.Context
-import android.util.Log
-import android.widget.Toast
 import com.segmentify.segmentifyandroidsdk.controller.EventController
 import com.segmentify.segmentifyandroidsdk.controller.KeyController
 import com.segmentify.segmentifyandroidsdk.controller.PushController
@@ -12,6 +10,8 @@ import com.segmentify.segmentifyandroidsdk.utils.ClientPreferences
 import com.segmentify.segmentifyandroidsdk.utils.Constant
 import com.segmentify.segmentifyandroidsdk.utils.SegmentifyCallback
 import com.segmentify.segmentifyandroidsdk.utils.SegmentifyLogger
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 object SegmentifyManager {
@@ -19,6 +19,30 @@ object SegmentifyManager {
     var clientPreferences: ClientPreferences? = null
     var configModel = ConfigModel()
     var segmentifyObject = SegmentifyObject()
+    var clickedBanners: LinkedList<ClickedBannerObject> = LinkedList()
+
+    private fun addClickedBanner(banner: BannerOperationsModel) {
+
+        clickedBanners.forEach {
+            if (    it.group.equals(banner.group) &&
+                    it.title.equals(banner.title) &&
+                    it.order!!.equals(banner.order)) {
+                return
+            }
+        }
+
+        if (clickedBanners.size > 20) {
+            clickedBanners.removeFirst()
+        }
+
+        val cbo = ClickedBannerObject()
+        cbo.group = banner.group
+        cbo.order = banner.order
+        cbo.title = banner.title
+
+
+        clickedBanners.add(cbo)
+    }
 
     fun setSessionKeepSecond(sessionKeepSecond: Int) {
         clientPreferences?.setSessionKeepSeconds(sessionKeepSecond)
@@ -107,6 +131,63 @@ object SegmentifyManager {
         })
     }
 
+    /* bannerify events */
+
+    fun sendBannerImpressionEvent(bannerOperationsModel: BannerOperationsModel) {
+        if (bannerOperationsModel == null) {
+            SegmentifyLogger.printErrorLog("you must fill banneroperationsmodel before accessing sendBannerOperationEvent method")
+            return
+        }
+        bannerOperationsModel.eventName = Constant.bannerOperationsEventName
+        bannerOperationsModel.bannerType = Constant.bannerImpressionStep
+
+        EventController.sendBannerOperations(bannerOperationsModel)
+    }
+
+    fun sendBannerClickEvent(bannerOperationsModel: BannerOperationsModel) {
+        if (bannerOperationsModel == null) {
+            SegmentifyLogger.printErrorLog("you must fill banneroperationsmodel before accessing bannerGroupViewEvent method")
+            return
+        }
+
+        addClickedBanner(bannerOperationsModel)
+        bannerOperationsModel.eventName = Constant.bannerOperationsEventName
+        bannerOperationsModel.bannerType = Constant.bannerClickStep
+
+        EventController.sendBannerOperations(bannerOperationsModel)
+    }
+
+    fun sendBannerUpdateEvent(bannerOperationsModel: BannerOperationsModel) {
+        if (bannerOperationsModel == null) {
+            SegmentifyLogger.printErrorLog("you must fill banneroperationsmodel before accessing bannerGroupViewEvent method")
+            return
+        }
+        bannerOperationsModel.eventName = Constant.bannerOperationsEventName
+        bannerOperationsModel.bannerType = Constant.bannerUpdateStep
+
+        EventController.sendBannerOperations(bannerOperationsModel)
+    }
+
+    fun sendBannerGroupViewEvent(bannerGroupViewModel: BannerGroupViewModel) {
+        if (bannerGroupViewModel == null) {
+            SegmentifyLogger.printErrorLog("you must fill bannergroupviewmodel before accessing bannerGroupViewEvent method")
+            return
+        }
+        bannerGroupViewModel.eventName = Constant.bannerGroupViewEventName
+
+        EventController.sendBannerGroupView(bannerGroupViewModel)
+    }
+
+    fun sendInternalBannerGroupEvent(bannerGroupViewModel: BannerGroupViewModel) {
+        if (bannerGroupViewModel == null) {
+            SegmentifyLogger.printErrorLog("you must fill type before accessing InternalBannerGroupEvent method")
+            return
+        }
+        bannerGroupViewModel.eventName = Constant.internalBannerGroupEventName
+
+        EventController.sendInternalBannerGroup(bannerGroupViewModel)
+    }
+
     fun sendCustomEvent(customEventModel: CustomEventModel, segmentifyCallback: SegmentifyCallback<ArrayList<RecommendationModel>>) {
         if (customEventModel == null || customEventModel?.type.isNullOrBlank()) {
             SegmentifyLogger.printErrorLog("you must fill type before accessing sendCustomEvent event method")
@@ -163,6 +244,9 @@ object SegmentifyManager {
             SegmentifyLogger.printErrorLog("You must fill price before accessing sendProductView event method")
             return
         }
+
+        productModel.activeBanners = clickedBanners
+
 
         EventController.sendProductView(productModel, object : SegmentifyCallback<ArrayList<RecommendationModel>> {
             override fun onDataLoaded(data: ArrayList<RecommendationModel>) {
@@ -222,6 +306,7 @@ object SegmentifyManager {
         productModel.sizes = sizes
         productModel.labels = labels
         productModel.noUpdate = noUpdate
+        productModel.activeBanners = clickedBanners
 
         EventController.sendProductView(productModel, object : SegmentifyCallback<ArrayList<RecommendationModel>> {
             override fun onDataLoaded(data: ArrayList<RecommendationModel>) {
@@ -381,6 +466,8 @@ object SegmentifyManager {
             return
         }
 
+        basketModel.activeBanners = clickedBanners
+
         EventController.sendAddOrRemoveBasket(basketModel)
     }
 
@@ -409,6 +496,8 @@ object SegmentifyManager {
         basketModel.productId = productId
         basketModel.quantity = quantity
         basketModel.price = price
+        basketModel.activeBanners = clickedBanners
+
 
         EventController.sendAddOrRemoveBasket(basketModel)
     }
@@ -426,6 +515,8 @@ object SegmentifyManager {
             return
         }
 
+        checkoutModel.activeBanners = clickedBanners
+
         EventController.sendCheckout(checkoutModel, object : SegmentifyCallback<ArrayList<RecommendationModel>> {
             override fun onDataLoaded(data: ArrayList<RecommendationModel>) {
                 segmentifyCallback.onDataLoaded(data)
@@ -439,6 +530,8 @@ object SegmentifyManager {
         checkoutModel.checkoutStep = Constant.paymentPurchaseStep
         checkoutModel.totalPrice = totalPrice
         checkoutModel.productList = productList
+        checkoutModel.activeBanners = clickedBanners
+
         EventController.sendCheckout(checkoutModel, object : SegmentifyCallback<ArrayList<RecommendationModel>> {
             override fun onDataLoaded(data: ArrayList<RecommendationModel>) {
                 segmentifyCallback.onDataLoaded(data)
