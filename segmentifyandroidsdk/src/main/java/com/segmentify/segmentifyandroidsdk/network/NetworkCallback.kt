@@ -33,7 +33,6 @@ abstract class NetworkCallback<T> : Callback<T> {
     abstract fun onSuccess(response:T)
 
     override fun onFailure(call: Call<T>, t: Throwable) {
-        println(t.localizedMessage)
     }
 
     private fun retry(call: Call<T>) {
