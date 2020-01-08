@@ -553,8 +553,6 @@ object SegmentifyManager {
         interactionModel.type = Constant.impressionStep
         interactionModel.instanceId = instanceId
         interactionModel.interactionId = interactionId
-        interactionModel.sessionId = "7045991982078394368"
-        interactionModel.userId = "7045941861358673921"
         EventController.sendInteractionEvent(interactionModel)
 
     }
