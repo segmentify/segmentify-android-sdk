@@ -52,6 +52,8 @@ interface EventFactory {
         @POST("/add/events/v1.json")
         fun sendInternalBannerGroup(@Body bannerGroupViewModel: BannerGroupViewModel,@Query("apiKey") apiKey : String): Call<Any>
 
-
+        //POST PageModel Object with steps as defined in documentation
+        @POST("/add/events/v1.json")
+        fun sendSearchView(@Body pageModel: SearchPageModel,@Query("apiKey") apiKey : String): Call<SearchEventResponseModel>
 
 }

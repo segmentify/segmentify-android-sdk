@@ -2,14 +2,14 @@ package com.segmentify.segmentifyandroidsdk.controller
 
 import com.google.gson.Gson
 import com.google.gson.internal.LinkedTreeMap
+import com.google.gson.reflect.TypeToken
+import com.segmentify.segmentifyandroidsdk.SegmentifyManager
 import com.segmentify.segmentifyandroidsdk.model.*
 import com.segmentify.segmentifyandroidsdk.network.ConnectionManager
 import com.segmentify.segmentifyandroidsdk.network.NetworkCallback
+import com.segmentify.segmentifyandroidsdk.utils.Constant
 import com.segmentify.segmentifyandroidsdk.utils.SegmentifyCallback
 import com.segmentify.segmentifyandroidsdk.utils.SegmentifyLogger
-import com.google.gson.reflect.TypeToken
-import com.segmentify.segmentifyandroidsdk.SegmentifyManager
-import com.segmentify.segmentifyandroidsdk.utils.Constant
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -34,6 +34,36 @@ internal object EventController {
             return
         }
 
+    }
+
+    fun sendSearchView(pageModel: SearchPageModel, segmentifyCallback: SegmentifyCallback<SearchResponseModel>){
+        pageModel.device="mobile"
+        if(!pageModel.userId.isNullOrEmpty() && !pageModel.sessionId.isNullOrEmpty()){
+            ConnectionManager.getEventFactory().sendSearchView(pageModel,SegmentifyManager.configModel.apiKey!!)
+                    .enqueue(object : NetworkCallback<SearchEventResponseModel>(){
+                        override fun onSuccess(response: SearchEventResponseModel) {
+                            segmentifyCallback.onDataLoaded(reformatSearchResponse(response))
+                        }
+                    })
+        }
+
+        else{
+            SegmentifyLogger.printErrorLog("You must fill userid&sessionid before accessing pageview event")
+            return
+        }
+    }
+
+    fun reformatSearchResponse(response: SearchEventResponseModel): SearchResponseModel {
+        var returnVal = SearchResponseModel()
+        var list = response.search?.get(0)
+        if(list != null){
+            returnVal = list[0]
+        }
+
+        SegmentifyManager.sendWidgetView("SEARCH", "static")
+        SegmentifyManager.sendImpression("SEARCH", "static")
+
+        return returnVal
     }
 
     fun sendCustomEvent(customEventModel: CustomEventModel, segmentifyCallback: SegmentifyCallback<ArrayList<RecommendationModel>>) {

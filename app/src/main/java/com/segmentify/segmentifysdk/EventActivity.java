@@ -1,28 +1,12 @@
 package com.segmentify.segmentifysdk;
 
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.Toast;
+import android.support.v7.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.messaging.FirebaseMessaging;
 import com.segmentify.segmentifyandroidsdk.SegmentifyManager;
-import com.segmentify.segmentifyandroidsdk.model.CheckoutModel;
-import com.segmentify.segmentifyandroidsdk.model.NotificationModel;
-import com.segmentify.segmentifyandroidsdk.model.NotificationType;
-import com.segmentify.segmentifyandroidsdk.model.PageModel;
-import com.segmentify.segmentifyandroidsdk.model.ProductModel;
-import com.segmentify.segmentifyandroidsdk.model.ProductRecommendationModel;
-import com.segmentify.segmentifyandroidsdk.model.RecommendationModel;
+import com.segmentify.segmentifyandroidsdk.model.SearchPageModel;
+import com.segmentify.segmentifyandroidsdk.model.SearchResponseModel;
 import com.segmentify.segmentifyandroidsdk.utils.SegmentifyCallback;
-
-import java.util.ArrayList;
 
 public class EventActivity extends AppCompatActivity {
 
@@ -31,9 +15,23 @@ public class EventActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        SearchPageModel searchPage = new SearchPageModel();
+        searchPage.setQuery("");
+        searchPage.setLang("EN");
+        SegmentifyManager.INSTANCE.sendSearchPageView(searchPage, new SegmentifyCallback<SearchResponseModel>() {
+                    @Override
+                    public void onDataLoaded(SearchResponseModel data) {
+                        if(data!=null){
+                            System.out.println(data);
+                        }
+                    }
+                });
 
-        PageModel model = new PageModel();
+        SegmentifyManager.INSTANCE.sendSearchClickView("product","21046");
+
+        /*PageModel model = new PageModel();
         model.setCategory("Home Page");
+
 
         SegmentifyManager.INSTANCE.sendPageView(model, new SegmentifyCallback<ArrayList<RecommendationModel>>() {
             @Override
@@ -80,7 +78,7 @@ public class EventActivity extends AppCompatActivity {
 
             }
         });
-
+*/
 
     }
 }
