@@ -37,7 +37,6 @@ internal object EventController {
     }
 
     fun sendSearchView(pageModel: SearchPageModel, segmentifyCallback: SegmentifyCallback<SearchResponseModel>){
-        pageModel.device="mobile"
         if(!pageModel.userId.isNullOrEmpty() && !pageModel.sessionId.isNullOrEmpty()){
             ConnectionManager.getEventFactory().sendSearchView(pageModel,SegmentifyManager.configModel.apiKey!!)
                     .enqueue(object : NetworkCallback<SearchEventResponseModel>(){
