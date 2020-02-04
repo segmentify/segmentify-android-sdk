@@ -8,7 +8,7 @@ public class MyApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        SegmentifyManager.INSTANCE.config(this,"8f6b9ae8-7d0e-455d-be6d-bdf7b74efcf7","https://gandalf-dev.segmentify.com","ihalilaltun-dev.me");
+        SegmentifyManager.INSTANCE.config(this,"3974676b-02e7-4507-bdef-350ef31429fb","https://dce1.segmentify.com","demo.segmentify.com");
         SegmentifyManager.INSTANCE.setSessionKeepSecond(100000);
         SegmentifyManager.INSTANCE.logStatus(true);
     }
