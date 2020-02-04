@@ -363,6 +363,12 @@ internal object EventController {
         if(productJson.has("price")){
             productRecommendationModel.price = productJson.getDouble("price")
         }
+        if(productJson.has("priceText")){
+            productRecommendationModel.priceText = productJson.getString("priceText")
+        }
+        if(productJson.has("oldPriceText")){
+            productRecommendationModel.oldPriceText = productJson.getString("oldPriceText")
+        }
 
         if(productJson.has("categories")) {
             var categoriesJSONArray = productJson.getJSONArray("categories")
@@ -374,7 +380,15 @@ internal object EventController {
             }
             productRecommendationModel.categories = categories
         }
-
+        if(productJson.has("language")){
+            productRecommendationModel.language = productJson.getString("language")
+        }
+        if(productJson.has("currency")){
+            productRecommendationModel.currency = productJson.getString("currency")
+        }
+        if(productJson.has("quantity")) {
+            productRecommendationModel.quantity = productJson.getInt("quantity")
+        }
         if(productJson.has("inStock")) {
             productRecommendationModel.inStock = productJson.getBoolean("inStock")
         }
@@ -402,8 +416,15 @@ internal object EventController {
         if(productJson.has("imageXL")){
             productRecommendationModel.imageXL = productJson.getString("imageXL")
         }
-        if(productJson.has("category")){
-            productRecommendationModel.category = productJson.getString("category")
+        if(productJson.has("category")) {
+            var categoryJSONArray = productJson.getJSONArray("category")
+            var category = ArrayList<String>()
+            if(categoryJSONArray != null) {
+                for(i in 0 until categoryJSONArray!!.length()) {
+                    category.add(categoryJSONArray.getString(i))
+                }
+            }
+            productRecommendationModel.category = category
         }
         if(productJson.has("gender")){
             productRecommendationModel.gender = productJson.getString("gender")
