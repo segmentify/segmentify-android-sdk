@@ -386,9 +386,6 @@ internal object EventController {
         if(productJson.has("currency")){
             productRecommendationModel.currency = productJson.getString("currency")
         }
-        if(productJson.has("quantity")) {
-            productRecommendationModel.quantity = productJson.getInt("quantity")
-        }
         if(productJson.has("inStock")) {
             productRecommendationModel.inStock = productJson.getBoolean("inStock")
         }

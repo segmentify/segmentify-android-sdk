@@ -27,5 +27,4 @@ class ProductRecommendationModel {
         var params : Map<String,Any>? = null
         var language:String? = null
         var currency:String? = null
-        var quantity:Int? = null
 }
