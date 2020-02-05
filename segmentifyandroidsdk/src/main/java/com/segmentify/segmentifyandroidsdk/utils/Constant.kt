@@ -21,6 +21,7 @@ class Constant {
         val bannerOperationsEventName = "BANNER_OPERATIONS"
         val bannerGroupViewEventName = "BANNER_GROUP_VIEW"
         val internalBannerGroupEventName = "INTERNAL_BANNER_GROUP"
+        val searchViewEventName = "SEARCH"
 
         //Steps
         val customerInformationStep = "customer"
@@ -37,6 +38,7 @@ class Constant {
         val bannerImpressionStep = "impression"
         val bannerClickStep = "click"
         val bannerUpdateStep = "update"
+        val searchStep = "search"
 
         //Custom
         val sessionKeepSecond = 86400

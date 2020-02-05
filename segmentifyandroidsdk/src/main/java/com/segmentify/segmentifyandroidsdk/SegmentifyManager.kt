@@ -11,7 +11,6 @@ import com.segmentify.segmentifyandroidsdk.utils.Constant
 import com.segmentify.segmentifyandroidsdk.utils.SegmentifyCallback
 import com.segmentify.segmentifyandroidsdk.utils.SegmentifyLogger
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 object SegmentifyManager {
@@ -101,6 +100,15 @@ object SegmentifyManager {
         pageModel.eventName = Constant.pageViewEventName
         EventController.sendPageView(pageModel, object : SegmentifyCallback<ArrayList<RecommendationModel>> {
             override fun onDataLoaded(data: ArrayList<RecommendationModel>) {
+                segmentifyCallback.onDataLoaded(data)
+            }
+        })
+    }
+
+    fun sendSearchPageView(pageModel: SearchPageModel, segmentifyCallback: SegmentifyCallback<SearchResponseModel>){
+        pageModel.eventName = Constant.searchViewEventName
+        EventController.sendSearchView(pageModel, object : SegmentifyCallback<SearchResponseModel>{
+            override fun onDataLoaded(data: SearchResponseModel) {
                 segmentifyCallback.onDataLoaded(data)
             }
         })
@@ -545,6 +553,8 @@ object SegmentifyManager {
         interactionModel.type = Constant.impressionStep
         interactionModel.instanceId = instanceId
         interactionModel.interactionId = interactionId
+        EventController.sendInteractionEvent(interactionModel)
+
     }
 
     fun sendWidgetView(instanceId: String, interactionId: String) {
@@ -561,6 +571,16 @@ object SegmentifyManager {
         var interactionModel = InteractionModel()
         interactionModel.eventName = Constant.interactionEventName
         interactionModel.type = Constant.clickStep
+        interactionModel.instanceId = instanceId
+        interactionModel.interactionId = interactionId
+
+        EventController.sendInteractionEvent(interactionModel)
+    }
+
+    fun sendSearchClickView(instanceId: String, interactionId: String){
+        var interactionModel = InteractionModel()
+        interactionModel.eventName = Constant.interactionEventName
+        interactionModel.type = Constant.searchStep
         interactionModel.instanceId = instanceId
         interactionModel.interactionId = interactionId
 

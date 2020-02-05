@@ -41,7 +41,7 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        [END firebase_service]
+        <!--[END firebase_service]-->
     </application>
 
 
