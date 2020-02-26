@@ -2,7 +2,6 @@ package com.segmentify.segmentifyandroidsdk.model
 
 import com.google.gson.annotations.SerializedName
 import com.segmentify.segmentifyandroidsdk.SegmentifyManager
-import java.util.*
 
 open class SegmentifyObject{
     var userId : String? = SegmentifyManager.clientPreferences?.getUserId()
@@ -21,4 +20,5 @@ open class SegmentifyObject{
     var osversion : String? = android.os.Build.VERSION.RELEASE.toString()
     var advertisingIdentifier : String? = null
     var appVersion : String? = null
+    var testMode:Boolean? = null
 }
