@@ -20,5 +20,5 @@ open class SegmentifyObject{
     var osversion : String? = android.os.Build.VERSION.RELEASE.toString()
     var advertisingIdentifier : String? = null
     var appVersion : String? = null
-    var testMode:Boolean? = null
+    var testMode:Boolean? = false
 }
