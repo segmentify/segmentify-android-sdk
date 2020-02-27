@@ -55,12 +55,11 @@ internal object EventController {
     fun reformatSearchResponse(response: SearchEventResponseModel): SearchResponseModel {
         var returnVal = SearchResponseModel()
         var list = response.search?.get(0)
-        if(list != null){
+        if(list != null && list.isEmpty().not()){
             returnVal = list[0]
+            SegmentifyManager.sendWidgetView("SEARCH", "static")
+            SegmentifyManager.sendImpression("SEARCH", "static")
         }
-
-        SegmentifyManager.sendWidgetView("SEARCH", "static")
-        SegmentifyManager.sendImpression("SEARCH", "static")
 
         return returnVal
     }
