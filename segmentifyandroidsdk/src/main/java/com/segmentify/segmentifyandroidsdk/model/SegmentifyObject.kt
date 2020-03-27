@@ -21,4 +21,5 @@ open class SegmentifyObject{
     var advertisingIdentifier : String? = null
     var appVersion : String? = null
     var testMode:Boolean? = false
+    var region : String? = ""
 }
