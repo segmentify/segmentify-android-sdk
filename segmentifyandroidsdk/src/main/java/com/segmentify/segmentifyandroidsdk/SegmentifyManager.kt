@@ -48,9 +48,10 @@ object SegmentifyManager {
     }
 
 
-    fun setConfig(apiKey: String, dataCenterUrl: String, subDomain: String ) {
+    fun setConfig(apiKey: String, dataCenterUrl: String, subDomain: String, dataCenterUrlPush: String ) {
         this.configModel.apiKey = apiKey
         this.configModel.dataCenterUrl = dataCenterUrl
+        this.configModel.dataCenterUrlPush = dataCenterUrlPush
         this.configModel.subDomain = subDomain
         setBaseApiUrl()
         ConnectionManager.rebuildServices()
@@ -60,7 +61,7 @@ object SegmentifyManager {
         clientPreferences?.setLogVisible(isVisible)
     }
 
-    fun config(context: Context, appKey: String, dataCenterUrl: String, subDomain: String) {
+    fun config(context: Context, appKey: String, dataCenterUrl: String, subDomain: String, dataCenterUrlPush: String) {
 
         if (appKey.isNullOrBlank() || dataCenterUrl.isNullOrBlank() || subDomain.isNullOrBlank()) {
             SegmentifyLogger.printErrorLog("Api is not initialized, you can not enter null or empty parameter to config, please recheck your config parameters")
@@ -71,6 +72,7 @@ object SegmentifyManager {
         clientPreferences?.getSessionKeepSeconds()!!
         this.configModel.apiKey = appKey
         this.configModel.dataCenterUrl = dataCenterUrl
+        this.configModel.dataCenterUrlPush = dataCenterUrlPush
         this.configModel.subDomain = subDomain
         setBaseApiUrl()
 
