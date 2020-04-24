@@ -99,7 +99,7 @@ object ConnectionManager {
 
 
         val pushService = Retrofit.Builder()
-                .baseUrl(SegmentifyManager.clientPreferences?.getApiUrl())
+                .baseUrl(SegmentifyManager.configModel?.dataCenterUrlPush)
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(client)
                 .build()
