@@ -57,7 +57,6 @@ object SegmentifyManager {
 
     fun setPushConfig(dataCenterUrlPush: String ) {
         this.configModel.dataCenterUrlPush = dataCenterUrlPush
-        ConnectionManager.rebuildPushService()
     }
 
     fun logStatus(isVisible: Boolean) {
@@ -725,16 +724,13 @@ object SegmentifyManager {
     }
 
     fun sendNotification(notificationModel: NotificationModel) {
-        
         if (notificationModel.type == NotificationType.PERMISSION_INFO) {
 
             if (notificationModel.deviceToken.isNullOrEmpty()) {
                 SegmentifyLogger.printErrorLog("You must fill deviceToken before accessing notification event")
                 return
             }
-
         }
-
         PushController.sendNotification(notificationModel)
     }
 
@@ -748,10 +744,7 @@ object SegmentifyManager {
             }
         }
 
-
         if (notificationModel.type == NotificationType.CLICK) {
-
-
             if (notificationModel.instanceId.isNullOrEmpty() && notificationModel.productId.isNullOrEmpty() ) {
                 SegmentifyLogger.printErrorLog("You must fill deviceToken before accessing notification click event")
                 return
@@ -761,11 +754,8 @@ object SegmentifyManager {
                 clientPreferences?.setPushCampaignProductId(notificationModel.productId!!)
                 sendClickView(notificationModel.instanceId!!, notificationModel.productId!!);
             }
-
         }
-
         PushController.sendNotificationInteraction(notificationModel)
-
     }
 
     fun getTrackingParameters(): UtmModel {
@@ -773,19 +763,3 @@ object SegmentifyManager {
     }
 
 }
-
-/*fun addParams(key: String, value: Object?) {
-    segmentifyObject.extra[key] = value
-}
-
-fun addCustomParameter(key: String?, value: AnyObject?) {
-    if (key != nil && value != nil) {
-        eventRequest.extra[key!] = value
-    }
-}
-
-fun removeUserParameters() {
-    eventRequest.extra.removeAll()
-}*/
-
-

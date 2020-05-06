@@ -39,26 +39,19 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     public void onMessageReceived(RemoteMessage remoteMessage) {
 
         super.onMessageReceived(remoteMessage);
-        RemoteMessage.Notification  notification= null;
+        RemoteMessage.Notification notification = null;
 
-
-        if(remoteMessage.getNotification()!=null){
-             notification = remoteMessage.getNotification();
+        if (remoteMessage.getNotification() != null) {
+            notification = remoteMessage.getNotification();
         }
-
-
-        Map<String,String > data =  remoteMessage.getData();
-
-
-
-
-        sendNotification(notification,data);
-
+        Map<String, String> data = remoteMessage.getData();
+        sendNotification(notification, data);
     }
     // [END receive_message]
 
 
     // [START on_new_token]
+
     /**
      * Called if InstanceID token is updated. This may occur if the security of
      * the previous token had been compromised. Note that this is called when the InstanceID token
@@ -82,19 +75,17 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     /**
      * Create and show a simple notification containing the received FCM message.
-     *
-     * @param messageBody FCM message body received.
      */
-    private void sendNotification(RemoteMessage.Notification notification, Map<String,String> data) {
+    private void sendNotification(RemoteMessage.Notification notification, Map<String, String> data) {
 
-        if(notification!=null){
+        if (notification != null) {
             Intent intent = new Intent(this, EventActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                     PendingIntent.FLAG_ONE_SHOT);
 
             String channelId = getString(R.string.default_notification_channel_id);
-            Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
             NotificationCompat.Builder notificationBuilder =
                     new NotificationCompat.Builder(this, channelId)
                             .setSmallIcon(R.drawable.ic_stat_ic_notification)
@@ -116,15 +107,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             }
 
             notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
-        }
-
-        else{
+        } else {
 
 
             Intent intent = new Intent(this, EventActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            intent.putExtra("instanceId",data.get("instanceId"));
-            intent.putExtra("productId",data.get("productId"));
+            intent.putExtra("instanceId", data.get("instanceId"));
+            intent.putExtra("productId", data.get("productId"));
 
             //For notification view event
             //App Developer google'a besleyebilsin diye anlatım yapılacak  http:/
@@ -137,23 +126,20 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             SegmentifyManager.INSTANCE.sendNotificationInteraction(nmodel);
 
 
-
-
             PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                     PendingIntent.FLAG_ONE_SHOT);
 
 
             String channelId = getString(R.string.default_notification_channel_id);
-            Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
             NotificationCompat.Builder notificationBuilder =
                     new NotificationCompat.Builder(this, channelId)
                             .setSmallIcon(R.drawable.ic_stat_ic_notification)
-                            .setLargeIcon(getBitmapfromUrl(data.get("icon")))
                             .setBadgeIconType(Integer.parseInt(data.get("badge")))
                             .setContentTitle(data.get("title"))
                             .setContentText(data.get("body"))
                             .setStyle(new NotificationCompat.BigPictureStyle()
-                              .bigPicture(getBitmapfromUrl(data.get("image"))))
+                                    .bigPicture(getBitmapfromUrl(data.get("image"))))
                             .setAutoCancel(true)
                             .setSound(defaultSoundUri)
                             .setContentIntent(pendingIntent);
@@ -168,13 +154,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         NotificationManager.IMPORTANCE_DEFAULT);
                 notificationManager.createNotificationChannel(channel);
             }
-
             notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
-
-
         }
-
-
     }
 
 
@@ -191,7 +172,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         } catch (Exception e) {
             e.printStackTrace();
             return null;
-
         }
     }
 }
