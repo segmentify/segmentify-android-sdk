@@ -8,10 +8,11 @@ public class MyApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        SegmentifyManager.INSTANCE.config(this,"3974676b-02e7-4507-bdef-350ef31429fb","https://dce1.segmentify.com","demo.segmentify.com");
+        // if you are using push module make sure to call SegmentifyManager.Instance.setPushConfig first
+        SegmentifyManager.INSTANCE.setPushConfig("https://gimli-test.segmentify.com");
+        SegmentifyManager.INSTANCE.config(this, "603a135e-9b7d-483f-a40d-7cbcf8f31e37","https://gandalf-test.segmentify.com","demo-test.segmentify.com");
         SegmentifyManager.INSTANCE.setSessionKeepSecond(100000);
         SegmentifyManager.INSTANCE.logStatus(true);
-        SegmentifyManager.INSTANCE.setPushConfig("https://dce1.segmentify.com");
     }
 }
 

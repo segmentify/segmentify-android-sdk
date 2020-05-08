@@ -14,5 +14,4 @@ interface PushFactory {
         @POST("/native/interaction/notification")
         fun sendNotificationInteraction(@Body notificationModel: NotificationModel,@Query("apiKey")apiKey : String): Call<Any>
 
-
 }

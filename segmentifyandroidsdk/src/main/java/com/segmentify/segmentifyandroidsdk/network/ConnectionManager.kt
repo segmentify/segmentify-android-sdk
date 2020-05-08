@@ -3,7 +3,6 @@ package com.segmentify.segmentifyandroidsdk.network
 import android.content.Context
 import android.net.ConnectivityManager
 import android.util.Log
-import com.segmentify.segmentifyandroidsdk.BuildConfig
 import com.segmentify.segmentifyandroidsdk.SegmentifyManager
 import com.segmentify.segmentifyandroidsdk.network.Factories.EventFactory
 import com.segmentify.segmentifyandroidsdk.network.Factories.PushFactory
@@ -17,16 +16,12 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 
-
-
-
 object ConnectionManager {
     private val timeoutInterval = 60
-    private var userSessionFactory : UserSessionFactory
-    private var eventFactory : EventFactory
-    private var pushFactory : PushFactory
-    private val client : OkHttpClient
-
+    private var userSessionFactory: UserSessionFactory
+    private var eventFactory: EventFactory
+    private lateinit var pushFactory: PushFactory
+    private val client: OkHttpClient
 
     init {
         val logging = HttpLoggingInterceptor()
@@ -46,7 +41,7 @@ object ConnectionManager {
 
             try {
                 newRequest = request?.newBuilder()
-                        ?.addHeader("Origin",SegmentifyManager.configModel.subDomain)
+                        ?.addHeader("Origin", SegmentifyManager.configModel.subDomain)
                         ?.addHeader("Content-Type", "application/json")
                         ?.addHeader("Accept", "application/json")!!.build()
             } catch (e: Exception) {
@@ -83,7 +78,7 @@ object ConnectionManager {
 
         client = httpClient.build()
         val keyService = Retrofit.Builder()
-                .baseUrl(BuildConfig.KEY_ADDRESS)
+                .baseUrl(SegmentifyManager.clientPreferences?.getApiUrl())
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(client)
                 .build()
@@ -96,21 +91,17 @@ object ConnectionManager {
                 .client(client)
                 .build()
 
-
-
-        val pushService = Retrofit.Builder()
-                .baseUrl(SegmentifyManager.configModel?.dataCenterUrlPush)
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(client)
-                .build()
-
-
         eventFactory = eventService.create(EventFactory::class.java)
 
+        if (SegmentifyManager.configModel?.dataCenterUrlPush != null) {
+            val pushService = Retrofit.Builder()
+                    .baseUrl(SegmentifyManager.configModel?.dataCenterUrlPush)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .client(client)
+                    .build()
 
-
-        pushFactory = pushService.create(PushFactory::class.java)
-
+            pushFactory = pushService.create(PushFactory::class.java)
+        }
     }
 
     fun getUserSessionFactory(): UserSessionFactory {
@@ -131,33 +122,17 @@ object ConnectionManager {
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(client)
                 .build()
-
-
-
-        val pushService = Retrofit.Builder()
-                .baseUrl(SegmentifyManager.configModel?.dataCenterUrlPush)
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(client)
-                .build()
-
         eventFactory = eventService.create(EventFactory::class.java)
 
-
-
-        pushFactory = pushService.create(PushFactory::class.java)
+        if (SegmentifyManager.configModel?.dataCenterUrlPush != null) {
+            val pushService = Retrofit.Builder()
+                    .baseUrl(SegmentifyManager.configModel?.dataCenterUrlPush)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .client(client)
+                    .build()
+            pushFactory = pushService.create(PushFactory::class.java)
+        }
     }
-
-    fun rebuildPushService() {
-
-        val pushService = Retrofit.Builder()
-                .baseUrl(SegmentifyManager.configModel?.dataCenterUrlPush)
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(client)
-                .build()
-
-        pushFactory = pushService.create(PushFactory::class.java)
-    }
-
 
     fun getSyncClient(): OkHttpClient {
         return client

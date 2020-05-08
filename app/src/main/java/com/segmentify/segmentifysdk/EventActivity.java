@@ -31,7 +31,7 @@ public class EventActivity extends AppCompatActivity {
         SegmentifyManager.INSTANCE.sendPageView(model, new SegmentifyCallback<ArrayList<RecommendationModel>>() {
             @Override
             public void onDataLoaded(ArrayList<RecommendationModel> data) {
-                if(data!=null){
+                if (data != null) {
                     System.out.println(data);
                 }
             }
@@ -56,23 +56,15 @@ public class EventActivity extends AppCompatActivity {
             }
         });
 
-
-
-
         Button subscribeButton = findViewById(R.id.button);
         subscribeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
                 NotificationModel model = new NotificationModel();
                 model.setDeviceToken(FirebaseInstanceId.getInstance().getToken());
                 model.setType(NotificationType.PERMISSION_INFO);
                 SegmentifyManager.INSTANCE.sendNotification(model);
-
-
             }
         });
-
     }
 }

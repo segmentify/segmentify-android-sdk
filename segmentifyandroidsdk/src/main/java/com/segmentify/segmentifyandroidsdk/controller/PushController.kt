@@ -1,45 +1,41 @@
 package com.segmentify.segmentifyandroidsdk.controller
 
-import android.util.Log
-import android.widget.Toast
-import com.google.gson.Gson
-import com.segmentify.segmentifyandroidsdk.model.*
+import com.segmentify.segmentifyandroidsdk.SegmentifyManager
+import com.segmentify.segmentifyandroidsdk.model.NotificationModel
 import com.segmentify.segmentifyandroidsdk.network.ConnectionManager
 import com.segmentify.segmentifyandroidsdk.network.NetworkCallback
-import com.segmentify.segmentifyandroidsdk.utils.SegmentifyCallback
-import com.segmentify.segmentifyandroidsdk.utils.SegmentifyLogger
-import com.google.gson.reflect.TypeToken
-import com.segmentify.segmentifyandroidsdk.SegmentifyManager
-import com.segmentify.segmentifyandroidsdk.utils.Constant
-import org.json.JSONArray
-import org.json.JSONObject
 import com.segmentify.segmentifyandroidsdk.utils.ClientPreferences
+import com.segmentify.segmentifyandroidsdk.utils.SegmentifyLogger
+import java.lang.Exception
 
 
 internal object PushController {
 
-    var clientPreferences : ClientPreferences? = null
+    var clientPreferences: ClientPreferences? = null
 
-    fun sendNotification(notificationModel: NotificationModel){
+    fun sendNotification(notificationModel: NotificationModel) {
 
-
-        ConnectionManager.getPushFactory().sendNotification(notificationModel,SegmentifyManager.configModel.apiKey!!)
-                .enqueue(object : NetworkCallback<Any>(){
-                    override fun onSuccess(response: Any) {
-                    }
-                })
-
+        try {
+            ConnectionManager.getPushFactory().sendNotification(notificationModel, SegmentifyManager.configModel.apiKey!!)
+                    .enqueue(object : NetworkCallback<Any>() {
+                        override fun onSuccess(response: Any) {
+                        }
+                    })
+        } catch (e: Exception) {
+            SegmentifyLogger.printErrorLog("Error occurred when sending notification model, error: $e")
+        }
     }
 
-    fun sendNotificationInteraction(notificationModel: NotificationModel){
+    fun sendNotificationInteraction(notificationModel: NotificationModel) {
 
-        ConnectionManager.getPushFactory().sendNotificationInteraction(notificationModel,SegmentifyManager.configModel.apiKey!!)
-                .enqueue(object : NetworkCallback<Any>(){
-                    override fun onSuccess(response: Any) {
-                    }
-                })
-
+        try {
+            ConnectionManager.getPushFactory().sendNotificationInteraction(notificationModel, SegmentifyManager.configModel.apiKey!!)
+                    .enqueue(object : NetworkCallback<Any>() {
+                        override fun onSuccess(response: Any) {
+                        }
+                    })
+        } catch (e: Exception) {
+            SegmentifyLogger.printErrorLog("Error occurred when sending notification interaction model, error: $e")
+        }
     }
-
-
 }

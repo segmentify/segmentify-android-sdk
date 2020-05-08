@@ -16,11 +16,9 @@ android {
 
     buildTypes {
         debug {
-            buildConfigField 'String', 'KEY_ADDRESS', "\"https://dce1.segmentify.com/\""
             buildConfigField "Boolean", "DEBUG_MODE", "true"
         }
         release {
-            buildConfigField 'String', 'KEY_ADDRESS', "\"https://dce1.segmentify.com/\""
             buildConfigField "Boolean", "DEBUG_MODE", "false"
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -36,7 +34,7 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 
     implementation 'com.google.code.gson:gson:2.8.0'
     implementation 'com.squareup.retrofit2:retrofit:2.3.0'
