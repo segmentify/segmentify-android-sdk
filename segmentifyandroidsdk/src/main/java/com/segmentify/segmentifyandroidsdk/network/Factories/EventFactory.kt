@@ -41,7 +41,7 @@ interface EventFactory {
         fun sendInteractionEvent(@Body interactionModel: InteractionModel,@Query("apiKey") apiKey : String): Call<Any>
 
         //POST Banner Operation Object with types as defined in documentation
-        @POST("/sync/events/v1.json")
+        @POST("/add/events/v1.json")
         fun sendBannerOperations(@Body bannerOperationsModel: BannerOperationsModel, @Query("apiKey") apiKey : String): Call<Any>
 
         //POST Banner Group View Object with types as defined in documentation
