@@ -66,7 +66,7 @@ public class PurchaseSuccessActivity extends AppCompatActivity {
 
                 ProductModel productModel = new ProductModel();
                 productModel.setPrice(productRecommendationModel.getPrice());
-                productModel.setQuantity(1);
+                productModel.setQuantity(1.0);
                 productModel.setProductId(productRecommendationModel.getProductId());
 
                 productList.add(productModel);

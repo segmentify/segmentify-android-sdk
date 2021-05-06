@@ -37,13 +37,49 @@ public class EventActivity extends AppCompatActivity {
             }
         });
 
-        ArrayList<ProductModel> productList = new ArrayList<>();
-        ProductModel productModel = new ProductModel();
-        productModel.setPrice(78.0);
-        productModel.setQuantity(2);
-        productModel.setProductId("25799809929");
+        PageModel pageModel = new PageModel();
+        pageModel.setCategory("Product Page");
+        pageModel.setLang("EN");
+        pageModel.setRegion("EU");
 
-        productList.add(productModel);
+        SegmentifyManager.INSTANCE.sendPageView(pageModel, new SegmentifyCallback<ArrayList<RecommendationModel>>() {
+            @Override
+            public void onDataLoaded(ArrayList<RecommendationModel> data) {
+                if (data != null) {
+                    System.out.println(data);
+                }
+            }
+        });
+
+        ProductModel productModel = new ProductModel();
+        ArrayList<String> categories = new ArrayList<String>();
+        categories.add("Shop");
+        categories.add("Toys");
+
+        productModel.setProductId("30000-1");
+        productModel.setTitle("Toys Forky");
+        productModel.setUrl("https://ihalilaltun.me/toys-forky/");
+        productModel.setImage("https://cdn11.bigcommerce.com/s-5ylnei6or5/images/stencil/500x500/products/1982/5015/2929_Forky_TS4_23_wModel__61743.1559248389.jpg?c=2");
+        productModel.setCategories(categories);
+        productModel.setPrice(45.75);
+
+        SegmentifyManager.INSTANCE.sendProductView(productModel, new SegmentifyCallback<ArrayList<RecommendationModel>>() {
+            @Override
+            public void onDataLoaded(ArrayList<RecommendationModel> data) {
+                if (data != null) {
+                    System.out.println(data);
+                }
+            }
+        });
+
+
+        ArrayList<ProductModel> productList = new ArrayList<>();
+        ProductModel productPurchaseModel = new ProductModel();
+        productPurchaseModel.setPrice(45.75);
+        productPurchaseModel.setQuantity(2.3);
+        productPurchaseModel.setProductId("30000-1");
+
+        productList.add(productPurchaseModel);
 
         CheckoutModel checkoutModel = new CheckoutModel();
         checkoutModel.setProductList(productList);
@@ -52,7 +88,40 @@ public class EventActivity extends AppCompatActivity {
         SegmentifyManager.INSTANCE.sendViewBasket(checkoutModel, new SegmentifyCallback<ArrayList<RecommendationModel>>() {
             @Override
             public void onDataLoaded(ArrayList<RecommendationModel> data) {
+                if (data != null) {
+                    System.out.println(data);
+                }
+            }
+        });
 
+        SegmentifyManager.INSTANCE.sendPageView("Checkout Success Page", null, new SegmentifyCallback<ArrayList<RecommendationModel>>() {
+            @Override
+            public void onDataLoaded(ArrayList<RecommendationModel> data) {
+                if (data != null) {
+                    System.out.println(data);
+                }
+            }
+        });
+
+        ArrayList<ProductModel> checkOutProductList = new ArrayList<>();
+        ProductModel checkOutProductModel = new ProductModel();
+        checkOutProductModel.setPrice(78.0);
+        checkOutProductModel.setQuantity(2.75);
+        checkOutProductModel.setProductId("30000-1");
+
+        checkOutProductList.add(productModel);
+
+        CheckoutModel checkoutModel1 = new CheckoutModel();
+        checkoutModel1.setProductList(productList);
+        checkoutModel1.setTotalPrice(156.0);
+        checkoutModel1.setOrderNo("order1");
+
+        SegmentifyManager.INSTANCE.sendPurchase(checkoutModel1, new SegmentifyCallback<ArrayList<RecommendationModel>>() {
+            @Override
+            public void onDataLoaded(ArrayList<RecommendationModel> data) {
+                if (data != null) {
+                    System.out.println(data);
+                }
             }
         });
 

@@ -482,7 +482,7 @@ object SegmentifyManager {
         EventController.sendAddOrRemoveBasket(basketModel)
     }
 
-    fun sendAddOrRemoveBasket(basketStep: String, productId: String, quantity: Int, price: Double?) {
+    fun sendAddOrRemoveBasket(basketStep: String, productId: String, quantity: Double?, price: Double?) {
         var basketModel = BasketModel()
         basketModel.eventName = Constant.basketOperationsEventName
 
@@ -542,6 +542,7 @@ object SegmentifyManager {
         checkoutModel.totalPrice = totalPrice
         checkoutModel.productList = productList
         checkoutModel.activeBanners = clickedBanners
+        checkoutModel.orderNo = orderNo
 
         EventController.sendCheckout(checkoutModel, object : SegmentifyCallback<ArrayList<RecommendationModel>> {
             override fun onDataLoaded(data: ArrayList<RecommendationModel>) {

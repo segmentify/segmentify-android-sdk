@@ -20,7 +20,7 @@ class ProductModel : SegmentifyObject() {
         var brand:String? = null
         var price:Double? = null
         var oldPrice:Double? = null
-        var quantity:Int? = null
+        var quantity:Double? = null
         var gender:String? = null
         var colors:ArrayList<String>? = null
         var sizes:ArrayList<String>? = null
