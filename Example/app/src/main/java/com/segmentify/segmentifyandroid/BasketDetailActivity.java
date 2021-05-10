@@ -95,7 +95,7 @@ public class BasketDetailActivity extends AppCompatActivity {
                 BasketModel model = new BasketModel();
                 model.setStep("add");
                 model.setProductId(productId);
-                model.setQuantity(1);
+                model.setQuantity(1.0);
                 model.setPrice(Double.parseDouble((price)));
                 SegmentifyManager.INSTANCE.sendAddOrRemoveBasket(model);
 
@@ -123,7 +123,7 @@ public class BasketDetailActivity extends AppCompatActivity {
 
                 ProductModel productModel = new ProductModel();
                 productModel.setPrice(productRecommendationModel.getPrice());
-                productModel.setQuantity(1);
+                productModel.setQuantity(1.0);
                 productModel.setProductId(productRecommendationModel.getProductId());
 
                 productList.add(productModel);

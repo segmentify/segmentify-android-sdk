@@ -91,7 +91,7 @@ public class HomeActivity extends AppCompatActivity {
                 BasketModel model = new BasketModel();
                 model.setStep("add");
                 model.setProductId(recommendationModelArrayList.get(1).getProducts().get(position).getProductId());
-                model.setQuantity(1);
+                model.setQuantity(1.0);
                 model.setPrice(Double.parseDouble(recommendationModelArrayList.get(1).getProducts().get(position).getPrice().toString()));
                 SegmentifyManager.INSTANCE.sendAddOrRemoveBasket(model);
 

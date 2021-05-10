@@ -8,7 +8,7 @@ class BasketModel : SegmentifyObject() {
     var step:String? = null
 
     var price:Double? = null
-    var quantity:Int? = null
+    var quantity:Double? = null
     var productId:String? = null
     var activeBanners:LinkedList<ClickedBannerObject> = LinkedList()
 }
