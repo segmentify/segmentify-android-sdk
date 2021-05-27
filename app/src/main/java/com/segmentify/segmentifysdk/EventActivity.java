@@ -7,7 +7,10 @@ import android.widget.Button;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.segmentify.segmentifyandroidsdk.SegmentifyManager;
+import com.segmentify.segmentifyandroidsdk.model.BannerGroupViewModel;
+import com.segmentify.segmentifyandroidsdk.model.BannerOperationsModel;
 import com.segmentify.segmentifyandroidsdk.model.CheckoutModel;
+import com.segmentify.segmentifyandroidsdk.model.InternalBannerModel;
 import com.segmentify.segmentifyandroidsdk.model.NotificationModel;
 import com.segmentify.segmentifyandroidsdk.model.NotificationType;
 import com.segmentify.segmentifyandroidsdk.model.PageModel;
@@ -16,6 +19,7 @@ import com.segmentify.segmentifyandroidsdk.model.RecommendationModel;
 import com.segmentify.segmentifyandroidsdk.utils.SegmentifyCallback;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class EventActivity extends AppCompatActivity {
 
@@ -124,6 +128,48 @@ public class EventActivity extends AppCompatActivity {
                 }
             }
         });
+
+        BannerOperationsModel bannerImpressionOperationModel = new BannerOperationsModel();
+        bannerImpressionOperationModel.setBannerType("impression");
+        bannerImpressionOperationModel.setTitle("New Season Men Shoes");
+        bannerImpressionOperationModel.setGroup("Home Page Slider");
+        bannerImpressionOperationModel.setOrder(1);
+        SegmentifyManager.INSTANCE.sendBannerImpressionEvent(bannerImpressionOperationModel);
+
+        BannerOperationsModel bannerClickOperationModel = new BannerOperationsModel();
+        bannerClickOperationModel.setBannerType("click");
+        bannerClickOperationModel.setTitle("New Season Women Shoes");
+        bannerClickOperationModel.setGroup("Home Page Slider");
+        bannerClickOperationModel.setOrder(2);
+        SegmentifyManager.INSTANCE.sendBannerClickEvent(bannerClickOperationModel);
+
+        BannerOperationsModel bannerUpdateOperationModel = new BannerOperationsModel();
+        bannerUpdateOperationModel.setBannerType("update");
+        bannerUpdateOperationModel.setTitle("New Season Women Shoes");
+        bannerUpdateOperationModel.setGroup("Home Page Slider");
+        bannerUpdateOperationModel.setOrder(3);
+        SegmentifyManager.INSTANCE.sendBannerUpdateEvent(bannerUpdateOperationModel);
+
+        BannerGroupViewModel bannerGroupViewModel = new BannerGroupViewModel();
+        bannerGroupViewModel.setGroup("Home Page Slider");
+        ArrayList<InternalBannerModel> internalBannerModels = new ArrayList<>();
+        InternalBannerModel internalBannerModel = new InternalBannerModel();
+        internalBannerModel.setTitle("Gorgeous Duo T-Shirt & Trousers");
+        internalBannerModel.setOrder(1);
+        internalBannerModel.setImage("https://www.example.com/gorgeous-duo-tshirt-trousers.jpg");
+        internalBannerModel.setUrls(new ArrayList<>(Arrays.asList("https://www.example.com/gorgeous-duo-tshirt-trousers")));
+        internalBannerModels.add(internalBannerModel);
+
+        internalBannerModel = new InternalBannerModel();
+        internalBannerModel.setTitle("Ready to Renew");
+        internalBannerModel.setOrder(2);
+        internalBannerModel.setImage("https://www.example.com/ready-to-renew.jpg");
+        internalBannerModel.setUrls(new ArrayList<>(Arrays.asList("https://www.example.com/ready-to-renew")));
+        internalBannerModels.add(internalBannerModel);
+
+        SegmentifyManager.INSTANCE.sendBannerGroupViewEvent(bannerGroupViewModel);
+
+
 
         Button subscribeButton = findViewById(R.id.button);
         subscribeButton.setOnClickListener(new View.OnClickListener() {
