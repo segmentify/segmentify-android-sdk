@@ -74,8 +74,6 @@ object ConnectionManager {
         httpClient.connectTimeout(timeoutInterval.toLong(), TimeUnit.SECONDS)
         httpClient.readTimeout(timeoutInterval.toLong(), TimeUnit.SECONDS)
 
-        httpClient.addInterceptor(logging);
-
         client = httpClient.build()
         val keyService = Retrofit.Builder()
                 .baseUrl(SegmentifyManager.clientPreferences?.getApiUrl())
