@@ -21,6 +21,7 @@
         android:layout_height="wrap_content"
         android:text="Get Permission"
         tools:layout_editor_absoluteX="124dp"
-        tools:layout_editor_absoluteY="296dp" />
+        tools:layout_editor_absoluteY="296dp"
+        tools:ignore="MissingConstraints" />
 
 </android.support.constraint.ConstraintLayout>
