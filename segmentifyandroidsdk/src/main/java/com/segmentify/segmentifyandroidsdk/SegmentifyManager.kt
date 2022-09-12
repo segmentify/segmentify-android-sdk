@@ -5,6 +5,8 @@ import com.segmentify.segmentifyandroidsdk.controller.EventController
 import com.segmentify.segmentifyandroidsdk.controller.KeyController
 import com.segmentify.segmentifyandroidsdk.controller.PushController
 import com.segmentify.segmentifyandroidsdk.model.*
+import com.segmentify.segmentifyandroidsdk.model.faceted.SearchFacetedPageModel
+import com.segmentify.segmentifyandroidsdk.model.faceted.SearchFacetedResponseModel
 import com.segmentify.segmentifyandroidsdk.network.ConnectionManager
 import com.segmentify.segmentifyandroidsdk.utils.ClientPreferences
 import com.segmentify.segmentifyandroidsdk.utils.Constant
@@ -112,6 +114,15 @@ object SegmentifyManager {
         pageModel.eventName = Constant.searchViewEventName
         EventController.sendSearchView(pageModel, object : SegmentifyCallback<SearchResponseModel>{
             override fun onDataLoaded(data: SearchResponseModel) {
+                segmentifyCallback.onDataLoaded(data)
+            }
+        })
+    }
+   
+    fun sendFacetedSearchPageView(pageModel: SearchFacetedPageModel, segmentifyCallback: SegmentifyCallback<SearchFacetedResponseModel>){
+        pageModel.eventName = Constant.searchViewEventName
+        EventController.sendFacetedSearchView(pageModel, object : SegmentifyCallback<SearchFacetedResponseModel>{
+            override fun onDataLoaded(data: SearchFacetedResponseModel) {
                 segmentifyCallback.onDataLoaded(data)
             }
         })

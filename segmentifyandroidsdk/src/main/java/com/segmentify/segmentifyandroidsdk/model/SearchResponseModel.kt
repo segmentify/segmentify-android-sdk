@@ -9,5 +9,4 @@ class SearchResponseModel {
     var brandProducts: HashMap<String, ArrayList<ProductRecommendationModel>>? = null
     var lastSearches: List<String>? = null
     var categories: HashMap<String, String>? = null
-
 }

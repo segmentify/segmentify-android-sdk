@@ -5,6 +5,9 @@ import com.google.gson.internal.LinkedTreeMap
 import com.google.gson.reflect.TypeToken
 import com.segmentify.segmentifyandroidsdk.SegmentifyManager
 import com.segmentify.segmentifyandroidsdk.model.*
+import com.segmentify.segmentifyandroidsdk.model.faceted.SearchFacetedEventResponseModel
+import com.segmentify.segmentifyandroidsdk.model.faceted.SearchFacetedPageModel
+import com.segmentify.segmentifyandroidsdk.model.faceted.SearchFacetedResponseModel
 import com.segmentify.segmentifyandroidsdk.network.ConnectionManager
 import com.segmentify.segmentifyandroidsdk.network.NetworkCallback
 import com.segmentify.segmentifyandroidsdk.utils.Constant
@@ -60,6 +63,33 @@ internal object EventController {
             SegmentifyManager.sendWidgetView("SEARCH", "static")
             SegmentifyManager.sendImpression("SEARCH", "static")
         }
+
+        return returnVal
+    }
+
+    fun sendFacetedSearchView(pageModel: SearchFacetedPageModel, segmentifyCallback: SegmentifyCallback<SearchFacetedResponseModel>){
+        if (!pageModel.userId.isNullOrEmpty() && !pageModel.sessionId.isNullOrEmpty()) {
+            ConnectionManager.getEventFactory()
+                .sendFacetedSearchView(pageModel, SegmentifyManager.configModel.apiKey!!)
+                .enqueue(object : NetworkCallback<SearchFacetedEventResponseModel>() {
+                    override fun onSuccess(response: SearchFacetedEventResponseModel) {
+                        segmentifyCallback.onDataLoaded(reformatSearchFacetedResponse(response))
+                    }
+                })
+        } else {
+            SegmentifyLogger.printErrorLog("You must fill userid&sessionid before accessing pageview event")
+            return
+        }
+    }
+
+    fun reformatSearchFacetedResponse(response: SearchFacetedEventResponseModel): SearchFacetedResponseModel {
+        var returnVal = SearchFacetedResponseModel()
+        var list = response.search?.get(0)
+        //if(list != null && list.isEmpty().not()){
+        //    returnVal = list[0]
+        //    SegmentifyManager.sendWidgetView("SEARCH", "static")
+        //    SegmentifyManager.sendImpression("SEARCH", "static")
+        //}
 
         return returnVal
     }

@@ -1,6 +1,8 @@
 package com.segmentify.segmentifyandroidsdk.network.Factories
 
 import com.segmentify.segmentifyandroidsdk.model.*
+import com.segmentify.segmentifyandroidsdk.model.faceted.SearchFacetedEventResponseModel
+import com.segmentify.segmentifyandroidsdk.model.faceted.SearchFacetedPageModel
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.POST
@@ -55,5 +57,9 @@ interface EventFactory {
         //POST PageModel Object with steps as defined in documentation
         @POST("/add/events/v1.json")
         fun sendSearchView(@Body pageModel: SearchPageModel,@Query("apiKey") apiKey : String): Call<SearchEventResponseModel>
+
+        //POST PageModel Object with steps as defined in documentation
+        @POST("/add/events/v1.json")
+        fun sendFacetedSearchView(@Body pageModel: SearchFacetedPageModel, @Query("apiKey") apiKey : String): Call<SearchFacetedEventResponseModel>
 
 }
