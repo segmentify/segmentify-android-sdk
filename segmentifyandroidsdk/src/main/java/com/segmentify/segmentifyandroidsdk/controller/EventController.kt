@@ -63,7 +63,6 @@ internal object EventController {
             SegmentifyManager.sendWidgetView("SEARCH", "static")
             SegmentifyManager.sendImpression("SEARCH", "static")
         }
-
         return returnVal
     }
 
@@ -85,11 +84,9 @@ internal object EventController {
     fun reformatSearchFacetedResponse(response: SearchFacetedEventResponseModel): SearchFacetedResponseModel {
         var returnVal = SearchFacetedResponseModel()
         var list = response.search?.get(0)
-        //if(list != null && list.isEmpty().not()){
-        //    returnVal = list[0]
-        //    SegmentifyManager.sendWidgetView("SEARCH", "static")
-        //    SegmentifyManager.sendImpression("SEARCH", "static")
-        //}
+        if(list != null && list.isEmpty().not()){
+            returnVal = list[0]
+        }
 
         return returnVal
     }
