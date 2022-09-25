@@ -128,31 +128,6 @@ object SegmentifyManager {
         })
     }
 
-    fun sendPageView(category: String, subCategory: String?, segmentifyCallback: SegmentifyCallback<ArrayList<RecommendationModel>>) {
-        if (category.isNullOrBlank()) {
-            SegmentifyLogger.printErrorLog("you must fill category before accessing sendPageView event method")
-            return
-        }
-
-        segmentifyObject.eventName = "asd"
-
-        val fields = segmentifyObject?.eventName?.javaClass!!.declaredFields
-        for (i in fields.indices) {
-            System.out.println("Field = " + fields[i].toString())
-        }
-
-        var pageModel = PageModel()
-        pageModel.eventName = Constant.pageViewEventName
-        pageModel.category = category
-        pageModel.subCategory = subCategory
-
-        EventController.sendPageView(pageModel, object : SegmentifyCallback<ArrayList<RecommendationModel>> {
-            override fun onDataLoaded(data: ArrayList<RecommendationModel>) {
-                segmentifyCallback.onDataLoaded(data)
-            }
-        })
-    }
-
     /* bannerify events */
 
     fun sendBannerImpressionEvent(bannerOperationsModel: BannerOperationsModel) {

@@ -9,4 +9,6 @@ class SearchFacetedResponseModel {
     var banners: List<SearchBanner>? = arrayListOf()
     var meanings: List<String>? = arrayListOf()
     var products: List<ProductRecommendationModel>? = arrayListOf()
+    var executable: Boolean? = false
+    var instanceId: String? = null
 }
