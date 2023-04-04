@@ -763,4 +763,20 @@ object SegmentifyManager {
         return  UtmModel()
     }
 
+    fun clearLastSearchHistory(userModel: UserModel) {
+        userModel.eventName = Constant.userOperationEventName
+        userModel.userOperationStep = Constant.deleteLastSearchStep
+
+        EventController.sendUserOperation(userModel)
+    }
+
+    fun clearLastSearchHistory(lastSearchDeletedKeyword: String?) {
+        var userModel = UserModel()
+        userModel.eventName = Constant.userOperationEventName
+        userModel.userOperationStep = Constant.deleteLastSearchStep
+        userModel.lastSearchDeletedKeywords = lastSearchDeletedKeyword
+
+        EventController.sendUserOperation(userModel)
+    }
+
 }
