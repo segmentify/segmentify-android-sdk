@@ -32,6 +32,7 @@ class Constant {
         val registerStep = "signup"
         val logoutStep = "signout"
         val updateUserStep = "update"
+        val deleteLastSearchStep = "delete_last_search"
         val impressionStep = "impression"
         val widgetViewStep = "widget-view"
         val clickStep = "click"
