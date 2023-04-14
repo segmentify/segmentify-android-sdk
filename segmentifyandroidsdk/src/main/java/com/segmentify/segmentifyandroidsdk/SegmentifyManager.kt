@@ -23,7 +23,7 @@ object SegmentifyManager {
     private fun addClickedBanner(banner: BannerOperationsModel) {
 
         clickedBanners.forEach {
-            if (    it.group.equals(banner.group) &&
+            if (it.group.equals(banner.group) &&
                     it.title.equals(banner.title) &&
                     it.order!!.equals(banner.order)) {
                 return
@@ -47,7 +47,7 @@ object SegmentifyManager {
         clientPreferences?.setSessionKeepSeconds(sessionKeepSecond)
     }
 
-    fun setConfig(apiKey: String, dataCenterUrl: String, subDomain: String ) {
+    fun setConfig(apiKey: String, dataCenterUrl: String, subDomain: String) {
         this.configModel.apiKey = apiKey
         this.configModel.dataCenterUrl = dataCenterUrl
         this.configModel.subDomain = subDomain
@@ -55,7 +55,7 @@ object SegmentifyManager {
         ConnectionManager.rebuildServices()
     }
 
-    fun setPushConfig(dataCenterUrlPush: String ) {
+    fun setPushConfig(dataCenterUrlPush: String) {
         this.configModel.dataCenterUrlPush = dataCenterUrlPush
     }
 
@@ -108,9 +108,9 @@ object SegmentifyManager {
         })
     }
 
-    fun sendSearchPageView(pageModel: SearchPageModel, segmentifyCallback: SegmentifyCallback<SearchResponseModel>){
+    fun sendSearchPageView(pageModel: SearchPageModel, segmentifyCallback: SegmentifyCallback<SearchResponseModel>) {
         pageModel.eventName = Constant.searchViewEventName
-        EventController.sendSearchView(pageModel, object : SegmentifyCallback<SearchResponseModel>{
+        EventController.sendSearchView(pageModel, object : SegmentifyCallback<SearchResponseModel> {
             override fun onDataLoaded(data: SearchResponseModel) {
                 segmentifyCallback.onDataLoaded(data)
             }
@@ -269,8 +269,7 @@ object SegmentifyManager {
     fun sendProductView(productId: String, title: String, categories: ArrayList<String>, price: Double,
                         brand: String?, stock: Boolean?, url: String, image: String, imageXS: String?,
                         imageS: String?, imageM: String?, imageL: String?, imageXL: String?, gender: String?,
-                        colors: ArrayList<String>?, sizes: ArrayList<String>?, labels: ArrayList<String>?, noUpdate: Boolean?
-                        , segmentifyCallback: SegmentifyCallback<ArrayList<RecommendationModel>>) {
+                        colors: ArrayList<String>?, sizes: ArrayList<String>?, labels: ArrayList<String>?, noUpdate: Boolean?, segmentifyCallback: SegmentifyCallback<ArrayList<RecommendationModel>>) {
         var productModel = ProductModel()
         productModel.eventName = Constant.productViewEventName
 
@@ -561,12 +560,44 @@ object SegmentifyManager {
 
     }
 
+    fun sendImpression(interactionModel: InteractionModel) {
+        if (interactionModel.instanceId.isNullOrBlank()) {
+            SegmentifyLogger.printErrorLog("You must fill instanceId before sending interaction event")
+            return
+        }
+        if (interactionModel.interactionId.isNullOrBlank()) {
+            SegmentifyLogger.printErrorLog("You must fill interactionId before sending interaction event")
+            return
+        }
+
+        interactionModel.eventName = Constant.interactionEventName
+        interactionModel.type = Constant.impressionStep
+
+        EventController.sendInteractionEvent(interactionModel)
+    }
+
     fun sendWidgetView(instanceId: String, interactionId: String) {
         var interactionModel = InteractionModel()
         interactionModel.eventName = Constant.interactionEventName
         interactionModel.type = Constant.widgetViewStep
         interactionModel.instanceId = instanceId
         interactionModel.interactionId = interactionId
+
+        EventController.sendInteractionEvent(interactionModel)
+    }
+
+    fun sendWidgetView(interactionModel: InteractionModel) {
+        if (interactionModel.instanceId.isNullOrBlank()) {
+            SegmentifyLogger.printErrorLog("You must fill instanceId before sending interaction event")
+            return
+        }
+        if (interactionModel.interactionId.isNullOrBlank()) {
+            SegmentifyLogger.printErrorLog("You must fill interactionId before sending interaction event")
+            return
+        }
+
+        interactionModel.eventName = Constant.interactionEventName
+        interactionModel.type = Constant.widgetViewStep
 
         EventController.sendInteractionEvent(interactionModel)
     }
@@ -581,12 +612,44 @@ object SegmentifyManager {
         EventController.sendInteractionEvent(interactionModel)
     }
 
-    fun sendSearchClickView(instanceId: String, interactionId: String){
+    fun sendClickView(interactionModel: InteractionModel) {
+        if (interactionModel.instanceId.isNullOrBlank()) {
+            SegmentifyLogger.printErrorLog("You must fill instanceId before sending interaction event")
+            return
+        }
+        if (interactionModel.interactionId.isNullOrBlank()) {
+            SegmentifyLogger.printErrorLog("You must fill interactionId before sending interaction event")
+            return
+        }
+
+        interactionModel.eventName = Constant.interactionEventName
+        interactionModel.type = Constant.clickStep
+
+        EventController.sendInteractionEvent(interactionModel)
+    }
+
+    fun sendSearchClickView(instanceId: String, interactionId: String) {
         var interactionModel = InteractionModel()
         interactionModel.eventName = Constant.interactionEventName
         interactionModel.type = Constant.searchStep
         interactionModel.instanceId = instanceId
         interactionModel.interactionId = interactionId
+
+        EventController.sendInteractionEvent(interactionModel)
+    }
+
+    fun sendSearchClickView(interactionModel: InteractionModel) {
+        if (interactionModel.instanceId.isNullOrBlank()) {
+            SegmentifyLogger.printErrorLog("You must fill instanceId before sending interaction event")
+            return
+        }
+        if (interactionModel.interactionId.isNullOrBlank()) {
+            SegmentifyLogger.printErrorLog("You must fill interactionId before sending interaction event")
+            return
+        }
+
+        interactionModel.eventName = Constant.interactionEventName
+        interactionModel.type = Constant.searchStep
 
         EventController.sendInteractionEvent(interactionModel)
     }
@@ -746,11 +809,10 @@ object SegmentifyManager {
         }
 
         if (notificationModel.type == NotificationType.CLICK) {
-            if (notificationModel.instanceId.isNullOrEmpty() && notificationModel.productId.isNullOrEmpty() ) {
+            if (notificationModel.instanceId.isNullOrEmpty() && notificationModel.productId.isNullOrEmpty()) {
                 SegmentifyLogger.printErrorLog("You must fill deviceToken before accessing notification click event")
                 return
-            }
-            else{
+            } else {
                 clientPreferences?.setPushCampaignId(notificationModel.instanceId!!)
                 clientPreferences?.setPushCampaignProductId(notificationModel.productId!!)
                 sendClickView(notificationModel.instanceId!!, notificationModel.productId!!);
@@ -760,7 +822,7 @@ object SegmentifyManager {
     }
 
     fun getTrackingParameters(): UtmModel {
-        return  UtmModel()
+        return UtmModel()
     }
 
     fun clearLastSearchHistory(userModel: UserModel) {
