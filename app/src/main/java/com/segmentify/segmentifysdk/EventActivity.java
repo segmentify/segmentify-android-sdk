@@ -5,7 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
-//import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.segmentify.segmentifyandroidsdk.SegmentifyManager;
 import com.segmentify.segmentifyandroidsdk.model.BannerGroupViewModel;
 import com.segmentify.segmentifyandroidsdk.model.BannerOperationsModel;
@@ -43,8 +43,7 @@ public class EventActivity extends AppCompatActivity {
 
         PageModel pageModel = new PageModel();
         pageModel.setCategory("Product Page");
-        pageModel.setLang("EN");
-        pageModel.setRegion("EU");
+        pageModel.setLang("TR");
 
         SegmentifyManager.INSTANCE.sendPageView(pageModel, new SegmentifyCallback<ArrayList<RecommendationModel>>() {
             @Override
@@ -66,6 +65,7 @@ public class EventActivity extends AppCompatActivity {
         productModel.setImage("https://cdn11.bigcommerce.com/s-5ylnei6or5/images/stencil/500x500/products/1982/5015/2929_Forky_TS4_23_wModel__61743.1559248389.jpg?c=2");
         productModel.setCategories(categories);
         productModel.setPrice(45.75);
+        productModel.setLang("TR");
 
         SegmentifyManager.INSTANCE.sendProductView(productModel, new SegmentifyCallback<ArrayList<RecommendationModel>>() {
             @Override
@@ -82,6 +82,7 @@ public class EventActivity extends AppCompatActivity {
         productPurchaseModel.setPrice(45.75);
         productPurchaseModel.setQuantity(2.3);
         productPurchaseModel.setProductId("30000-1");
+        productPurchaseModel.setLang("TR");
 
         productList.add(productPurchaseModel);
 
@@ -112,6 +113,7 @@ public class EventActivity extends AppCompatActivity {
         checkOutProductModel.setPrice(78.0);
         checkOutProductModel.setQuantity(2.75);
         checkOutProductModel.setProductId("30000-1");
+        checkOutProductModel.setLang("TR");
 
         checkOutProductList.add(productModel);
 
@@ -170,28 +172,14 @@ public class EventActivity extends AppCompatActivity {
         SegmentifyManager.INSTANCE.sendBannerGroupViewEvent(bannerGroupViewModel);
 
 
-
         Button subscribeButton = findViewById(R.id.button);
         subscribeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PageModel model = new PageModel();
-                model.setCategory("Home Page");
-
-
-                SegmentifyManager.INSTANCE.sendPageView(model, new SegmentifyCallback<ArrayList<RecommendationModel>>() {
-                    @Override
-                    public void onDataLoaded(ArrayList<RecommendationModel> data) {
-                        if (data != null) {
-                            System.out.println(data);
-                        }
-                    }
-                });
-
-                //NotificationModel nModel = new NotificationModel();
-                //nModel.setDeviceToken(FirebaseInstanceId.getInstance().getToken());
-                //nModel.setType(NotificationType.PERMISSION_INFO);
-                //SegmentifyManager.INSTANCE.sendNotification(nModel);
+                NotificationModel nModel = new NotificationModel();
+                nModel.setDeviceToken(FirebaseInstanceId.getInstance().getToken());
+                nModel.setType(NotificationType.PERMISSION_INFO);
+                SegmentifyManager.INSTANCE.sendNotification(nModel);
             }
         });
     }

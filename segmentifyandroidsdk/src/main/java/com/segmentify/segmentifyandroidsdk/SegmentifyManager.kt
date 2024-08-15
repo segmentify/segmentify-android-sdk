@@ -65,7 +65,7 @@ object SegmentifyManager {
 
     fun config(context: Context, appKey: String, dataCenterUrl: String, subDomain: String) {
 
-        if (appKey.isNullOrBlank() || dataCenterUrl.isNullOrBlank() || subDomain.isNullOrBlank()) {
+        if (appKey.isBlank() || dataCenterUrl.isBlank() || subDomain.isBlank()) {
             SegmentifyLogger.printErrorLog("Api is not initialized, you can not enter null or empty parameter to config, please recheck your config parameters")
             return
         }
