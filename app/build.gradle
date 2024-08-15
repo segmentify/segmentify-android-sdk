@@ -20,7 +20,8 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    lintOptions {
+    namespace 'com.segmentify.segmentifysdk'
+    lint {
         abortOnError false
     }
 }
