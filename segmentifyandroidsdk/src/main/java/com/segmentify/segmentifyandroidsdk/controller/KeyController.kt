@@ -16,21 +16,21 @@ internal object KeyController {
             Calendar.SECOND,
             SegmentifyManager.clientPreferences?.getSessionKeepSeconds()!!
         )
-        var date = calendar.time
+        var date = calendar.timeInMillis
         if (SegmentifyManager.clientPreferences?.getSavedDateForSession() != null) {
-            date = SegmentifyManager.clientPreferences?.getSavedDateForSession()
+            date = SegmentifyManager.clientPreferences?.getSavedDateForSession()!!
         }
-        val dayBySecondsDifference = getDifferenceDays(date, Calendar.getInstance().time)
+        val dayBySecondsDifference = getDifferenceDays(date, Calendar.getInstance().timeInMillis)
         if (dayBySecondsDifference > SegmentifyManager.clientPreferences?.getSessionKeepSeconds()!!) {
-            SegmentifyManager.clientPreferences?.setSavedDateforSession(calendar.time)
+            SegmentifyManager.clientPreferences?.setSavedDateforSession(calendar.timeInMillis)
             getSessionId()
         } else {
-            SegmentifyManager.clientPreferences?.setSavedDateforSession(calendar.time)
+            SegmentifyManager.clientPreferences?.setSavedDateforSession(calendar.timeInMillis)
         }
     }
 
-    fun getDifferenceDays(d1: Date, d2: Date): Long {
-        val diff = d2.time - d1.time
+    fun getDifferenceDays(d1: Long, d2: Long): Long {
+        val diff = d2 - d1
         return TimeUnit.SECONDS.convert(diff, TimeUnit.MILLISECONDS)
     }
 

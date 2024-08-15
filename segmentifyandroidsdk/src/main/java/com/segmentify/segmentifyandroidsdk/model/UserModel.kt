@@ -12,6 +12,7 @@ class UserModel : SegmentifyObject() {
         var mobilePhone:String? = null
         var isRegistered:String? = null
         var isLogin:Boolean? = null
+        var lastSearchDeletedKeywords:String? = null
 
         @SerializedName("step")
         var userOperationStep:String? = null

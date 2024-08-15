@@ -20,6 +20,7 @@ import com.segmentify.segmentifyandroidsdk.utils.SegmentifyCallback;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class EventActivity extends AppCompatActivity {
 
@@ -30,6 +31,7 @@ public class EventActivity extends AppCompatActivity {
 
         PageModel model = new PageModel();
         model.setCategory("Home Page");
+        model.setLang("TR");
 
 
         SegmentifyManager.INSTANCE.sendPageView(model, new SegmentifyCallback<ArrayList<RecommendationModel>>() {
@@ -43,8 +45,7 @@ public class EventActivity extends AppCompatActivity {
 
         PageModel pageModel = new PageModel();
         pageModel.setCategory("Product Page");
-        pageModel.setLang("EN");
-        pageModel.setRegion("EU");
+        pageModel.setLang("TR");
 
         SegmentifyManager.INSTANCE.sendPageView(pageModel, new SegmentifyCallback<ArrayList<RecommendationModel>>() {
             @Override
@@ -62,10 +63,11 @@ public class EventActivity extends AppCompatActivity {
 
         productModel.setProductId("30000-1");
         productModel.setTitle("Toys Forky");
-        productModel.setUrl("https://ihalilaltun.me/toys-forky/");
+        productModel.setUrl("https://demo.segmentify.com/toys-forky/");
         productModel.setImage("https://cdn11.bigcommerce.com/s-5ylnei6or5/images/stencil/500x500/products/1982/5015/2929_Forky_TS4_23_wModel__61743.1559248389.jpg?c=2");
         productModel.setCategories(categories);
         productModel.setPrice(45.75);
+        productModel.setLang("TR");
 
         SegmentifyManager.INSTANCE.sendProductView(productModel, new SegmentifyCallback<ArrayList<RecommendationModel>>() {
             @Override
@@ -82,12 +84,14 @@ public class EventActivity extends AppCompatActivity {
         productPurchaseModel.setPrice(45.75);
         productPurchaseModel.setQuantity(2.3);
         productPurchaseModel.setProductId("30000-1");
+        productPurchaseModel.setLang("TR");
 
         productList.add(productPurchaseModel);
 
         CheckoutModel checkoutModel = new CheckoutModel();
         checkoutModel.setProductList(productList);
         checkoutModel.setTotalPrice(156.0);
+        checkoutModel.setLang("TR");
 
         SegmentifyManager.INSTANCE.sendViewBasket(checkoutModel, new SegmentifyCallback<ArrayList<RecommendationModel>>() {
             @Override
@@ -112,6 +116,7 @@ public class EventActivity extends AppCompatActivity {
         checkOutProductModel.setPrice(78.0);
         checkOutProductModel.setQuantity(2.75);
         checkOutProductModel.setProductId("30000-1");
+        checkOutProductModel.setLang("TR");
 
         checkOutProductList.add(productModel);
 
@@ -119,6 +124,7 @@ public class EventActivity extends AppCompatActivity {
         checkoutModel1.setProductList(productList);
         checkoutModel1.setTotalPrice(156.0);
         checkoutModel1.setOrderNo("order1");
+        checkoutModel1.setLang("TR");
 
         SegmentifyManager.INSTANCE.sendPurchase(checkoutModel1, new SegmentifyCallback<ArrayList<RecommendationModel>>() {
             @Override
@@ -134,6 +140,7 @@ public class EventActivity extends AppCompatActivity {
         bannerImpressionOperationModel.setTitle("New Season Men Shoes");
         bannerImpressionOperationModel.setGroup("Home Page Slider");
         bannerImpressionOperationModel.setOrder(1);
+        bannerImpressionOperationModel.setLang("TR");
         SegmentifyManager.INSTANCE.sendBannerImpressionEvent(bannerImpressionOperationModel);
 
         BannerOperationsModel bannerClickOperationModel = new BannerOperationsModel();
@@ -141,6 +148,7 @@ public class EventActivity extends AppCompatActivity {
         bannerClickOperationModel.setTitle("New Season Women Shoes");
         bannerClickOperationModel.setGroup("Home Page Slider");
         bannerClickOperationModel.setOrder(2);
+        bannerClickOperationModel.setLang("TR");
         SegmentifyManager.INSTANCE.sendBannerClickEvent(bannerClickOperationModel);
 
         BannerOperationsModel bannerUpdateOperationModel = new BannerOperationsModel();
@@ -148,6 +156,7 @@ public class EventActivity extends AppCompatActivity {
         bannerUpdateOperationModel.setTitle("New Season Women Shoes");
         bannerUpdateOperationModel.setGroup("Home Page Slider");
         bannerUpdateOperationModel.setOrder(3);
+        bannerUpdateOperationModel.setLang("TR");
         SegmentifyManager.INSTANCE.sendBannerUpdateEvent(bannerUpdateOperationModel);
 
         BannerGroupViewModel bannerGroupViewModel = new BannerGroupViewModel();
@@ -156,29 +165,30 @@ public class EventActivity extends AppCompatActivity {
         InternalBannerModel internalBannerModel = new InternalBannerModel();
         internalBannerModel.setTitle("Gorgeous Duo T-Shirt & Trousers");
         internalBannerModel.setOrder(1);
-        internalBannerModel.setImage("https://www.example.com/gorgeous-duo-tshirt-trousers.jpg");
-        internalBannerModel.setUrls(new ArrayList<>(Arrays.asList("https://www.example.com/gorgeous-duo-tshirt-trousers")));
+        internalBannerModel.setImage("https://demo.segmentify.com/gorgeous-duo-tshirt-trousers.jpg");
+        internalBannerModel.setLang("TR");
+        internalBannerModel.setUrls(new ArrayList<>(Arrays.asList("https://demo.segmentify.com/gorgeous-duo-tshirt-trousers")));
         internalBannerModels.add(internalBannerModel);
 
         internalBannerModel = new InternalBannerModel();
         internalBannerModel.setTitle("Ready to Renew");
         internalBannerModel.setOrder(2);
-        internalBannerModel.setImage("https://www.example.com/ready-to-renew.jpg");
-        internalBannerModel.setUrls(new ArrayList<>(Arrays.asList("https://www.example.com/ready-to-renew")));
+        internalBannerModel.setImage("https://demo.segmentify.com/ready-to-renew.jpg");
+        internalBannerModel.setLang("TR");
+        internalBannerModel.setUrls(new ArrayList<>(List.of("https://demo.segmentify.com/ready-to-renew")));
         internalBannerModels.add(internalBannerModel);
 
         SegmentifyManager.INSTANCE.sendBannerGroupViewEvent(bannerGroupViewModel);
-
 
 
         Button subscribeButton = findViewById(R.id.button);
         subscribeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                NotificationModel model = new NotificationModel();
-                model.setDeviceToken(FirebaseInstanceId.getInstance().getToken());
-                model.setType(NotificationType.PERMISSION_INFO);
-                SegmentifyManager.INSTANCE.sendNotification(model);
+                NotificationModel nModel = new NotificationModel();
+                nModel.setDeviceToken(FirebaseInstanceId.getInstance().getToken());
+                nModel.setType(NotificationType.PERMISSION_INFO);
+                SegmentifyManager.INSTANCE.sendNotification(nModel);
             }
         });
     }
