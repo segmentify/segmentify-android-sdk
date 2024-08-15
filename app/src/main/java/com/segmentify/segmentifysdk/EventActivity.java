@@ -5,7 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
-import com.google.firebase.iid.FirebaseInstanceId;
+//import com.google.firebase.iid.FirebaseInstanceId;
 import com.segmentify.segmentifyandroidsdk.SegmentifyManager;
 import com.segmentify.segmentifyandroidsdk.model.BannerGroupViewModel;
 import com.segmentify.segmentifyandroidsdk.model.BannerOperationsModel;
@@ -175,10 +175,23 @@ public class EventActivity extends AppCompatActivity {
         subscribeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                NotificationModel model = new NotificationModel();
-                model.setDeviceToken(FirebaseInstanceId.getInstance().getToken());
-                model.setType(NotificationType.PERMISSION_INFO);
-                SegmentifyManager.INSTANCE.sendNotification(model);
+                PageModel model = new PageModel();
+                model.setCategory("Home Page");
+
+
+                SegmentifyManager.INSTANCE.sendPageView(model, new SegmentifyCallback<ArrayList<RecommendationModel>>() {
+                    @Override
+                    public void onDataLoaded(ArrayList<RecommendationModel> data) {
+                        if (data != null) {
+                            System.out.println(data);
+                        }
+                    }
+                });
+
+                //NotificationModel nModel = new NotificationModel();
+                //nModel.setDeviceToken(FirebaseInstanceId.getInstance().getToken());
+                //nModel.setType(NotificationType.PERMISSION_INFO);
+                //SegmentifyManager.INSTANCE.sendNotification(nModel);
             }
         });
     }

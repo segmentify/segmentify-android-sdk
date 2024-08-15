@@ -27,12 +27,12 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.google.firebase:firebase-core:16.0.1'
-    implementation 'com.google.firebase:firebase-messaging:17.3.0'
+    //implementation 'com.google.firebase:firebase-core:16.0.1'
+    //implementation 'com.google.firebase:firebase-messaging:17.3.0'
 
 
-    implementation 'com.google.firebase:firebase-iid:17.0.0'
-    implementation 'com.firebase:firebase-jobdispatcher:0.8.5'
+    //implementation 'com.google.firebase:firebase-iid:17.0.0'
+    //implementation 'com.firebase:firebase-jobdispatcher:0.8.5'
 
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'com.scottyab:secure-preferences-lib:0.1.4'
