@@ -102,15 +102,6 @@ public class EventActivity extends AppCompatActivity {
             }
         });
 
-        SegmentifyManager.INSTANCE.sendPageView("Checkout Success Page", null, new SegmentifyCallback<ArrayList<RecommendationModel>>() {
-            @Override
-            public void onDataLoaded(ArrayList<RecommendationModel> data) {
-                if (data != null) {
-                    System.out.println(data);
-                }
-            }
-        });
-
         ArrayList<ProductModel> checkOutProductList = new ArrayList<>();
         ProductModel checkOutProductModel = new ProductModel();
         checkOutProductModel.setPrice(78.0);
