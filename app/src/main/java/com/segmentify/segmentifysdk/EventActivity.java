@@ -20,6 +20,7 @@ import com.segmentify.segmentifyandroidsdk.utils.SegmentifyCallback;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class EventActivity extends AppCompatActivity {
 
@@ -62,7 +63,7 @@ public class EventActivity extends AppCompatActivity {
 
         productModel.setProductId("30000-1");
         productModel.setTitle("Toys Forky");
-        productModel.setUrl("https://ihalilaltun.me/toys-forky/");
+        productModel.setUrl("https://demo.segmentify.com/toys-forky/");
         productModel.setImage("https://cdn11.bigcommerce.com/s-5ylnei6or5/images/stencil/500x500/products/1982/5015/2929_Forky_TS4_23_wModel__61743.1559248389.jpg?c=2");
         productModel.setCategories(categories);
         productModel.setPrice(45.75);
@@ -164,17 +165,17 @@ public class EventActivity extends AppCompatActivity {
         InternalBannerModel internalBannerModel = new InternalBannerModel();
         internalBannerModel.setTitle("Gorgeous Duo T-Shirt & Trousers");
         internalBannerModel.setOrder(1);
-        internalBannerModel.setImage("https://www.example.com/gorgeous-duo-tshirt-trousers.jpg");
+        internalBannerModel.setImage("https://demo.segmentify.com/gorgeous-duo-tshirt-trousers.jpg");
         internalBannerModel.setLang("TR");
-        internalBannerModel.setUrls(new ArrayList<>(Arrays.asList("https://www.example.com/gorgeous-duo-tshirt-trousers")));
+        internalBannerModel.setUrls(new ArrayList<>(Arrays.asList("https://demo.segmentify.com/gorgeous-duo-tshirt-trousers")));
         internalBannerModels.add(internalBannerModel);
 
         internalBannerModel = new InternalBannerModel();
         internalBannerModel.setTitle("Ready to Renew");
         internalBannerModel.setOrder(2);
-        internalBannerModel.setImage("https://www.example.com/ready-to-renew.jpg");
+        internalBannerModel.setImage("https://demo.segmentify.com/ready-to-renew.jpg");
         internalBannerModel.setLang("TR");
-        internalBannerModel.setUrls(new ArrayList<>(Arrays.asList("https://www.example.com/ready-to-renew")));
+        internalBannerModel.setUrls(new ArrayList<>(List.of("https://demo.segmentify.com/ready-to-renew")));
         internalBannerModels.add(internalBannerModel);
 
         SegmentifyManager.INSTANCE.sendBannerGroupViewEvent(bannerGroupViewModel);
