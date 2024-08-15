@@ -30,6 +30,7 @@ public class EventActivity extends AppCompatActivity {
 
         PageModel model = new PageModel();
         model.setCategory("Home Page");
+        model.setLang("TR");
 
 
         SegmentifyManager.INSTANCE.sendPageView(model, new SegmentifyCallback<ArrayList<RecommendationModel>>() {
@@ -89,6 +90,7 @@ public class EventActivity extends AppCompatActivity {
         CheckoutModel checkoutModel = new CheckoutModel();
         checkoutModel.setProductList(productList);
         checkoutModel.setTotalPrice(156.0);
+        checkoutModel.setLang("TR");
 
         SegmentifyManager.INSTANCE.sendViewBasket(checkoutModel, new SegmentifyCallback<ArrayList<RecommendationModel>>() {
             @Override
@@ -121,6 +123,7 @@ public class EventActivity extends AppCompatActivity {
         checkoutModel1.setProductList(productList);
         checkoutModel1.setTotalPrice(156.0);
         checkoutModel1.setOrderNo("order1");
+        checkoutModel1.setLang("TR");
 
         SegmentifyManager.INSTANCE.sendPurchase(checkoutModel1, new SegmentifyCallback<ArrayList<RecommendationModel>>() {
             @Override
@@ -136,6 +139,7 @@ public class EventActivity extends AppCompatActivity {
         bannerImpressionOperationModel.setTitle("New Season Men Shoes");
         bannerImpressionOperationModel.setGroup("Home Page Slider");
         bannerImpressionOperationModel.setOrder(1);
+        bannerImpressionOperationModel.setLang("TR");
         SegmentifyManager.INSTANCE.sendBannerImpressionEvent(bannerImpressionOperationModel);
 
         BannerOperationsModel bannerClickOperationModel = new BannerOperationsModel();
@@ -143,6 +147,7 @@ public class EventActivity extends AppCompatActivity {
         bannerClickOperationModel.setTitle("New Season Women Shoes");
         bannerClickOperationModel.setGroup("Home Page Slider");
         bannerClickOperationModel.setOrder(2);
+        bannerClickOperationModel.setLang("TR");
         SegmentifyManager.INSTANCE.sendBannerClickEvent(bannerClickOperationModel);
 
         BannerOperationsModel bannerUpdateOperationModel = new BannerOperationsModel();
@@ -150,6 +155,7 @@ public class EventActivity extends AppCompatActivity {
         bannerUpdateOperationModel.setTitle("New Season Women Shoes");
         bannerUpdateOperationModel.setGroup("Home Page Slider");
         bannerUpdateOperationModel.setOrder(3);
+        bannerUpdateOperationModel.setLang("TR");
         SegmentifyManager.INSTANCE.sendBannerUpdateEvent(bannerUpdateOperationModel);
 
         BannerGroupViewModel bannerGroupViewModel = new BannerGroupViewModel();
@@ -159,6 +165,7 @@ public class EventActivity extends AppCompatActivity {
         internalBannerModel.setTitle("Gorgeous Duo T-Shirt & Trousers");
         internalBannerModel.setOrder(1);
         internalBannerModel.setImage("https://www.example.com/gorgeous-duo-tshirt-trousers.jpg");
+        internalBannerModel.setLang("TR");
         internalBannerModel.setUrls(new ArrayList<>(Arrays.asList("https://www.example.com/gorgeous-duo-tshirt-trousers")));
         internalBannerModels.add(internalBannerModel);
 
@@ -166,6 +173,7 @@ public class EventActivity extends AppCompatActivity {
         internalBannerModel.setTitle("Ready to Renew");
         internalBannerModel.setOrder(2);
         internalBannerModel.setImage("https://www.example.com/ready-to-renew.jpg");
+        internalBannerModel.setLang("TR");
         internalBannerModel.setUrls(new ArrayList<>(Arrays.asList("https://www.example.com/ready-to-renew")));
         internalBannerModels.add(internalBannerModel);
 
