@@ -1,7 +1,7 @@
 package com.segmentify.segmentifysdk;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.segmentify.segmentifyandroidsdk.SegmentifyManager;
 import com.segmentify.segmentifyandroidsdk.model.SearchPageModel;

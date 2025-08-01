@@ -3,29 +3,27 @@ apply plugin: 'kotlin-android'
 apply from: 'maven-push.gradle'
 
 android {
-    compileSdkVersion 34
+    compileSdkVersion 36
 
     defaultConfig {
-        minSdkVersion 16
-        targetSdkVersion 34
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
+        minSdkVersion 24
+        targetSdkVersion 36
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
-        debug {
-            buildConfigField "Boolean", "DEBUG_MODE", "true"
-        }
         release {
-            buildConfigField "Boolean", "DEBUG_MODE", "false"
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
     namespace 'com.segmentify.segmentifyandroidsdk'
+
     lint {
         abortOnError false
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_11
         targetCompatibility JavaVersion.VERSION_11
@@ -34,24 +32,29 @@ android {
     kotlinOptions {
         jvmTarget = '11'
     }
-
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation 'com.android.support:appcompat-v7:28.0.0'
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    // AndroidX destek kütüphaneleri
+    implementation "androidx.appcompat:appcompat:1.7.1"
 
+    // JSON ve HTTP
     implementation 'com.google.code.gson:gson:2.10.1'
     implementation 'com.squareup.retrofit2:retrofit:2.11.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.11.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.8.1'
 
+    // Kotlin
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+
+    // Test kütüphaneleri
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test:runner:1.7.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 }
+
 repositories {
     mavenCentral()
 }

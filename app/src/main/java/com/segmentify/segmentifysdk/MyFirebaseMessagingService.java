@@ -5,173 +5,136 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
-import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
-import com.google.firebase.iid.FirebaseInstanceId;
+import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
+import androidx.work.Worker;
+import androidx.work.WorkerParameters;
+
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
-import com.segmentify.segmentifyandroidsdk.SegmentifyManager;
-import com.segmentify.segmentifyandroidsdk.model.NotificationModel;
-import com.segmentify.segmentifyandroidsdk.model.NotificationType;
-
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.Map;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private static final String TAG = "MyFirebaseMsgService";
 
-    /**
-     * Called when message is received.
-     *
-     * @param remoteMessage Object representing the message received from Firebase Cloud Messaging.
-     */
     // [START receive_message]
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
+        // TODO(developer): Handle FCM messages here.
+        // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
+        Log.d(TAG, "From: " + remoteMessage.getFrom());
 
-        super.onMessageReceived(remoteMessage);
-        RemoteMessage.Notification notification = null;
+        // Check if message contains a data payload.
+        if (!remoteMessage.getData().isEmpty()) {
+            Log.d(TAG, "Message data payload: " + remoteMessage.getData());
 
-        if (remoteMessage.getNotification() != null) {
-            notification = remoteMessage.getNotification();
+            if (/* Check if data needs to be processed by long running job */ true) {
+                // For long-running tasks (10 seconds or more) use WorkManager.
+                scheduleJob();
+            } else {
+                // Handle message within 10 seconds
+                handleNow();
+            }
+
         }
-        Map<String, String> data = remoteMessage.getData();
-        sendNotification(notification, data);
+
+        // Check if message contains a notification payload.
+        if (remoteMessage.getNotification() != null) {
+            Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
+        }
+
+        // Also if you intend on generating your own notifications as a result of a received FCM
+        // message, here is where that should be initiated. See sendNotification method below.
     }
     // [END receive_message]
-
 
     // [START on_new_token]
 
     /**
-     * Called if InstanceID token is updated. This may occur if the security of
-     * the previous token had been compromised. Note that this is called when the InstanceID token
-     * is initially generated so this is where you would retrieve the token.
+     * There are two scenarios when onNewToken is called:
+     * 1) When a new token is generated on initial app startup
+     * 2) Whenever an existing token is changed
+     * Under #2, there are three scenarios when the existing token is changed:
+     * A) App is restored to a new device
+     * B) User uninstalls/reinstalls the app
+     * C) User clears app data
      */
     @Override
-    public void onNewToken(String token) {
+    public void onNewToken(@NonNull String token) {
         Log.d(TAG, "Refreshed token: " + token);
 
         // If you want to send messages to this application instance or
         // manage this apps subscriptions on the server side, send the
-        // Instance ID token to your app server.
+        // FCM registration token to your app server.
         sendRegistrationToServer(token);
     }
     // [END on_new_token]
 
+    private void scheduleJob() {
+        // [START dispatch_job]
+        OneTimeWorkRequest work = new OneTimeWorkRequest.Builder(MyWorker.class)
+                .build();
+        WorkManager.getInstance(this).beginWith(work).enqueue();
+        // [END dispatch_job]
+    }
+
+    private void handleNow() {
+        Log.d(TAG, "Short lived task is done.");
+    }
 
     private void sendRegistrationToServer(String token) {
         // TODO: Implement this method to send token to your app server.
     }
 
-    /**
-     * Create and show a simple notification containing the received FCM message.
-     */
-    private void sendNotification(RemoteMessage.Notification notification, Map<String, String> data) {
+    private void sendNotification(String messageBody) {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
+                PendingIntent.FLAG_IMMUTABLE);
 
-        if (notification != null) {
-            Intent intent = new Intent(this, EventActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
-                    PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
+        String channelId = "fcm_default_channel";
+        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        NotificationCompat.Builder notificationBuilder =
+                new NotificationCompat.Builder(this, channelId)
+                        .setSmallIcon(R.mipmap.ic_launcher)
+                        .setContentTitle("FCM Message")
+                        .setContentText(messageBody)
+                        .setAutoCancel(true)
+                        .setSound(defaultSoundUri)
+                        .setContentIntent(pendingIntent);
 
-            String channelId = getString(R.string.default_notification_channel_id);
-            Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-            NotificationCompat.Builder notificationBuilder =
-                    new NotificationCompat.Builder(this, channelId)
-                            .setSmallIcon(R.drawable.ic_stat_ic_notification)
-                            .setContentTitle(notification.getTitle())
-                            .setContentText(notification.getBody())
-                            .setAutoCancel(true)
-                            .setSound(defaultSoundUri)
-                            .setContentIntent(pendingIntent);
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-            NotificationManager notificationManager =
-                    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-            // Since android Oreo notification channel is needed.
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                NotificationChannel channel = new NotificationChannel(channelId,
-                        "Channel human readable title",
-                        NotificationManager.IMPORTANCE_DEFAULT);
-                notificationManager.createNotificationChannel(channel);
-            }
-
-            notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
-        } else {
-
-
-            Intent intent = new Intent(this, EventActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            intent.putExtra("instanceId", data.get("instanceId"));
-            intent.putExtra("productId", data.get("productId"));
-
-            //For notification view event
-            //App Developer google'a besleyebilsin diye anlatım yapılacak  http:/
-            NotificationModel nmodel = new NotificationModel();
-            nmodel.setDeviceToken(FirebaseInstanceId.getInstance().getToken());
-            nmodel.setInstanceId(data.get("instanceId"));
-            nmodel.setProductId(data.get("productId"));
-            nmodel.setType(NotificationType.VIEW);
-
-            SegmentifyManager.INSTANCE.sendNotificationInteraction(nmodel);
-
-
-            PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
-                    PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
-
-
-            String channelId = getString(R.string.default_notification_channel_id);
-            Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-            NotificationCompat.Builder notificationBuilder =
-                    new NotificationCompat.Builder(this, channelId)
-                            .setSmallIcon(R.drawable.ic_stat_ic_notification)
-                            .setBadgeIconType(Integer.parseInt(data.get("badge")))
-                            .setContentTitle(data.get("title"))
-                            .setContentText(data.get("body"))
-                            .setStyle(new NotificationCompat.BigPictureStyle()
-                                    .bigPicture(getBitmapfromUrl(data.get("image"))))
-                            .setAutoCancel(true)
-                            .setSound(defaultSoundUri)
-                            .setContentIntent(pendingIntent);
-
-            NotificationManager notificationManager =
-                    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-            // Since android Oreo notification channel is needed.
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                NotificationChannel channel = new NotificationChannel(channelId,
-                        "fcm_default_channel",
-                        NotificationManager.IMPORTANCE_DEFAULT);
-                notificationManager.createNotificationChannel(channel);
-            }
-            notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+        // Since android Oreo notification channel is needed.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(channelId,
+                    "Channel human readable title",
+                    NotificationManager.IMPORTANCE_DEFAULT);
+            notificationManager.createNotificationChannel(channel);
         }
+
+        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
     }
 
+    public static class MyWorker extends Worker {
 
-    public Bitmap getBitmapfromUrl(String imageUrl) {
-        try {
-            URL url = new URL(imageUrl);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setDoInput(true);
-            connection.connect();
-            InputStream input = connection.getInputStream();
-            Bitmap bitmap = BitmapFactory.decodeStream(input);
-            return bitmap;
+        public MyWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
+            super(context, workerParams);
+        }
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+        @NonNull
+        @Override
+        public Result doWork() {
+            // TODO(developer): add long running task here.
+            return Result.success();
         }
     }
 }

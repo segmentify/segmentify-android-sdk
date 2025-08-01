@@ -1,35 +1,78 @@
 {
   "project_info": {
-    "project_number": "794335569547",
-    "firebase_url": "https://segmentify-qa.firebaseio.com",
-    "project_id": "segmentify-qa",
-    "storage_bucket": "segmentify-qa.appspot.com"
+    "project_number": "828798501886",
+    "firebase_url": "https://segmentify-app.firebaseio.com",
+    "project_id": "segmentify-app",
+    "storage_bucket": "segmentify-app.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:794335569547:android:2dd7ab3c0e14426066568e",
+        "mobilesdk_app_id": "1:828798501886:android:73e9ae3293b4002a82f6af",
         "android_client_info": {
           "package_name": "com.segmentify.segmentifysdk"
         }
       },
       "oauth_client": [
         {
-          "client_id": "794335569547-ng6bboi02t8aksdnq9drqebr3qgu51t7.apps.googleusercontent.com",
+          "client_id": "828798501886-h7tjek5a53buihgspcillc6vfgadbr62.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBul9RNuHLGGfjPwH8YdtC5D9qTPC4eDcs"
+          "current_key": "AIzaSyDiPD-8BG4rxEPynGWIC0vUOCqqM8mL5b8"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "794335569547-ng6bboi02t8aksdnq9drqebr3qgu51t7.apps.googleusercontent.com",
+              "client_id": "828798501886-h7tjek5a53buihgspcillc6vfgadbr62.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "828798501886-un35m3k65u1ooc7b3i5o78o68skl1oc9.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.segmentify.app"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:828798501886:android:57f77461d444c60782f6af",
+        "android_client_info": {
+          "package_name": "com.segmentify.test.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "828798501886-h7tjek5a53buihgspcillc6vfgadbr62.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDiPD-8BG4rxEPynGWIC0vUOCqqM8mL5b8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "828798501886-h7tjek5a53buihgspcillc6vfgadbr62.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "828798501886-un35m3k65u1ooc7b3i5o78o68skl1oc9.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.segmentify.app"
+              }
             }
           ]
         }
