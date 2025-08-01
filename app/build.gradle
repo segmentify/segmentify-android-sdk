@@ -50,9 +50,9 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-firestore")
 
-    implementation("com.google.android.gms:play-services-auth:21.3.0")
-    implementation("androidx.work:work-runtime-ktx:2.10.2")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.9.1")
+    implementation("com.google.android.gms:play-services-auth:21.4.0")
+    implementation("androidx.work:work-runtime-ktx:2.10.3")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.9.2")
 
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'com.scottyab:secure-preferences-lib:0.1.7'
