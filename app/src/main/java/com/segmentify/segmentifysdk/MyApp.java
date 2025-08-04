@@ -9,8 +9,8 @@ public class MyApp extends Application {
     public void onCreate() {
         super.onCreate();
         // if you are using push module make sure to call SegmentifyManager.Instance.setPushConfig first
-        SegmentifyManager.INSTANCE.setPushConfig("https://gimli-dev.segmentify.com");
-        SegmentifyManager.INSTANCE.config(this, "ae272bfb-214b-4cdd-b5c4-1dddde09e95e","https://gandalf-dev.segmentify.com","ihalilaltun.github.io");
+        SegmentifyManager.INSTANCE.setPushConfig("https://gimli-qa.segmentify.com");
+        SegmentifyManager.INSTANCE.config(this, "5c571072-068e-40c5-8dbc-d8448158de19","https://gandalf-qa.segmentify.com","demo.segmentify.com");
         SegmentifyManager.INSTANCE.setSessionKeepSecond(86400);
         SegmentifyManager.INSTANCE.logStatus(true);
     }
