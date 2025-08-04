@@ -30,7 +30,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class EventActivity extends AppCompatActivity {
-    private static final String TAG = "MainActivity";
+    private static final String TAG = "EventActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
