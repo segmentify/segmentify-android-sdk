@@ -37,7 +37,6 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    // AndroidX destek kütüphaneleri
     implementation "androidx.appcompat:appcompat:1.7.1"
 
     // JSON ve HTTP
@@ -49,10 +48,9 @@ dependencies {
     // Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 
-    // Test kütüphaneleri
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test:runner:1.7.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.7.0'
 }
 
 repositories {
