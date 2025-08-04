@@ -108,6 +108,6 @@ publishing {
 }
 
 signing {
-    required { isReleaseBuild() && gradle.taskGraph.hasTask("publish") }
+    required = { isReleaseBuild() && gradle.taskGraph.hasTask("publish") }
     sign publishing.publications.mavenAndroid
 }

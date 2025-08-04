@@ -26,10 +26,10 @@ android {
         }
     }
 
-    namespace 'com.segmentify.segmentifysdk'
+    namespace = 'com.segmentify.segmentifysdk'
 
     lint {
-        abortOnError false
+        abortOnError = false
     }
 
     compileOptions {
