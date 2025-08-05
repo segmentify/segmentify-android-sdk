@@ -2,8 +2,12 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply from: 'maven-push.gradle'
 
+buildscript {
+    ext.kotlin_version = '2.2.0'
+}
+
 android {
-    compileSdkVersion 36
+    compileSdk 34
 
     defaultConfig {
         minSdkVersion 24

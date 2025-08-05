@@ -1,113 +1,142 @@
+// maven-push.gradle
 apply plugin: 'maven-publish'
 apply plugin: 'signing'
 
+// --- Properties ---
 def isReleaseBuild() {
-    return VERSION_NAME.contains("SNAPSHOT") == false
-}
-
-def getReleaseRepositoryUrl() {
-    return hasProperty('RELEASE_REPOSITORY_URL') ? RELEASE_REPOSITORY_URL
-            : "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
-}
-
-def getSnapshotRepositoryUrl() {
-    return hasProperty('SNAPSHOT_REPOSITORY_URL') ? SNAPSHOT_REPOSITORY_URL
-            : "https://oss.sonatype.org/content/repositories/snapshots/"
+    return project.hasProperty('VERSION_NAME') && !VERSION_NAME.contains("SNAPSHOT")
 }
 
 def getRepositoryUsername() {
-    return hasProperty('NEXUS_USERNAME') ? NEXUS_USERNAME : ""
+    return project.findProperty('NEXUS_USERNAME') ?: ""
 }
 
 def getRepositoryPassword() {
-    return hasProperty('NEXUS_PASSWORD') ? NEXUS_PASSWORD : ""
+    return project.findProperty('NEXUS_PASSWORD') ?: ""
 }
 
-// Source Jar task
-tasks.register('androidSourcesJar', Jar) {
-    archiveClassifier.set('sources')
-    from android.sourceSets.main.java.sourceFiles
+def getReleaseRepositoryUrl() {
+    return project.findProperty('RELEASE_REPOSITORY_URL') ?: "your_release_repo_url"
 }
 
-// Uncomment if you want to include javadocs
-//tasks.register('javadocsJar', Jar) {
-//    archiveClassifier.set('javadoc')
-//    from tasks.javadoc
-//}
-
-// Main artifact
-artifacts {
-    archives tasks.named('androidSourcesJar').get()
+def getSnapshotRepositoryUrl() {
+    return project.findProperty('SNAPSHOT_REPOSITORY_URL') ?: "your_snapshot_repo_url"
 }
 
-publishing {
-    publications {
-        mavenAndroid(MavenPublication) {
-            groupId = GROUP
-            artifactId = POM_ARTIFACT_ID
-            version = VERSION_NAME
+project.afterEvaluate {
+    if (!project.plugins.hasPlugin('com.android.library')) {
+        throw new GradleException("'com.android.library' plugin required")
+    }
 
-            afterEvaluate {
-                artifact("$buildDir/outputs/aar/${project.name}-release.aar")
-            }
+    tasks.register('androidSourcesJar', Jar) {
+        archiveClassifier.set('sources')
+        from android.sourceSets.main.java.srcDirs
+    }
 
-            pom.withXml {
-                def dependenciesNode = asNode().appendNode('dependencies')
+    tasks.register('androidJavadocsJar', Jar) {
+        archiveClassifier.set('javadoc')
+        from android.sourceSets.main.java.srcDirs
+    }
 
-                configurations.implementation.allDependencies.each { dependency ->
-                    if (dependency.group != null && dependency.version != null) {
-                        def dependencyNode = dependenciesNode.appendNode('dependency')
-                        dependencyNode.appendNode('groupId', dependency.group)
-                        dependencyNode.appendNode('artifactId', dependency.name)
-                        dependencyNode.appendNode('version', dependency.version)
-                        dependencyNode.appendNode('scope', 'compile')
+    publishing {
+        publications {
+            mavenAndroid(MavenPublication) {
+                groupId = GROUP
+                artifactId = POM_ARTIFACT_ID
+                version = VERSION_NAME
+
+                artifact("$buildDir/outputs/aar/${project.name}-release.aar") {
+                    builtBy tasks.named("assembleRelease")
+                }
+                artifact tasks.named('androidSourcesJar')
+                artifact tasks.named('androidJavadocsJar')
+
+                pom {
+                    name = POM_NAME
+                    description = POM_DESCRIPTION
+                    url = POM_URL
+
+                    scm {
+                        url = POM_SCM_URL
+                        connection = POM_SCM_CONNECTION
+                        developerConnection = POM_SCM_DEV_CONNECTION
+                    }
+
+                    licenses {
+                        license {
+                            name = POM_LICENSE_NAME
+                            url = POM_LICENSE_URL
+                            distribution = POM_LICENSE_DIST
+                        }
+                    }
+
+                    developers {
+                        developer {
+                            id = POM_DEVELOPER_ID
+                            name = POM_DEVELOPER_NAME
+                            email = POM_DEVELOPER_EMAIL
+                        }
                     }
                 }
             }
-
-            pom {
-                name = POM_NAME
-                description = POM_DESCRIPTION
-                url = POM_URL
-
-                scm {
-                    url = POM_SCM_URL
-                    connection = POM_SCM_CONNECTION
-                    developerConnection = POM_SCM_DEV_CONNECTION
-                }
-
-                licenses {
-                    license {
-                        name = POM_LICENSE_NAME
-                        url = POM_LICENSE_URL
-                        distribution = POM_LICENSE_DIST
-                    }
-                }
-
-                developers {
-                    developer {
-                        id = POM_DEVELOPER_ID
-                        name = POM_DEVELOPER_NAME
-                        email = POM_DEVELOPER_EMAIL
-                    }
+        }
+        repositories {
+            maven {
+                name = isReleaseBuild() ? "release" : "snapshot"
+                url = uri(isReleaseBuild() ? getReleaseRepositoryUrl() : getSnapshotRepositoryUrl())
+                credentials {
+                    username = getRepositoryUsername()
+                    password = getRepositoryPassword()
                 }
             }
         }
     }
 
-    repositories {
-        maven {
-            name = isReleaseBuild() ? "release" : "snapshot"
-            url = uri(isReleaseBuild() ? getReleaseRepositoryUrl() : getSnapshotRepositoryUrl())
-            credentials {
-                username = getRepositoryUsername()
-                password = getRepositoryPassword()
+    signing {
+        required = { isReleaseBuild() && gradle.taskGraph.hasTask(":${project.name}:publishMavenAndroidPublicationToMavenRepository") }
+        sign publishing.publications.mavenAndroid
+    }
+
+    tasks.register("fullPublishToZip") {
+        group = "publishing"
+        description = "Publish + GPG + ZIP for Maven Central"
+
+        dependsOn(
+                "assembleRelease",
+                "androidSourcesJar",
+                "androidJavadocsJar",
+                "generatePomFileForMavenAndroidPublication",
+                "signMavenAndroidPublication",
+                "publishMavenAndroidPublicationToMavenLocal" // düzeltildi
+        )
+
+        doLast {
+            def artifactBase = "android-${project.VERSION_NAME}"
+            def mavenDir = new File(System.getProperty("user.home") + "/.m2/repository/com/segmentify/sdk/android/${artifactBase}")
+            def zipDir = new File("$buildDir/deployment-package")
+            zipDir.mkdirs()
+
+            def files = [
+                    "${artifactBase}.aar", "${artifactBase}.pom",
+                    "${artifactBase}-sources.jar", "${artifactBase}-javadoc.jar"
+            ]
+
+            files.each { f ->
+                def source = new File(mavenDir, f)
+                if (source.exists()) {
+                    def target = new File(zipDir, f)
+                    target.bytes = source.bytes
+                }
+                ["asc", "md5", "sha1"].each { ext ->
+                    def meta = new File(mavenDir, "$f.$ext")
+                    if (meta.exists()) {
+                        new File(zipDir, "$f.$ext").bytes = meta.bytes
+                    }
+                }
             }
+
+            ant.zip(destfile: "$zipDir/${artifactBase}-bundle.zip", basedir: zipDir.absolutePath)
+            println "\n✅ ZIP oluşturuldu: ${zipDir}/${artifactBase}-bundle.zip"
         }
     }
-}
-
-signing {
-    required = { isReleaseBuild() && gradle.taskGraph.hasTask("publish") }
-    sign publishing.publications.mavenAndroid
 }
