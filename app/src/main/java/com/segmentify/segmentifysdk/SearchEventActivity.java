@@ -1,14 +1,15 @@
 package com.segmentify.segmentifysdk;
 
 import android.os.Bundle;
+import android.util.Log;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.segmentify.segmentifyandroidsdk.SegmentifyManager;
 import com.segmentify.segmentifyandroidsdk.model.SearchPageModel;
-import com.segmentify.segmentifyandroidsdk.model.SearchResponseModel;
-import com.segmentify.segmentifyandroidsdk.utils.SegmentifyCallback;
 
 public class SearchEventActivity extends AppCompatActivity {
+    private static final String TAG = "SearchEventActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,16 +19,8 @@ public class SearchEventActivity extends AppCompatActivity {
         SearchPageModel searchPage = new SearchPageModel();
         searchPage.setQuery("");
         searchPage.setLang("EN");
-        SegmentifyManager.INSTANCE.sendSearchPageView(searchPage, new SegmentifyCallback<SearchResponseModel>() {
-                    @Override
-                    public void onDataLoaded(SearchResponseModel data) {
-                        if(data!=null){
-                            System.out.println(data);
-                        }
-                    }
-                });
-
-        SegmentifyManager.INSTANCE.sendSearchClickView("product","21046");
+        SegmentifyManager.INSTANCE.sendSearchPageView(searchPage, data -> Log.d(TAG, String.valueOf(data)));
+        SegmentifyManager.INSTANCE.sendSearchClickView("product", "21046");
 
     }
 }

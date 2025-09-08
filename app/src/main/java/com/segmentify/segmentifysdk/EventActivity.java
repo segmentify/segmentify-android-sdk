@@ -1,8 +1,5 @@
 package com.segmentify.segmentifysdk;
 
-import android.Manifest;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -10,7 +7,6 @@ import android.widget.Button;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.segmentify.segmentifyandroidsdk.SegmentifyManager;
@@ -22,11 +18,8 @@ import com.segmentify.segmentifyandroidsdk.model.NotificationModel;
 import com.segmentify.segmentifyandroidsdk.model.NotificationType;
 import com.segmentify.segmentifyandroidsdk.model.PageModel;
 import com.segmentify.segmentifyandroidsdk.model.ProductModel;
-import com.segmentify.segmentifyandroidsdk.model.RecommendationModel;
-import com.segmentify.segmentifyandroidsdk.utils.SegmentifyCallback;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class EventActivity extends AppCompatActivity {
@@ -42,27 +35,13 @@ public class EventActivity extends AppCompatActivity {
         model.setLang("TR");
 
 
-        SegmentifyManager.INSTANCE.sendPageView(model, new SegmentifyCallback<ArrayList<RecommendationModel>>() {
-            @Override
-            public void onDataLoaded(ArrayList<RecommendationModel> data) {
-                if (data != null) {
-                    System.out.println(data);
-                }
-            }
-        });
+        SegmentifyManager.INSTANCE.sendPageView(model, data -> Log.d(TAG, String.valueOf(data)));
 
         PageModel pageModel = new PageModel();
         pageModel.setCategory("Product Page");
         pageModel.setLang("TR");
 
-        SegmentifyManager.INSTANCE.sendPageView(pageModel, new SegmentifyCallback<ArrayList<RecommendationModel>>() {
-            @Override
-            public void onDataLoaded(ArrayList<RecommendationModel> data) {
-                if (data != null) {
-                    System.out.println(data);
-                }
-            }
-        });
+        SegmentifyManager.INSTANCE.sendPageView(pageModel, data -> Log.d(TAG, String.valueOf(data)));
 
         ProductModel productModel = new ProductModel();
         ArrayList<String> categories = new ArrayList<String>();
@@ -77,14 +56,7 @@ public class EventActivity extends AppCompatActivity {
         productModel.setPrice(45.75);
         productModel.setLang("TR");
 
-        SegmentifyManager.INSTANCE.sendProductView(productModel, new SegmentifyCallback<ArrayList<RecommendationModel>>() {
-            @Override
-            public void onDataLoaded(ArrayList<RecommendationModel> data) {
-                if (data != null) {
-                    System.out.println(data);
-                }
-            }
-        });
+        SegmentifyManager.INSTANCE.sendProductView(productModel, data -> Log.d(TAG, String.valueOf(data)));
 
 
         ArrayList<ProductModel> productList = new ArrayList<>();
@@ -101,14 +73,7 @@ public class EventActivity extends AppCompatActivity {
         checkoutModel.setTotalPrice(156.0);
         checkoutModel.setLang("TR");
 
-        SegmentifyManager.INSTANCE.sendViewBasket(checkoutModel, new SegmentifyCallback<ArrayList<RecommendationModel>>() {
-            @Override
-            public void onDataLoaded(ArrayList<RecommendationModel> data) {
-                if (data != null) {
-                    System.out.println(data);
-                }
-            }
-        });
+        SegmentifyManager.INSTANCE.sendViewBasket(checkoutModel, data -> Log.d(TAG, String.valueOf(data)));
 
         ArrayList<ProductModel> checkOutProductList = new ArrayList<>();
         ProductModel checkOutProductModel = new ProductModel();
@@ -125,14 +90,7 @@ public class EventActivity extends AppCompatActivity {
         checkoutModel1.setOrderNo("order1");
         checkoutModel1.setLang("TR");
 
-        SegmentifyManager.INSTANCE.sendPurchase(checkoutModel1, new SegmentifyCallback<ArrayList<RecommendationModel>>() {
-            @Override
-            public void onDataLoaded(ArrayList<RecommendationModel> data) {
-                if (data != null) {
-                    System.out.println(data);
-                }
-            }
-        });
+        SegmentifyManager.INSTANCE.sendPurchase(checkoutModel1, data -> Log.d(TAG, String.valueOf(data)));
 
         BannerOperationsModel bannerImpressionOperationModel = new BannerOperationsModel();
         bannerImpressionOperationModel.setBannerType("impression");
@@ -166,7 +124,7 @@ public class EventActivity extends AppCompatActivity {
         internalBannerModel.setOrder(1);
         internalBannerModel.setImage("https://demo.segmentify.com/gorgeous-duo-tshirt-trousers.jpg");
         internalBannerModel.setLang("TR");
-        internalBannerModel.setUrls(new ArrayList<>(Arrays.asList("https://demo.segmentify.com/gorgeous-duo-tshirt-trousers")));
+        internalBannerModel.setUrls(new ArrayList<>(List.of("https://demo.segmentify.com/gorgeous-duo-tshirt-trousers")));
         internalBannerModels.add(internalBannerModel);
 
         internalBannerModel = new InternalBannerModel();
@@ -188,7 +146,6 @@ public class EventActivity extends AppCompatActivity {
                             Log.w(TAG, "Fetching FCM registration token failed", task.getException());
                             return;
                         }
-
                         // Get new FCM registration token
                         String token = task.getResult();
                         NotificationModel nModel = new NotificationModel();
@@ -213,29 +170,4 @@ public class EventActivity extends AppCompatActivity {
                     // TODO: Inform user that that your app will not show notifications.
                 }
             });
-
-    private void askNotificationPermission() {
-        // This is only necessary for API level >= 33 (TIRAMISU)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) ==
-                    PackageManager.PERMISSION_GRANTED) {
-                // FCM SDK (and your app) can post notifications.
-            } else if (shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
-                // TODO: display an educational UI explaining to the user the features that will be enabled
-                //       by them granting the POST_NOTIFICATION permission. This UI should provide the user
-                //       "OK" and "No thanks" buttons. If the user selects "OK," directly request the permission.
-                //       If the user selects "No thanks," allow the user to continue without notifications.
-            } else {
-                // Directly ask for the permission
-                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
-            }
-        }
-    }
-    // [END ask_post_notifications]
-
-    public void runtimeEnableAutoInit() {
-        // [START fcm_runtime_enable_auto_init]
-        FirebaseMessaging.getInstance().setAutoInitEnabled(true);
-        // [END fcm_runtime_enable_auto_init]
-    }
 }

@@ -19,6 +19,9 @@ import androidx.work.WorkerParameters;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.segmentify.segmentifyandroidsdk.SegmentifyManager;
+import com.segmentify.segmentifyandroidsdk.model.NotificationModel;
+import com.segmentify.segmentifyandroidsdk.model.NotificationType;
 
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
@@ -51,6 +54,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             String messageBody = remoteMessage.getNotification().getBody();
             Log.d(TAG, "Message Notification Body: " + messageBody);
             sendNotification(messageBody, remoteMessage.getNotification().getTitle());
+            NotificationModel model = new NotificationModel();
+            model.setType(NotificationType.VIEW);
+            model.setInstanceId(remoteMessage.getData().get("instanceId"));
+            model.setProductId(remoteMessage.getData().get("productId"));
+            SegmentifyManager.INSTANCE.sendNotificationInteraction(model);
         }
 
         // Also if you intend on generating your own notifications as a result of a received FCM
