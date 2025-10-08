@@ -745,24 +745,8 @@ object SegmentifyManager {
         EventController.sendUserOperation(userModel)
     }
 
+    @Deprecated("User change event is deprecated. You do not need to call this method anymore for user ID changes.")
     fun sendChangeUser(userChangeModel: UserChangeModel) {
-        userChangeModel.eventName = Constant.userChangeEventName
-
-        if (userChangeModel?.userId.isNullOrBlank()) {
-            SegmentifyLogger.printErrorLog("You must fill userId before accessing change user event")
-            return
-        }
-        userChangeModel.oldUserId = clientPreferences?.getUserId()
-
-        if (clientPreferences?.getUserId() != userChangeModel.userId) {
-            EventController.sendChangeUser(userChangeModel, object : SegmentifyCallback<Boolean> {
-                override fun onDataLoaded(isSuccessful: Boolean) {
-                    if (isSuccessful) {
-                        userChangeModel.userId?.let { clientPreferences?.setUserId(it) }
-                    }
-                }
-            })
-        }
     }
 
     fun setAdvertisingIdentifier(adIdentifier: String?) {
