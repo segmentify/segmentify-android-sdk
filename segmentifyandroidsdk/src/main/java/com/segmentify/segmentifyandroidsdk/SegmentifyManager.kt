@@ -745,7 +745,7 @@ object SegmentifyManager {
         EventController.sendUserOperation(userModel)
     }
 
-    @Deprecated("Use the new month() method")
+    @Deprecated("User change event is deprecated. You do not need to call this method anymore for user ID changes.")
     fun sendChangeUser(userChangeModel: UserChangeModel) {
     }
 
