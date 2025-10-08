@@ -15,7 +15,6 @@ class Constant {
         val basketOperationsEventName = "BASKET_OPERATIONS"
         val checkoutEventName = "CHECKOUT"
         val userOperationEventName = "USER_OPERATIONS"
-        val userChangeEventName = "USER_CHANGE"
         val customEventName = "CUSTOM_EVENT"
         val interactionEventName = "INTERACTION"
         val bannerOperationsEventName = "BANNER_OPERATIONS"
