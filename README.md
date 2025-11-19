@@ -80,3 +80,12 @@ For other integrations you can check [Master Integration](https://www.segmentify
 
 Segmentify Android SDK is available under the BSD-2 license.
 Please check LICENSE file to learn more about details.
+
+
+## Push Permission & User Updates 1.0.1
+1.0.1 update changes user events in the background. This is a completely internal and will not effect sdk users. Also productId parameter has been removed from push interaction event.
+
+Good Luck!
+
+
+
