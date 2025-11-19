@@ -1,8 +1,8 @@
 # Segmentify Android SDK
 Segmentify  SDK for sending events and rendering recommendations for android based devices
 
-> **Supports Android 4.4(API Level: 19) and higher devices.**
-> **Current version : 2.2.5*
+> **Supports Android 4.4(API Level: 24) and higher devices.**
+> **Current version : 2.2.6*
 
 ## Installation
 
@@ -82,8 +82,8 @@ Segmentify Android SDK is available under the BSD-2 license.
 Please check LICENSE file to learn more about details.
 
 
-## Push Permission & User Updates 1.0.1
-1.0.1 update changes user events in the background. This is a completely internal and will not effect sdk users. Also productId parameter has been removed from push interaction event.
+## Push Permission & User Updates 2.2.6
+2.2.6 update changes user events in the background. This is a completely internal and will not effect sdk users. Also productId parameter has been removed from push interaction event.
 
 Good Luck!
 

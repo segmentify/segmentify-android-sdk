@@ -7,6 +7,7 @@ DEPLOY_DIR=$MODULE_NAME/build/deployment-package
 BUNDLE_NAME=android-$VERSION_NAME-bundle.zip
 MAVEN_REPO=$HOME/.m2/repository/com/segmentify/sdk/android/$VERSION_NAME
 
+
 CYAN='\033[1;36m'
 GREEN='\033[1;32m'
 YELLOW='\033[1;33m'
@@ -71,9 +72,14 @@ do
       error "$file cannot be signed. Check GPG configurations."
     fi
 
-    # MD5 ve SHA1
-    (cd "$TMP_BUNDLE_DIR" && md5sum "$file" | awk '{print $1}' > "$file.md5") && success "$file.md5 generated."
-    (cd "$TMP_BUNDLE_DIR" && sha1sum "$file" | awk '{print $1}' > "$file.sha1") && success "$file.sha1 generated."
+    # MD5 (macOS'ta yerleşik 'md5' kullanılır ve çıktı temizlenir)
+    (cd "$TMP_BUNDLE_DIR" && md5 -r "$file" | awk '{print $1}' > "$file.md5") && success "$file.md5 generated."
+
+    # SHA1 (macOS'ta yerleşik 'shasum -a 1' kullanılır ve çıktı temizlenir)
+    (cd "$TMP_BUNDLE_DIR" && shasum -a 1 "$file" | awk '{print $1}' > "$file.sha1") && success "$file.sha1 generated."
+
+    # ------------------------------------------
+
   else
     warn "File cannot be found, ignoring: $file"
   fi
@@ -108,7 +114,6 @@ else
   warn "ZIP file cannot be found: $BUNDLE_NAME"
 fi
 
-# Bilgilendirme
 success "🎉 Ready for publish, package and signs are created."
 echo -e "📁 Directory: $DEPLOY_DIR"
 echo -e "📤 Manuel upload: https://central.sonatype.com/"
