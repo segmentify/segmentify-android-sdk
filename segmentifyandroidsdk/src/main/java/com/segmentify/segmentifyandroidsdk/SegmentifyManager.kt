@@ -644,7 +644,7 @@ object SegmentifyManager {
         userModel.eventName = Constant.userOperationEventName
         userModel.userOperationStep = Constant.registerStep
 
-        if (userModel.email == null && userModel.username == null) {
+        if (userModel.email == null) {
             SegmentifyLogger.printErrorLog("You must fill email or email before accessing sendUserLogout event")
             return
         }
@@ -657,7 +657,7 @@ object SegmentifyManager {
         var userModel = UserModel()
         userModel.eventName = Constant.userOperationEventName
         userModel.userOperationStep = Constant.registerStep
-        userModel.username = username
+        userModel.externalId = username
         userModel.fullName = fullName
         userModel.email = email
         userModel.mobilePhone = mobilePhone
@@ -672,11 +672,6 @@ object SegmentifyManager {
         userModel.eventName = Constant.userOperationEventName
         userModel.userOperationStep = Constant.signInStep
 
-        if (userModel?.username.isNullOrBlank()) {
-            SegmentifyLogger.printErrorLog("You must fill username before accessing change user event")
-            return
-        }
-
         if (userModel?.email.isNullOrBlank()) {
             SegmentifyLogger.printErrorLog("You must fill email before accessing change user event")
             return
@@ -689,7 +684,7 @@ object SegmentifyManager {
         var userModel = UserModel()
         userModel.eventName = Constant.userOperationEventName
         userModel.userOperationStep = Constant.signInStep
-        userModel.username = username
+        userModel.externalId = username
         userModel.email = email
 
         EventController.sendUserOperation(userModel)
@@ -699,7 +694,7 @@ object SegmentifyManager {
         var userModel = UserModel()
         userModel.eventName = Constant.userOperationEventName
         userModel.userOperationStep = Constant.logoutStep
-        userModel.username = username
+        userModel.externalId = username
         userModel.email = email
 
         EventController.sendUserOperation(userModel)
@@ -709,14 +704,10 @@ object SegmentifyManager {
         userModel.eventName = Constant.userOperationEventName
         userModel.userOperationStep = Constant.updateUserStep
 
-        if (userModel.email.isNullOrBlank() || userModel.username.isNullOrBlank()) {
+        if (userModel.email.isNullOrBlank()) {
             SegmentifyLogger.printErrorLog("You must fill username or email before accessing sendUserUpdate event")
             return
         }
-
-        //Email ve userName kaydedebilmek için
-        //clientPreferences.setUserName(userModel.username.toString())
-        //clientPreferences?.setEmail(userModel.email.toString())
 
         EventController.sendUserOperation(userModel)
     }
@@ -725,7 +716,7 @@ object SegmentifyManager {
         var userModel = UserModel()
         userModel.eventName = Constant.userOperationEventName
         userModel.userOperationStep = Constant.updateUserStep
-        userModel.username = username
+        userModel.externalId = username
         userModel.fullName = fullName
         userModel.email = email
         userModel.mobilePhone = mobilePhone
@@ -779,13 +770,12 @@ object SegmentifyManager {
         }
 
         if (notificationModel.type == NotificationType.CLICK) {
-            if (notificationModel.instanceId.isNullOrEmpty() && notificationModel.productId.isNullOrEmpty()) {
+            if (notificationModel.instanceId.isNullOrEmpty()) {
                 SegmentifyLogger.printErrorLog("You must fill deviceToken before accessing notification click event")
                 return
             } else {
                 clientPreferences?.setPushCampaignId(notificationModel.instanceId!!)
-                clientPreferences?.setPushCampaignProductId(notificationModel.productId!!)
-                sendClickView(notificationModel.instanceId!!, notificationModel.productId!!);
+                sendClickView(notificationModel.instanceId!!, notificationModel.instanceId!!);
             }
         }
         PushController.sendNotificationInteraction(notificationModel)

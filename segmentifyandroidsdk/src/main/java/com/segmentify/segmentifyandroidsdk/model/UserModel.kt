@@ -3,7 +3,7 @@ package com.segmentify.segmentifyandroidsdk.model
 import com.google.gson.annotations.SerializedName
 
 class UserModel : SegmentifyObject() {
-        var username:String? = null
+        var externalId:String? = null
         var email:String? = null
         var age:String? = null
         var birthDate:String? = null
