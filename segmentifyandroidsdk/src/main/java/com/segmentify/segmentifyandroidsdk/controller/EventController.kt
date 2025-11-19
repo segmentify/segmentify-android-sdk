@@ -576,32 +576,40 @@ internal object EventController {
             val combineIdsJSONArray = productJson.getJSONArray("combineIds")
             val combineIds = ArrayList<String>()
 
-            if(combineIdsJSONArray != null){
-                for(i in 0 until combineIdsJSONArray.length()) {
+            if (combineIdsJSONArray != null) {
+                for (i in 0 until combineIdsJSONArray.length()) {
                     combineIds.add(combineIdsJSONArray.getString(i))
-            }
+                }
                 productRecommendationModel.combineIds = combineIds
+            }
         }
 
-        if(productJson.has("groupId")) {
-             productRecommendationModel.groupId = productJson.getString("groupId")
+        if (productJson.has("groupId")) {
+            productRecommendationModel.groupId = productJson.getString("groupId")
         }
-        if(productJson.has("priceSegment")) {
+
+        if (productJson.has("priceSegment")) {
             productRecommendationModel.priceSegment = productJson.getString("priceSegment")
         }
-        if(productJson.has("lastBoughtTime")) {
-            productRecommendationModel.lastBoughtTime = Date(productJson.getLong("lastBoughtTime"))
+
+        if (productJson.has("lastBoughtTime")) {
+            productRecommendationModel.lastBoughtTime =
+                Date(productJson.getLong("lastBoughtTime"))
 
         }
-        if(productJson.has("scoreCount")) {
+
+        if (productJson.has("scoreCount")) {
             productRecommendationModel.scoreCount = productJson.getInt("scoreCount")
         }
-        if(productJson.has("reviewCount")) {
+
+        if (productJson.has("reviewCount")) {
             productRecommendationModel.reviewCount = productJson.getInt("reviewCount")
         }
-        if(productJson.has("savingOverTime")) {
+
+        if (productJson.has("savingOverTime")) {
             productRecommendationModel.savingOverTime = productJson.getLong("savingOverTime")
         }
+
 
 
 
