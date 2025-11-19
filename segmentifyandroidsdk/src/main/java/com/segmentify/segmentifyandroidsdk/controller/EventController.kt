@@ -15,6 +15,7 @@ import com.segmentify.segmentifyandroidsdk.utils.SegmentifyCallback
 import com.segmentify.segmentifyandroidsdk.utils.SegmentifyLogger
 import org.json.JSONArray
 import org.json.JSONObject
+import java.util.Date
 
 internal object EventController {
 
@@ -395,12 +396,17 @@ internal object EventController {
         if(productJson.has("oldPriceText")){
             productRecommendationModel.oldPriceText = productJson.getString("oldPriceText")
         }
-
+        if(productJson.has("specialPrice")){
+            productRecommendationModel.specialPrice = productJson.getDouble("specialPrice")
+        }
+        if(productJson.has("specialPriceText")){
+            productRecommendationModel.specialPriceText = productJson.getString("specialPriceText")
+        }
         if(productJson.has("categories")) {
-            var categoriesJSONArray = productJson.getJSONArray("categories")
-            var categories = ArrayList<String>()
+            val categoriesJSONArray = productJson.getJSONArray("categories")
+            val categories = ArrayList<String>()
             if(categoriesJSONArray != null) {
-                for(i in 0 until categoriesJSONArray!!.length()) {
+                for(i in 0 until categoriesJSONArray.length()) {
                     categories.add(categoriesJSONArray.getString(i))
                 }
             }
@@ -431,7 +437,7 @@ internal object EventController {
             productRecommendationModel.imageS = productJson.getString("imageS")
         }
         if(productJson.has("imageM")){
-            productRecommendationModel.imageS = productJson.getString("imageM")
+            productRecommendationModel.imageM = productJson.getString("imageM")
         }
         if(productJson.has("imageL")){
             productRecommendationModel.imageL = productJson.getString("imageL")
@@ -439,9 +445,20 @@ internal object EventController {
         if(productJson.has("imageXL")){
             productRecommendationModel.imageXL = productJson.getString("imageXL")
         }
+        if(productJson.has("additionalImages")){
+           val additionalImagesJSONArray = productJson.getJSONArray("additionalImages")
+            val additionalImages = ArrayList<String>()
+            if(additionalImagesJSONArray != null){
+                for(i in 0 until additionalImagesJSONArray.length()) {
+                    additionalImages.add(additionalImagesJSONArray.getString(i))
+                }
+            }
+            productRecommendationModel.additionalImages = additionalImages
+        }
+
         if(productJson.has("category")) {
-            var categoryJSONArray = productJson.getJSONArray("category")
-            var category = ArrayList<String>()
+            val categoryJSONArray = productJson.getJSONArray("category")
+            val category = ArrayList<String>()
             if(categoryJSONArray != null) {
                 for(i in 0 until categoryJSONArray!!.length()) {
                     category.add(categoryJSONArray.getString(i))
@@ -449,15 +466,18 @@ internal object EventController {
             }
             productRecommendationModel.category = category
         }
+        if(productJson.has("mainCategory")){
+            productRecommendationModel.mainCategory = productJson.getString("mainCategory")
+        }
         if(productJson.has("gender")){
             productRecommendationModel.gender = productJson.getString("gender")
         }
 
         if(productJson.has("colors")){
-            var colorsJSONArray = productJson.getJSONArray("colors")
-            var colors = ArrayList<String>()
+            val colorsJSONArray = productJson.getJSONArray("colors")
+            val colors = ArrayList<String>()
             if(colorsJSONArray != null){
-                for(i in 0 until colorsJSONArray!!.length()) {
+                for(i in 0 until colorsJSONArray.length()) {
                     colors.add(colorsJSONArray.getString(i))
                 }
             }
@@ -465,14 +485,26 @@ internal object EventController {
         }
 
         if(productJson.has("sizes")){
-            var sizesJSONArray = productJson.getJSONArray("sizes")
-            var sizes = ArrayList<String>()
+            val sizesJSONArray = productJson.getJSONArray("sizes")
+            val sizes = ArrayList<String>()
+
             if(sizesJSONArray != null){
-                for(i in 0 until sizesJSONArray!!.length()) {
+                for(i in 0 until sizesJSONArray.length()) {
                     sizes.add(sizesJSONArray.getString(i))
                 }
             }
             productRecommendationModel.sizes = sizes
+        }
+
+        if(productJson.has("allSizes")){
+            val allSizesJSONArray = productJson.getJSONArray("allSizes")
+            val allSizes = ArrayList<String>()
+            if(allSizesJSONArray != null) {
+                for (i in 0 until allSizesJSONArray!!.length()) {
+                    allSizes.add(allSizesJSONArray.getString(i))
+                }
+            }
+            productRecommendationModel.allSizes = allSizes
         }
 
         if(productJson.has("labels")){
@@ -493,11 +525,84 @@ internal object EventController {
 
 
         if(productJson.has("params")){
-            var obj =  productJson.getString("params");
-            var json  = JSONObject(obj);
-            var paramsMap: Map<String, Any> =Gson().fromJson(obj, object : TypeToken<Map<String, Any>>() {}.type)
+            val obj =  productJson.getString("params");
+            val paramsMap: Map<String, Any> =Gson().fromJson(obj, object : TypeToken<Map<String, Any>>() {}.type)
             productRecommendationModel.params =paramsMap
         }
+
+        if(productJson.has("paramsList")){
+            val paramsListJSONObject = productJson.getJSONObject("paramsList")
+            val paramsList = HashMap<String, List<String>>()
+
+            if(paramsListJSONObject != null) {
+                val keys = paramsListJSONObject.keys()
+                while(keys.hasNext()) {
+                    val key = keys.next()
+                    val valueArray = paramsListJSONObject.getJSONArray(key)
+                    val valueList = ArrayList<String>()
+
+                    for (i in 0 until valueArray.length()) {
+                        valueList.add(valueArray.getString(i))
+                    }
+
+                    paramsList[key] = valueList
+                }
+            }
+
+            productRecommendationModel.paramsList = paramsList
+        }
+
+        if(productJson.has("lastUpdateTime")){
+            productRecommendationModel.lastUpdateTime = Date(productJson.getLong("lastUpdateTime"))
+        }
+
+        if(productJson.has("stockCount")){
+            productRecommendationModel.stockCount = productJson.getInt("stockCount")
+        }
+
+        if(productJson.has("stockRatio")) {
+            productRecommendationModel.stockRatio = productJson.getDouble("stockRatio").toFloat()
+        }
+
+        if(productJson.has("stockStatus")) {
+            productRecommendationModel.stockStatus = productJson.getInt("stockStatus")
+        }
+
+        if(productJson.has("publishTime")) {
+            productRecommendationModel.publishTime = Date(productJson.getLong("publishTime"))
+        }
+
+        if(productJson.has("combineIds")) {
+            val combineIdsJSONArray = productJson.getJSONArray("combineIds")
+            val combineIds = ArrayList<String>()
+
+            if(combineIdsJSONArray != null){
+                for(i in 0 until combineIdsJSONArray.length()) {
+                    combineIds.add(combineIdsJSONArray.getString(i))
+            }
+                productRecommendationModel.combineIds = combineIds
+        }
+
+        if(productJson.has("groupId")) {
+             productRecommendationModel.groupId = productJson.getString("groupId")
+        }
+        if(productJson.has("priceSegment")) {
+            productRecommendationModel.priceSegment = productJson.getString("priceSegment")
+        }
+        if(productJson.has("lastBoughtTime")) {
+            productRecommendationModel.lastBoughtTime = Date(productJson.getLong("lastBoughtTime"))
+
+        }
+        if(productJson.has("scoreCount")) {
+            productRecommendationModel.scoreCount = productJson.getInt("scoreCount")
+        }
+        if(productJson.has("reviewCount")) {
+            productRecommendationModel.reviewCount = productJson.getInt("reviewCount")
+        }
+        if(productJson.has("savingOverTime")) {
+            productRecommendationModel.savingOverTime = productJson.getLong("savingOverTime")
+        }
+
 
 
 
