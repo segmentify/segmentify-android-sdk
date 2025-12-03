@@ -18,7 +18,7 @@ public class SearchEventActivity extends AppCompatActivity {
 
         SearchPageModel searchPage = new SearchPageModel();
         searchPage.setQuery("");
-        searchPage.setLang("EN");
+        searchPage.setLang("TR");
         SegmentifyManager.INSTANCE.sendSearchPageView(searchPage, data -> Log.d(TAG, String.valueOf(data)));
         SegmentifyManager.INSTANCE.sendSearchClickView("product", "21046");
 

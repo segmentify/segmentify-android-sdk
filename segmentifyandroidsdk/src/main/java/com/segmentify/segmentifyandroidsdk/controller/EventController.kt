@@ -15,7 +15,6 @@ import com.segmentify.segmentifyandroidsdk.utils.SegmentifyCallback
 import com.segmentify.segmentifyandroidsdk.utils.SegmentifyLogger
 import org.json.JSONArray
 import org.json.JSONObject
-import java.util.Date
 
 internal object EventController {
 
@@ -51,18 +50,20 @@ internal object EventController {
         }
 
         else{
-            SegmentifyLogger.printErrorLog("You must fill userid&sessionid before accessing pageview event")
+            SegmentifyLogger.printErrorLog("You must fill userid & sessionid before accessing pageview event")
             return
         }
     }
 
     fun reformatSearchResponse(response: SearchEventResponseModel): SearchResponseModel {
         var returnVal = SearchResponseModel()
-        var list = response.search?.get(0)
-        if(list != null && list.isEmpty().not()){
-            returnVal = list[0]
-            SegmentifyManager.sendWidgetView("SEARCH", "static")
-            SegmentifyManager.sendImpression("SEARCH", "static")
+        if (response.search != null && response.search!!.isNotEmpty()) {
+            var list = response.search?.get(0)
+            if (list != null && list.isEmpty().not()) {
+                returnVal = list[0]
+                SegmentifyManager.sendWidgetView("SEARCH", "static")
+                SegmentifyManager.sendImpression("SEARCH", "static")
+            }
         }
         return returnVal
     }
@@ -553,7 +554,7 @@ internal object EventController {
         }
 
         if(productJson.has("lastUpdateTime")){
-            productRecommendationModel.lastUpdateTime = Date(productJson.getLong("lastUpdateTime"))
+            productRecommendationModel.lastUpdateTime = productJson.getLong("lastUpdateTime")
         }
 
         if(productJson.has("stockCount")){
@@ -569,7 +570,7 @@ internal object EventController {
         }
 
         if(productJson.has("publishTime")) {
-            productRecommendationModel.publishTime = Date(productJson.getLong("publishTime"))
+            productRecommendationModel.publishTime = productJson.getLong("publishTime")
         }
 
         if(productJson.has("combineIds")) {
@@ -593,8 +594,7 @@ internal object EventController {
         }
 
         if (productJson.has("lastBoughtTime")) {
-            productRecommendationModel.lastBoughtTime =
-                Date(productJson.getLong("lastBoughtTime"))
+            productRecommendationModel.lastBoughtTime = productJson.getLong("lastBoughtTime")
 
         }
 
