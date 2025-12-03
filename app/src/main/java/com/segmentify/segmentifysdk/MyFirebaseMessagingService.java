@@ -57,7 +57,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             NotificationModel model = new NotificationModel();
             model.setType(NotificationType.VIEW);
             model.setInstanceId(remoteMessage.getData().get("instanceId"));
-            model.setProductId(remoteMessage.getData().get("productId"));
             SegmentifyManager.INSTANCE.sendNotificationInteraction(model);
         }
 

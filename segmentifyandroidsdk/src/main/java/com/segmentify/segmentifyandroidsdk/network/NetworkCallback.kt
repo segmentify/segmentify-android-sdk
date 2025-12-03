@@ -14,12 +14,15 @@ abstract class NetworkCallback<T> : Callback<T> {
         response?.apply {
             if(isSuccessful)
             {
-                response.body()?.apply{
-                    onSuccess(this)
+                val body = response.body()
+                if(body != null){
+                    onSuccess(body)
+                } else {
+                    SegmentifyLogger.printErrorLog("Request successful but body is null")
                 }
             }
             else if(response.code() != 200){
-                if(!call!!.isCanceled) run {
+                if(call != null && !call.isCanceled) run {
                     SegmentifyLogger.printErrorLog(response.message())
                     if (retryCount++ < TOTAL_RETRIES) {
                         SegmentifyLogger.printErrorLog(": Retrying... ($retryCount out of $TOTAL_RETRIES)")
@@ -33,6 +36,7 @@ abstract class NetworkCallback<T> : Callback<T> {
     abstract fun onSuccess(response:T)
 
     override fun onFailure(call: Call<T>, t: Throwable) {
+        SegmentifyLogger.printErrorLog("Request failed: " + t.message)
     }
 
     private fun retry(call: Call<T>) {
