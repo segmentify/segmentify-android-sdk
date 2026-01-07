@@ -3,6 +3,7 @@ package com.segmentify.segmentifysdk
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.media.Image
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -36,16 +37,16 @@ class MainActivity : AppCompatActivity() {
 
         if (intent.hasExtra("deeplink")) {
             val deepLinkUrl = intent.getStringExtra("deeplink")
-            processDeepLink(deepLinkUrl)
+            processDeepLink(deepLinkUrl, intent.getStringExtra("pushimage"))
         } else if (intent.data != null) {
             val deepLinkUrl = intent.data.toString()
-            processDeepLink(deepLinkUrl)
+            processDeepLink(deepLinkUrl,intent.getStringExtra("pushimage"))
         } else {
             Log.w(TAG, "no deeplink.")
         }
     }
 
-    private fun processDeepLink(url: String?) {
+    private fun processDeepLink(url: String?, image: String?) {
         if (url.isNullOrEmpty()) {
             return
         }
@@ -60,6 +61,7 @@ class MainActivity : AppCompatActivity() {
                 if (!productId.isNullOrEmpty()) {
                     val detailIntent = Intent(this, ProductDetailActivity::class.java)
                     detailIntent.putExtra("PRODUCT_ID", productId)
+                    detailIntent.putExtra("PUSH_IMAGE", image)
                     startActivity(detailIntent)
                 } else {
                     Toast.makeText(this, "product not found.", Toast.LENGTH_SHORT).show()
