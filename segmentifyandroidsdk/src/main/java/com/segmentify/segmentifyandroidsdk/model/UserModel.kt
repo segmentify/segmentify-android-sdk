@@ -13,6 +13,9 @@ class UserModel : SegmentifyObject() {
         var isRegistered:String? = null
         var isLogin:Boolean? = null
         var lastSearchDeletedKeywords:String? = null
+        var emailNtf:Boolean? = null
+        var smsNtf:Boolean? = null
+        var whatsappNtf:Boolean? = null
 
         @SerializedName("step")
         var userOperationStep:String? = null

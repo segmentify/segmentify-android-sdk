@@ -653,7 +653,7 @@ object SegmentifyManager {
 
     }
 
-    fun sendUserRegister(username: String?, fullName: String?, email: String?, mobilePhone: String?, gender: String?, age: String?, birthdate: String?) {
+    fun sendUserRegister(username: String?, fullName: String?, email: String?, mobilePhone: String?, gender: String?, age: String?, birthdate: String?, whatsappNtf: Boolean?, smsNtf: Boolean?, emailNtf: Boolean?) {
         var userModel = UserModel()
         userModel.eventName = Constant.userOperationEventName
         userModel.userOperationStep = Constant.registerStep
@@ -664,6 +664,10 @@ object SegmentifyManager {
         userModel.gender = gender
         userModel.age = age
         userModel.birthDate = birthdate
+        userModel.emailNtf= emailNtf
+        userModel.smsNtf = smsNtf
+        userModel.whatsappNtf = whatsappNtf
+
 
         EventController.sendUserOperation(userModel)
     }
@@ -712,7 +716,7 @@ object SegmentifyManager {
         EventController.sendUserOperation(userModel)
     }
 
-    fun sendUserUpdate(username: String?, fullName: String?, email: String?, mobilePhone: String?, gender: String?, age: String?, birthdate: String?, isRegistered: String?, isLogin: Boolean?) {
+    fun sendUserUpdate(username: String?, fullName: String?, email: String?, mobilePhone: String?, gender: String?, age: String?, birthdate: String?, isRegistered: String?, isLogin: Boolean?, emailNtf: Boolean?, smsNtf: Boolean?, whatsappNtf: Boolean?) {
         var userModel = UserModel()
         userModel.eventName = Constant.userOperationEventName
         userModel.userOperationStep = Constant.updateUserStep
@@ -725,6 +729,10 @@ object SegmentifyManager {
         userModel.birthDate = birthdate
         userModel.isRegistered = isRegistered
         userModel.isLogin = isLogin
+        userModel.emailNtf = emailNtf
+        userModel.smsNtf = smsNtf
+        userModel.whatsappNtf = whatsappNtf
+
 
 
         //Email ve userName kaydedebilmek için
