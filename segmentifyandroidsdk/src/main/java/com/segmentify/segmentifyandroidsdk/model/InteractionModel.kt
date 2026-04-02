@@ -7,7 +7,6 @@ class InteractionModel: SegmentifyObject() {
     var widgetViewStep:String? = null
 
     var interactionId:String? = null
-    var impressionId:String? = null
     var instanceId:String? = null
     var type:String? = null
 }
