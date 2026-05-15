@@ -1,6 +1,7 @@
 package com.segmentify.segmentifyandroidsdk.model
 
 import com.google.gson.annotations.SerializedName
+import com.segmentify.segmentifyandroidsdk.BuildConfig
 import com.segmentify.segmentifyandroidsdk.SegmentifyManager
 
 open class SegmentifyObject{
@@ -20,6 +21,7 @@ open class SegmentifyObject{
     var osversion : String? = android.os.Build.VERSION.RELEASE.toString()
     var advertisingIdentifier : String? = null
     var appVersion : String? = null
+    var sdkVersion : String? = BuildConfig.SDK_VERSION
     var testMode:Boolean? = false
     var region : String? = ""
 }
