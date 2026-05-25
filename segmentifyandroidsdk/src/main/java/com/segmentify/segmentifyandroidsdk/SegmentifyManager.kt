@@ -53,6 +53,8 @@ object SegmentifyManager {
         this.configModel.apiKey = apiKey
         this.configModel.dataCenterUrl = dataCenterUrl
         this.configModel.subDomain = subDomain
+        this.configModel.os = "ANDROID"
+        this.configModel.device = "ANDROID"
         setBaseApiUrl()
         ConnectionManager.rebuildServices()
     }
@@ -77,6 +79,8 @@ object SegmentifyManager {
         this.configModel.apiKey = appKey
         this.configModel.dataCenterUrl = dataCenterUrl
         this.configModel.subDomain = subDomain
+        this.configModel.os = "ANDROID"
+        this.configModel.device = "ANDROID"
         setBaseApiUrl()
 
         if (clientPreferences?.getSessionId().isNullOrBlank()) {
@@ -638,6 +642,16 @@ object SegmentifyManager {
         interactionModel.type = Constant.searchStep
 
         EventController.sendInteractionEvent(interactionModel)
+    }
+
+    fun sendUserTraits(properties: Map<String, Any?>) {
+        if (properties.isEmpty()) return
+
+        val model = UserTraitsEventModel().apply {
+            eventName = Constant.userTraitsEventName
+            this.properties = properties.filterValues { it != null }
+        }
+        EventController.sendUserTraits(model)
     }
 
     fun sendUserRegister(userModel: UserModel) {

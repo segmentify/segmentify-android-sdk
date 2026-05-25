@@ -34,6 +34,9 @@ interface EventFactory {
         @POST("/add/events/v1.json")
         fun sendUserOperation(@Body userModel: UserModel,@Query("apiKey") apiKey : String): Call<Any>
 
+        @POST("/add/events/v1.json")
+        fun sendUserTraits(@Body userTraitsEventModel: UserTraitsEventModel, @Query("apiKey") apiKey: String): Call<Any>
+
         //POST UserModel Object with steps as defined in documentation
         @POST("/add/events/v1.json")
         fun sendChangeUser(@Body userChangeModel: UserChangeModel,@Query("apiKey") apiKey : String): Call<Any>
