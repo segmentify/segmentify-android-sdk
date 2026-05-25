@@ -21,7 +21,7 @@ class Constant {
         val bannerGroupViewEventName = "BANNER_GROUP_VIEW"
         val internalBannerGroupEventName = "INTERNAL_BANNER_GROUP"
         val searchViewEventName = "SEARCH"
-        val userTraitsEventName = "user:traits"
+        val userTraitsEventName = "USER_TRAITS"
 
         //Steps
         val customerInformationStep = "customer"
