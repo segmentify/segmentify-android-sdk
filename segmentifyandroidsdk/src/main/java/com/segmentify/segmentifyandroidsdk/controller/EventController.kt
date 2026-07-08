@@ -184,6 +184,21 @@ internal object EventController {
         }
     }
 
+    fun sendUserTraits(userTraitsEventModel: UserTraitsEventModel) {
+
+        if (!userTraitsEventModel.userId.isNullOrEmpty() && !userTraitsEventModel.sessionId.isNullOrEmpty()) {
+
+            ConnectionManager.getEventFactory().sendUserTraits(userTraitsEventModel, SegmentifyManager.configModel.apiKey!!)
+                    .enqueue(object : NetworkCallback<Any>() {
+                        override fun onSuccess(response: Any) {
+                        }
+                    })
+        } else {
+            SegmentifyLogger.printErrorLog("You must fill userid&sessionid before accessing user traits event")
+            return
+        }
+    }
+
     fun sendChangeUser(userChangeModel: UserChangeModel,segmentifyCallback : SegmentifyCallback<Boolean>){
 
         if(!userChangeModel.userId.isNullOrEmpty() && !userChangeModel.sessionId.isNullOrEmpty()){
