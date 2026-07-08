@@ -10,6 +10,7 @@ import com.segmentify.segmentifyandroidsdk.model.faceted.SearchFacetedPageModel
 import com.segmentify.segmentifyandroidsdk.model.faceted.SearchFacetedResponseModel
 import com.segmentify.segmentifyandroidsdk.network.ConnectionManager
 import com.segmentify.segmentifyandroidsdk.network.NetworkCallback
+import com.segmentify.segmentifyandroidsdk.utils.CdpUserProfileStore
 import com.segmentify.segmentifyandroidsdk.utils.Constant
 import com.segmentify.segmentifyandroidsdk.utils.SegmentifyCallback
 import com.segmentify.segmentifyandroidsdk.utils.SegmentifyLogger
@@ -195,6 +196,31 @@ internal object EventController {
                     })
         } else {
             SegmentifyLogger.printErrorLog("You must fill userid&sessionid before accessing user traits event")
+            return
+        }
+    }
+
+    fun sendCdpUserEvent(model: UserTraitsEventModel, identityPayload: CdpEventsPayload? = null) {
+
+        if (!model.userId.isNullOrEmpty() && !model.sessionId.isNullOrEmpty()) {
+
+            ConnectionManager.getEventFactory().sendUserTraits(model, SegmentifyManager.configModel.apiKey!!)
+                    .enqueue(object : NetworkCallback<Any>() {
+                        override fun onSuccess(response: Any) {
+                            if (identityPayload != null) {
+                                CdpUserProfileStore.default.markIdentifySent(identityPayload)
+                            }
+                        }
+
+                        override fun onFailure(call: retrofit2.Call<Any>, t: Throwable) {
+                            super.onFailure(call, t)
+                            if (identityPayload != null) {
+                                CdpUserProfileStore.default.clearInFlightIdentify(identityPayload)
+                            }
+                        }
+                    })
+        } else {
+            SegmentifyLogger.printErrorLog("You must fill userid&sessionid before accessing cdp user event")
             return
         }
     }

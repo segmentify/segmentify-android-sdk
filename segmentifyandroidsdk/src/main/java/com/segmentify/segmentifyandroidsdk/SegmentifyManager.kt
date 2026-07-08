@@ -8,6 +8,8 @@ import com.segmentify.segmentifyandroidsdk.model.*
 import com.segmentify.segmentifyandroidsdk.model.faceted.SearchFacetedPageModel
 import com.segmentify.segmentifyandroidsdk.model.faceted.SearchFacetedResponseModel
 import com.segmentify.segmentifyandroidsdk.network.ConnectionManager
+import com.segmentify.segmentifyandroidsdk.utils.CdpConsent
+import com.segmentify.segmentifyandroidsdk.utils.CdpUserProfileStore
 import com.segmentify.segmentifyandroidsdk.utils.ClientPreferences
 import com.segmentify.segmentifyandroidsdk.utils.Constant
 import com.segmentify.segmentifyandroidsdk.utils.SegmentifyCallback
@@ -652,6 +654,50 @@ object SegmentifyManager {
             this.properties = properties.filterValues { it != null }
         }
         EventController.sendUserTraits(model)
+    }
+
+    /* CDP user events (parity with @segmentify/integration) */
+
+    fun userTraits(payload: CdpEventsPayload) {
+        val configured = CdpConsent.withConsentDefaults(payload) ?: return
+        sendCdpUserEvent(Constant.userTraitsEventName, configured)
+    }
+
+    fun identityUser(payload: CdpEventsPayload) {
+        val configured = CdpConsent.withConsentDefaults(payload) ?: return
+        if (!CdpUserProfileStore.default.shouldSendIdentify(configured)) return
+        sendCdpUserEvent(Constant.userIdentityEventName, configured, identityPayload = configured)
+    }
+
+    fun registerUser(payload: CdpEventsPayload) {
+        val configured = CdpConsent.withConsentDefaults(payload) ?: return
+        sendCdpUserEvent(Constant.userRegisterEventName, configured)
+    }
+
+    fun loginUser(payload: CdpEventsPayload) {
+        val configured = CdpConsent.withConsentDefaults(payload) ?: return
+        sendCdpUserEvent(Constant.userLoginEventName, configured)
+    }
+
+    fun logoutUser(payload: CdpEventsPayload) {
+        val configured = CdpConsent.withConsentDefaults(payload) ?: return
+        sendCdpUserEvent(Constant.userLogoutEventName, configured)
+    }
+
+    fun subscribeUser(properties: SubscribeProperties) {
+        sendCdpUserEvent(Constant.userSubscribeEventName, properties)
+    }
+
+    fun unsubscribeUser(payload: UnsubscribePayload) {
+        sendCdpUserEvent(Constant.userUnsubscribeEventName, payload)
+    }
+
+    private fun sendCdpUserEvent(name: String, properties: Any, identityPayload: CdpEventsPayload? = null) {
+        val model = UserTraitsEventModel().apply {
+            eventName = name
+            this.properties = properties
+        }
+        EventController.sendCdpUserEvent(model, identityPayload)
     }
 
     fun sendUserRegister(userModel: UserModel) {

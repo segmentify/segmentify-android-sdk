@@ -15,6 +15,7 @@ class ClientPreferences(context: Context) : PreferencesManager(context) {
     private val SESSION_KEEP_SECONDS = "SESSION_KEEP_SECONDS"
     private val PUSH_CAMPAIGN_ID = "PUSH_CAMPAIGN_ID"
     private val PUSH_CAMPAIGN_PRODUCT_ID = "PUSH_CAMPAIGN_PRODUCT_ID"
+    private val USER_PROFILE_SNAPSHOT = "SEG_USER_PROFILE"
 
     fun getApiUrl(): String {
         return getString(API_URL, "")!!
@@ -78,6 +79,19 @@ class ClientPreferences(context: Context) : PreferencesManager(context) {
 
     fun setPushCampaignProductId(productId: String) {
         putString(PUSH_CAMPAIGN_PRODUCT_ID, productId)
+    }
+
+    fun getUserProfileSnapshot(): String? {
+        val snapshot = getString(USER_PROFILE_SNAPSHOT, "")
+        return if (snapshot.isNullOrBlank()) null else snapshot
+    }
+
+    fun setUserProfileSnapshot(snapshot: String) {
+        putString(USER_PROFILE_SNAPSHOT, snapshot)
+    }
+
+    fun clearUserProfileSnapshot() {
+        clearKey(USER_PROFILE_SNAPSHOT)
     }
 
 }

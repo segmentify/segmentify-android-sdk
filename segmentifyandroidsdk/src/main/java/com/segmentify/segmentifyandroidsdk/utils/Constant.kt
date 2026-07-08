@@ -22,6 +22,12 @@ class Constant {
         val internalBannerGroupEventName = "INTERNAL_BANNER_GROUP"
         val searchViewEventName = "SEARCH"
         val userTraitsEventName = "USER_TRAITS"
+        val userIdentityEventName = "USER_IDENTITY"
+        val userRegisterEventName = "USER_REGISTER"
+        val userLoginEventName = "USER_LOGIN"
+        val userLogoutEventName = "USER_LOGOUT"
+        val userSubscribeEventName = "USER_SUBSCRIBE"
+        val userUnsubscribeEventName = "USER_UNSUBSCRIBE"
 
         //Steps
         val customerInformationStep = "customer"
